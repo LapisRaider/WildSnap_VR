@@ -41,7 +41,7 @@ public class PhotoCapture : MonoBehaviour
         photoTaken.Apply();
 
         byte[] byteArray = photoTaken.EncodeToPNG();
-        System.IO.File.WriteAllBytes(Application.dataPath + "/photos/photo" + m_currPhotoCount + ".png", byteArray);
+        System.IO.File.WriteAllBytes(Application.dataPath + "/Photos/photo" + m_currPhotoCount + ".png", byteArray);
 
         ++m_currPhotoCount;
     }
