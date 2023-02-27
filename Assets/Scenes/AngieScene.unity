@@ -224,8 +224,7 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras:
-  - {fileID: 720991458}
+  m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -350,8 +349,9 @@ GameObject:
   m_Component:
   - component: {fileID: 720991455}
   - component: {fileID: 720991458}
-  - component: {fileID: 720991457}
   - component: {fileID: 720991456}
+  - component: {fileID: 720991459}
+  - component: {fileID: 720991460}
   m_Layer: 0
   m_Name: PhotoCamera
   m_TagString: Untagged
@@ -407,14 +407,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &720991457
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720991454}
-  m_Enabled: 1
 --- !u!20 &720991458
 Camera:
   m_ObjectHideFlags: 0
@@ -440,7 +432,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 15.6
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -458,6 +450,36 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &720991459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720991454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fcef38da112bc43bd5be64f2ecb36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_zoomFactor: 5
+  m_zoomLerpSpeed: 10
+  m_zoomLimit: {x: 10, y: 80}
+--- !u!114 &720991460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720991454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58cdf8df2ffaf6e44ab195438625d7b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_photoTargetTexture: {fileID: 8400000, guid: ae0ecf493cc2cc740af87dc12b0f5382,
+    type: 2}
+  m_photoTakingCamera: {fileID: 720991458}
 --- !u!1 &1184842387
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,7 +783,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791826235}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.26, y: -2.006, z: -0.27}
+  m_LocalPosition: {x: -3.6, y: -2.6, z: -3.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
