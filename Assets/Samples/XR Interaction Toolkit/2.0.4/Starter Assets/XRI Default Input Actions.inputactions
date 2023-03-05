@@ -278,6 +278,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "YButton",
+                    "type": "Button",
+                    "id": "9e755e25-63ce-4179-a19a-4bf740c48bce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "XButton",
+                    "type": "Button",
+                    "id": "ec470c34-e521-43a2-b7d7-f7e3bcc80d72",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -456,6 +474,28 @@
                     "action": "Translate Anchor",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "afc129fa-1d49-4688-8785-5f93e37d8673",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "YButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c7ca5cad-be81-4c6c-a8d7-c978763fac05",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

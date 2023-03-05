@@ -1,7 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PhotoCameraController : MonoBehaviour
 {
+    [Header("Camera Interaction")]
+    private bool m_cameraActivated = false;
+    public InputActionReference m_zoomInInput = null;
+    public InputActionReference m_zoomOutInput = null;
+
+    [Header("zoom")]
     [SerializeField] private float m_zoomFactor = 2.0f;
     [SerializeField] private float m_zoomLerpSpeed = 1.0f;
     [Tooltip("Smaller number means zoom in")]
@@ -9,7 +16,6 @@ public class PhotoCameraController : MonoBehaviour
 
     private float m_targetZoomAmt = 0.0f;
     private Camera m_photoTakingCamera;
-    
 
     // Start is called before the first frame update
     void Awake()
@@ -21,13 +27,20 @@ public class PhotoCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: change input to VR controller joystick
-        float scrollData = Input.GetAxis("Mouse ScrollWheel");
+        if (!m_cameraActivated)
+            return;
+
+        int zoomInOut = m_zoomInInput.action.ReadValue<float>() > 0.1f ? -1 : m_zoomOutInput.action.ReadValue<float>() > 0.1f ? 1 : 0;
 
         //smaller FOV is zoom in
-        m_targetZoomAmt -= scrollData * m_zoomFactor;
+        m_targetZoomAmt += zoomInOut * m_zoomFactor;
         m_targetZoomAmt = Mathf.Clamp(m_targetZoomAmt, m_zoomLimit.x, m_zoomLimit.y);
 
         m_photoTakingCamera.fieldOfView = Mathf.Lerp(m_photoTakingCamera.fieldOfView, m_targetZoomAmt, Time.deltaTime * m_zoomLerpSpeed);
+    }
+
+    public void SetActivation(bool isActivate)
+    {
+        m_cameraActivated = isActivate;
     }
 }
