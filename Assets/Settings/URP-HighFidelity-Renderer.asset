@@ -14,22 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_Shader: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
---- !u!114 &-5213638165297874387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99044e0b7d7b80241981c71e36b391ed, type: 3}
-  m_Name: GrassBendingFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  settings:
-    renderRange: 50
-    ignoreSceneView: 0
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,7 +29,7 @@ MonoBehaviour:
   m_Active: 1
   m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
   m_Settings:
-    Downsample: 0
+    Downsample: 1
     AfterOpaque: 0
     Source: 1
     NormalSamples: 1
@@ -72,9 +56,7 @@ MonoBehaviour:
   - {fileID: -1878332245247344467}
   - {fileID: 1570842567097159394}
   - {fileID: -8692980864447236321}
-  - {fileID: -5213638165297874387}
-  - {fileID: 0}
-  m_RendererFeatureMap: adc0de57c6d2eee5e28ee3f9fdc0cc151fb75a0ff6535c872d3a0032b66fa5b70420aedcfddb91cf
+  m_RendererFeatureMap: adc0de57c6d2eee5e28ee3f9fdc0cc151fb75a0ff6535c87
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

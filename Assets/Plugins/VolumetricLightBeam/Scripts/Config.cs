@@ -118,7 +118,7 @@ namespace VLB
             get
             {
 #if UNITY_EDITOR
-                if(_BeamShader == null)
+                if (_BeamShader == null)
                     RefreshShader(RefreshShaderFlags.All);
 #endif
                 return _BeamShader;
@@ -251,8 +251,6 @@ namespace VLB
             Instance.RefreshShader(RefreshShaderFlags.All);
 #endif
 
-            if(Instance.hasRenderPipelineMismatch)
-                Debug.LogError("It looks like the 'Render Pipeline' is not correctly set in the config. Please make sure to select the proper value depending on your pipeline in use.", Instance);
         }
 
         public void Reset()
@@ -475,8 +473,8 @@ namespace VLB
         {
             var fullname = name;
             var strToFind = ConfigOverride.kAssetName;
-            if (fullname.IndexOf(strToFind) == 0)   return fullname.Substring(strToFind.Length);
-            else                                    return "";
+            if (fullname.IndexOf(strToFind) == 0) return fullname.Substring(strToFind.Length);
+            else return "";
         }
 #endif
 

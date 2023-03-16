@@ -252,7 +252,7 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.9122808, y: 0.92232436, z: 1, w: 0}
+    m_Value: {x: 0.9122808, y: 0.92232436, z: 1, w: 0.08488964}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 1, y: 0.9219102, z: 0.9893835, w: 0}
@@ -369,7 +369,7 @@ MonoBehaviour:
     m_Value: 0
   turboMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   directWrite:
     m_OverrideState: 1
     m_Value: 0
@@ -554,7 +554,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
     dimension: 1
   bloomIntensity:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   bloomThreshold:
     m_OverrideState: 0
@@ -586,8 +586,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   bloomQuickerBlur:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   bloomCustomize:
     m_OverrideState: 0
     m_Value: 0
@@ -634,13 +634,13 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0.07
   anamorphicFlaresThreshold:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.75
   anamorphicFlaresTint:
     m_OverrideState: 0
     m_Value: {r: 0.5, g: 0.5, b: 1, a: 0}
   anamorphicFlaresVertical:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   anamorphicFlaresSpread:
     m_OverrideState: 0
@@ -663,11 +663,11 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   anamorphicFlaresResolution:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   anamorphicFlaresQuickerBlur:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   sunFlaresIntensity:
     m_OverrideState: 0
     m_Value: 0
@@ -1076,45 +1076,7 @@ MonoBehaviour:
   - {fileID: 4568966000606246630}
   - {fileID: 5136133582547194401}
   - {fileID: -2099485622448885130}
-  - {fileID: 2531322810302600853}
   - {fileID: 7937963264154175687}
---- !u!114 &2531322810302600853
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1f1c903230d0824f8f1fef6f51e54bf, type: 3}
-  m_Name: PRISMSunshafts
-  m_EditorClassIdentifier: 
-  active: 1
-  rayIntensity:
-    m_OverrideState: 1
-    m_Value: 0.207
-  rayDecay:
-    m_OverrideState: 1
-    m_Value: 0.5
-  rayDensity:
-    m_OverrideState: 1
-    m_Value: 0.25
-  sunTransformPosition:
-    m_OverrideState: 1
-    m_Value: {x: 0, y: 0, z: 0}
-  sunColor:
-    m_OverrideState: 1
-    m_Value: {r: 0.9056604, g: 0.8715417, b: 0.33748665, a: 1}
-  useUltraQuality:
-    m_OverrideState: 1
-    m_Value: 0
-  useMobileDownsampling:
-    m_OverrideState: 1
-    m_Value: 0
-  sunTransform:
-    m_OverrideState: 1
-    m_Value: {fileID: 0}
 --- !u!114 &4568966000606246630
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1188,8 +1150,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   skipIterations:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 5
   dirtTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
