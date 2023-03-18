@@ -5367,6 +5367,8 @@ MonoBehaviour:
   m_photoTargetTexture: {fileID: 8400000, guid: ae0ecf493cc2cc740af87dc12b0f5382,
     type: 2}
   m_photoTakingCamera: {fileID: 5793039974395690282}
+  m_maxAnimalDistance: 500
+  m_raysShotPerAnimal: 20
   m_albumPanel: {fileID: 0}
   m_photoPrefab: {fileID: 6293143888633381887, guid: 51ad4a932de9f034d99334f51f5f5b01,
     type: 3}
