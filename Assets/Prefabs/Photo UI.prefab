@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6293143888633381880}
   - component: {fileID: 6293143888633381882}
   - component: {fileID: 6293143888633381881}
+  - component: {fileID: 4712881652066789167}
   m_Layer: 5
   m_Name: Photo UI
   m_TagString: Untagged
@@ -73,3 +74,16 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &4712881652066789167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6293143888633381887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f429c0773bf1740b29900a008e984b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RawImage: {fileID: 6293143888633381881}
