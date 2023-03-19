@@ -69,11 +69,13 @@ public class PhotoCapture : MonoBehaviour
         GameObject imageObj = Instantiate(m_photoPrefab, m_albumPanel.transform);
         GameObject focusAnimal;
         int raysHit;
-        DetectFocusAnimal(out focusAnimal, out raysHit);
+        float distance;
+        float imageSize;
+        DetectFocusAnimal(out focusAnimal, out raysHit, out distance, out imageSize);
 
         PhotoProperties photoProps = imageObj.GetComponent<PhotoProperties>();
         photoProps.SetImage(newImage);
-        photoProps.SetAnimal(focusAnimal, (float)raysHit / m_raysShotPerAnimal);
+        photoProps.SetAnimal(focusAnimal, (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
     }
 
     public void TakePhoto()
@@ -84,7 +86,7 @@ public class PhotoCapture : MonoBehaviour
             m_testCaptureParticle.Play();
     }
 
-    public void DetectFocusAnimal(out GameObject animal, out int raysHit)
+    public void DetectFocusAnimal(out GameObject animal, out int raysHit, out float distance, out float imageSize)
     {
         Vector3 cameraFrontVector = m_photoTakingCamera.transform.forward;
         Collider[] collidersInRadius = Physics.OverlapSphere(m_photoTakingCamera.transform.position, m_maxAnimalDistance);
@@ -132,11 +134,46 @@ public class PhotoCapture : MonoBehaviour
                 // the first one that reaches this is the most centered animal that is highly visible
                 raysHit = hitCount;
                 animal = collider.gameObject;
+                Vector3 closestPoint = collider.ClosestPoint(m_photoTakingCamera.transform.position);
+                distance = (closestPoint - m_photoTakingCamera.transform.position).sqrMagnitude;
+
+                // use the bounds to get an estimate of how much space the image takes
+                Vector3[] boundsCorners = {
+                    new Vector3(collider.bounds.min.x, collider.bounds.min.y, collider.bounds.min.z),
+                    new Vector3(collider.bounds.min.x, collider.bounds.min.y, collider.bounds.max.z),
+                    new Vector3(collider.bounds.min.x, collider.bounds.max.y, collider.bounds.min.z),
+                    new Vector3(collider.bounds.max.x, collider.bounds.min.y, collider.bounds.min.z),
+                    new Vector3(collider.bounds.min.x, collider.bounds.max.y, collider.bounds.max.z),
+                    new Vector3(collider.bounds.max.x, collider.bounds.max.y, collider.bounds.min.z),
+                    new Vector3(collider.bounds.max.x, collider.bounds.min.y, collider.bounds.max.z),
+                    new Vector3(collider.bounds.max.x, collider.bounds.max.y, collider.bounds.max.z)
+                };
+                Matrix4x4 viewMat = m_photoTakingCamera.worldToCameraMatrix;
+                Matrix4x4 projMat = m_photoTakingCamera.projectionMatrix;
+
+                float screenMinX = Mathf.Infinity;
+                float screenMaxX = -Mathf.Infinity;
+                float screenMinY = Mathf.Infinity;
+                float screenMaxY = -Mathf.Infinity;
+
+                foreach (Vector3 corner in boundsCorners)
+                {
+                    Vector4 homo = new Vector4(corner.x, corner.y, corner.z, 1);
+                    Vector4 screenSpace = projMat * viewMat * homo;
+                    screenMinX = Mathf.Min(screenMinX, screenSpace.x);
+                    screenMaxX = Mathf.Max(screenMaxX, screenSpace.x);
+                    screenMinY = Mathf.Min(screenMinY, screenSpace.y);
+                    screenMaxY = Mathf.Max(screenMaxY, screenSpace.y);
+                }
+
+                imageSize = (screenMaxX - screenMinX) * (screenMaxY - screenMinY);
                 return;
             }
         }
         animal = null;
         raysHit = 0;
+        distance = 0;
+        imageSize = 0;
         return;
     }
 }
