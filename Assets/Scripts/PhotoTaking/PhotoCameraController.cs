@@ -27,9 +27,6 @@ public class PhotoCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!m_cameraActivated)
-            return;
-
         int zoomInOut = m_zoomInInput.action.ReadValue<float>() > 0.1f ? -1 : m_zoomOutInput.action.ReadValue<float>() > 0.1f ? 1 : 0;
 
         //smaller FOV is zoom in

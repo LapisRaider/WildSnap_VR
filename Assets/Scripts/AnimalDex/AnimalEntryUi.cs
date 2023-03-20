@@ -37,7 +37,7 @@ public class AnimalEntryUi : MonoBehaviour
         }
 
         //the remaining photos make it inactive since they're not taken yet
-        for (int i = currPhotoUiIndex + 1; currPhotoUiIndex < m_animalPhotosUi.Count; ++i)
+        for (int i = currPhotoUiIndex + 1; i < m_animalPhotosUi.Count; ++i)
         {
             m_animalPhotosUi[i].gameObject.SetActive(false);
         }

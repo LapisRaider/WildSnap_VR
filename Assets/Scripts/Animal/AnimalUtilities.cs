@@ -12,5 +12,6 @@ public enum AnimalType
     LION,
     BEAR,
     HUMAN,
-    DEER
+    DEER,
+    DOG
 }
