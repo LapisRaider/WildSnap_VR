@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class Animal_Behaviour : MonoBehaviour
 {
-    public Animal_Info m_animalInfo;
+    public AnimalType m_animalType;
     private BoxCollider m_boxCollider;
     private NavMeshAgent m_navMeshAgent;
     private Animator m_animator;
@@ -23,11 +23,6 @@ public class Animal_Behaviour : MonoBehaviour
             {"IsRunning", AnimalState.Running},
             {"IsAttacking", AnimalState.Attacking},
             {"IsDead" , AnimalState.Dead } };
-    }
-
-    public string GetInfo()
-    {
-        return m_animalInfo.info;
     }
 
     private void OnTriggerEnter(Collider other)
