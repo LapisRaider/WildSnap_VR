@@ -1,20 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [CreateAssetMenu]
+[Serializable]
 public class Animal_Info : ScriptableObject
 {
-    public string info;
-    // Start is called before the first frame update
-    void Start()
-    {
+    public AnimalType m_type;
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    [Header("Dex display information")]
+    public Sprite m_dexSprite;
+    public string m_displayName;
+    public string m_description;
 }

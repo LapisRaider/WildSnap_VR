@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public enum AnimalState
-{
-    Walking, Standing, Running, Attacking, Dead, Idling
-}
 public class Animal_Behaviour : MonoBehaviour
 {
     public Animal_Info m_animalInfo;
