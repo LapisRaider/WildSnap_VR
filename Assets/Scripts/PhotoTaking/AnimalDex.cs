@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class AnimalDex
+public class AnimalDex : SingletonBase<AnimalDex>
 {
     public List<Animal_Info> m_animalInfo = new List<Animal_Info>();
 

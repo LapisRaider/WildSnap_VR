@@ -69,16 +69,15 @@ public class PhotoCapture : MonoBehaviour
         if (m_albumPanel == null)
             return;
 
-        GameObject imageObj = Instantiate(m_photoPrefab, m_albumPanel.transform);
         GameObject focusAnimal;
         int raysHit;
         float distance;
         float imageSize;
         DetectFocusAnimal(out focusAnimal, out raysHit, out distance, out imageSize);
 
-        PhotoProperties photoProps = imageObj.GetComponent<PhotoProperties>();
-        photoProps.SetImage(newImage);
-        photoProps.SetAnimal(focusAnimal, (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
+        Animal_Behaviour animal = focusAnimal.GetComponent<Animal_Behaviour>();
+        float photoScore = CalculatePhotoScore(animal, (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
+        AnimalDex.Instance.AddPhotoToDexEntry(animal.m_animalType, animal.GetAnimalState(), (int)photoScore, newImage);
     }
 
     public void TakePhoto()
@@ -87,6 +86,17 @@ public class PhotoCapture : MonoBehaviour
 
         if (m_testCaptureParticle != null)
             m_testCaptureParticle.Play();
+    }
+
+    public float CalculatePhotoScore(Animal_Behaviour animalBehavior, float rayHitProportion, float distance, float imageSize)
+    {
+        AnimalState animalState = animalBehavior.GetAnimalState();
+        float baseScore = 10.0f;
+
+        // scale this based on animal properties i guess?
+        // ideas: rarity, how much of the frame contains the animal, etc.
+        //TODO: put in the animal state too
+        return rayHitProportion * distance * imageSize * baseScore;
     }
 
     public void DetectFocusAnimal(out GameObject animal, out int raysHit, out float distance, out float imageSize)

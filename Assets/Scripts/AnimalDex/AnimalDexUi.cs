@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimalDexUi : MonoBehaviour
 {
-    public AnimalDex m_animalDexInfo;
+    private AnimalDex m_animalDexInfo;
 
     [Header("UI info")]
     public GameObject m_animalDexSlotPrefab;
@@ -15,6 +15,7 @@ public class AnimalDexUi : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        m_animalDexInfo = AnimalDex.Instance;
         m_animalDexInfo.Init();
 
         foreach (var dexEntry in m_animalDexInfo.GetDexEntries())
