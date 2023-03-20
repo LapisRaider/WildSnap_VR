@@ -10,7 +10,7 @@ public class AnimalDexUi : MonoBehaviour
     public GameObject m_animalDexSlotPrefab;
     public GameObject m_animalDexSlotParent;
 
-    
+    public AnimalEntryUi m_animalEntryUi;
 
     // Start is called before the first frame update
     void Awake()
@@ -30,5 +30,7 @@ public class AnimalDexUi : MonoBehaviour
     {
         m_animalDexSlotParent.SetActive(false);
 
+        m_animalEntryUi.UpdateInfo(m_animalDexInfo.GetDexEntries()[m_animalType]);
+        m_animalEntryUi.gameObject.SetActive(true);
     }
 }
