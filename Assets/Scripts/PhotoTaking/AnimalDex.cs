@@ -74,6 +74,8 @@ public class AnimalDexEntry
 
         onAnimalPhotoUpdateCallback?.Invoke(animalState);
 
+        Debug.Log(animalState);
+
         return true;
     }
 }

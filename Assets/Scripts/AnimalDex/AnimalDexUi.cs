@@ -28,7 +28,7 @@ public class AnimalDexUi : MonoBehaviour
     {
         m_animalDexSlotParent.SetActive(false);
 
-        m_animalEntryUi.InitInfo(m_animalDexInfo.GetDexEntries()[m_animalType]);
         m_animalEntryUi.gameObject.SetActive(true);
+        m_animalEntryUi.InitInfo(m_animalDexInfo.GetDexEntries()[m_animalType]);
     }
 }

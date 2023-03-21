@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Horse
   m_EditorClassIdentifier: 
   m_type: 1
+  m_availableStates: 000000000100000002000000030000000400000005000000
   m_dexSprite: {fileID: 21300000, guid: f78dd62e517bc9348a6d654909965319, type: 3}
   m_displayName: Horse
   m_description: Humans began domesticating horses around 4000 BCE, and their domestication

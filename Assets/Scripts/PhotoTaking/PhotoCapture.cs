@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 using System;
 using System.Linq;
 using UnityEngine.InputSystem;
@@ -18,10 +17,6 @@ public class PhotoCapture : MonoBehaviour
     private Rect m_regionToRead;
     private int m_currPhotoCount = 0;
     private bool m_isTakingPhoto = false;
-
-    [Header("Phototaking Album")]
-    public GameObject m_albumPanel;
-    public GameObject m_photoPrefab;
 
     //TODO: THIS IS FOR TESTING, REMOVE LATER
     public ParticleSystem m_testCaptureParticle; 
@@ -56,27 +51,16 @@ public class PhotoCapture : MonoBehaviour
         m_isTakingPhoto = false;
 
         Texture2D photoTaken = new Texture2D(m_photoTargetTexture.width, m_photoTargetTexture.height, TextureFormat.ARGB32, false);
-        AddPhotoToUiAlbum(photoTaken);
-
-        //saving files into file directory
-        /*
         m_regionToRead = new Rect(0, 0, m_photoTargetTexture.width, m_photoTargetTexture.height);
         photoTaken.ReadPixels(m_regionToRead, 0, 0);
         photoTaken.Apply();
 
-        byte[] byteArray = photoTaken.EncodeToPNG();
-        System.IO.File.WriteAllBytes(Application.dataPath + "/Photos/photo" + m_currPhotoCount + ".png", byteArray);
-        
-        ++m_currPhotoCount;
-        */
+        AddPhotoToUiAlbum(photoTaken);
+        //SavePhotosToFolder(photoTaken);
     }
 
     private void AddPhotoToUiAlbum(Texture2D newImage)
     {
-        //no storing photos
-        if (m_albumPanel == null)
-            return;
-
         GameObject focusAnimal;
         int raysHit;
         float distance;
@@ -86,6 +70,14 @@ public class PhotoCapture : MonoBehaviour
         Animal_Behaviour animal = focusAnimal.GetComponent<Animal_Behaviour>();
         float photoScore = CalculatePhotoScore(animal, (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
         AnimalDex.Instance.AddPhotoToDexEntry(animal.m_animalType, animal.GetAnimalState(), (int)photoScore, newImage);
+    }
+
+    private void SavePhotosToFolder(Texture2D photoTaken)
+    {
+        byte[] byteArray = photoTaken.EncodeToPNG();
+        System.IO.File.WriteAllBytes(Application.dataPath + "/Photos/photo" + m_currPhotoCount + ".png", byteArray);
+
+        ++m_currPhotoCount;
     }
 
     public void TakePhoto()

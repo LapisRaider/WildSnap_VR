@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Deer
   m_EditorClassIdentifier: 
   m_type: 6
+  m_availableStates: 000000000100000002000000030000000400000005000000
   m_dexSprite: {fileID: 21300000, guid: 6f254c7fdc547304a86ef1ecdeb574a7, type: 3}
   m_displayName: Deer
   m_description: Deer live in a variety of biomes, ranging from tundra to the tropical
