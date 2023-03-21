@@ -58,10 +58,8 @@ public class PhotoCapture : MonoBehaviour
         Texture2D photoTaken = new Texture2D(m_photoTargetTexture.width, m_photoTargetTexture.height, TextureFormat.ARGB32, false);
         AddPhotoToUiAlbum(photoTaken);
 
-
-
         //saving files into file directory
-        
+        /*
         m_regionToRead = new Rect(0, 0, m_photoTargetTexture.width, m_photoTargetTexture.height);
         photoTaken.ReadPixels(m_regionToRead, 0, 0);
         photoTaken.Apply();
@@ -70,7 +68,7 @@ public class PhotoCapture : MonoBehaviour
         System.IO.File.WriteAllBytes(Application.dataPath + "/Photos/photo" + m_currPhotoCount + ".png", byteArray);
         
         ++m_currPhotoCount;
-        
+        */
     }
 
     private void AddPhotoToUiAlbum(Texture2D newImage)

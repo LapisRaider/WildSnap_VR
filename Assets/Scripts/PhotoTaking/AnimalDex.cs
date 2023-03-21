@@ -8,8 +8,7 @@ public class AnimalDex : SingletonBase<AnimalDex>
 
     private Dictionary<AnimalType, AnimalDexEntry> m_dexEntries = new Dictionary<AnimalType, AnimalDexEntry>();
 
-    // Start is called before the first frame update
-    public void Init()
+    public override void Awake()
     {
         foreach (Animal_Info animalInfo in m_animalInfo)
         {

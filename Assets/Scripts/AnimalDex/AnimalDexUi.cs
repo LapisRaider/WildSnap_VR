@@ -16,7 +16,6 @@ public class AnimalDexUi : MonoBehaviour
     void Awake()
     {
         m_animalDexInfo = AnimalDex.Instance;
-        m_animalDexInfo.Init();
 
         foreach (var dexEntry in m_animalDexInfo.GetDexEntries())
         {
