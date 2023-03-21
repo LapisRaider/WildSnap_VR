@@ -50,26 +50,38 @@ public class PhotoCapture : MonoBehaviour
 
         m_isTakingPhoto = false;
 
+        //check whether an animal is in the photo
+        GameObject focusAnimal;
+        int raysHit;
+        float distance;
+        float imageSize;
+
+        DetectFocusAnimal(out focusAnimal, out raysHit, out distance, out imageSize);
+        if (focusAnimal == null)
+            return;
+
+        Animal_Behaviour animal = focusAnimal.GetComponent<Animal_Behaviour>();
+        if (animal == null)
+        {
+            Debug.LogError("This animal does not have the Animal_Behaviour component: " + focusAnimal.name);
+            return;
+        }
+
+        float photoScore = CalculatePhotoScore(animal.m_animalType, animal.GetAnimalState(), (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
+        AddPhotoToUiAlbum(animal, photoScore);
+    }
+
+    private void AddPhotoToUiAlbum(Animal_Behaviour animal, float photoScore)
+    {
+        //read and save photo
         Texture2D photoTaken = new Texture2D(m_photoTargetTexture.width, m_photoTargetTexture.height, TextureFormat.ARGB32, false);
         m_regionToRead = new Rect(0, 0, m_photoTargetTexture.width, m_photoTargetTexture.height);
         photoTaken.ReadPixels(m_regionToRead, 0, 0);
         photoTaken.Apply();
 
-        AddPhotoToUiAlbum(photoTaken);
+        AnimalDex.Instance.AddPhotoToDexEntry(animal.m_animalType, animal.GetAnimalState(), (int)photoScore, photoTaken);
+
         //SavePhotosToFolder(photoTaken);
-    }
-
-    private void AddPhotoToUiAlbum(Texture2D newImage)
-    {
-        GameObject focusAnimal;
-        int raysHit;
-        float distance;
-        float imageSize;
-        DetectFocusAnimal(out focusAnimal, out raysHit, out distance, out imageSize);
-
-        Animal_Behaviour animal = focusAnimal.GetComponent<Animal_Behaviour>();
-        float photoScore = CalculatePhotoScore(animal, (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
-        AnimalDex.Instance.AddPhotoToDexEntry(animal.m_animalType, animal.GetAnimalState(), (int)photoScore, newImage);
     }
 
     private void SavePhotosToFolder(Texture2D photoTaken)
@@ -88,15 +100,14 @@ public class PhotoCapture : MonoBehaviour
             m_testCaptureParticle.Play();
     }
 
-    public float CalculatePhotoScore(Animal_Behaviour animalBehavior, float rayHitProportion, float distance, float imageSize)
+    public float CalculatePhotoScore(AnimalType type, AnimalState animalState, float rayHitProportion, float distance, float imageSize)
     {
-        AnimalState animalState = animalBehavior.GetAnimalState();
         float baseScore = 10.0f;
+        float stateScore = AnimalDex.Instance.GetAnimalDexEntry(type).m_photoStateScoreMap[animalState];
 
         // scale this based on animal properties i guess?
         // ideas: rarity, how much of the frame contains the animal, etc.
-        //TODO: put in the animal state too
-        return rayHitProportion * distance * imageSize * baseScore;
+        return rayHitProportion * distance * imageSize * baseScore * stateScore;
     }
 
     public void DetectFocusAnimal(out GameObject animal, out int raysHit, out float distance, out float imageSize)

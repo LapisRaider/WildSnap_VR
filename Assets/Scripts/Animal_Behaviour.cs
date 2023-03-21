@@ -7,22 +7,26 @@ using UnityEngine.AI;
 public class Animal_Behaviour : MonoBehaviour
 {
     public AnimalType m_animalType;
+
     private BoxCollider m_boxCollider;
     private NavMeshAgent m_navMeshAgent;
     private Animator m_animator;
-    private Dictionary<string, AnimalState> m_stateMap;
+    private Dictionary<string, AnimalState> m_animStateMap = new Dictionary<string, AnimalState>();
+
+
     // Start is called before the first frame update
     void Awake()
     {
         m_boxCollider = transform.GetComponentInChildren<BoxCollider>();
         m_navMeshAgent = transform.GetComponent<NavMeshAgent>();
         m_animator = transform.GetComponent<Animator>();
-        m_stateMap = new Dictionary<string, AnimalState>(){
-            { "IsWalking", AnimalState.Walking},
-            {"IsStanding", AnimalState.Standing},
-            {"IsRunning", AnimalState.Running},
-            {"IsAttacking", AnimalState.Attacking},
-            {"IsDead" , AnimalState.Dead } };
+
+        AnimalDexEntry dexEntry = AnimalDex.Instance.GetAnimalDexEntry(m_animalType);
+        Animal_Info info = dexEntry.m_animalInfo;
+        foreach (AnimalAnimationStates stateInfo in info.m_animStateData)
+        {
+            m_animStateMap.Add(stateInfo.m_animStateName, stateInfo.m_state);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,14 +50,16 @@ public class Animal_Behaviour : MonoBehaviour
 
     public AnimalState GetAnimalState()
     {
-        foreach (var state in m_stateMap)
+        AnimatorClipInfo[] currClipInfo = m_animator.GetCurrentAnimatorClipInfo(0);
+        string clipName = currClipInfo[0].clip.name;
+
+        if (!m_animStateMap.ContainsKey(clipName))
         {
-            if (m_animator.GetBool(state.Key))
-            {
-                return state.Value;
-            }
+            Debug.LogError("Missing state: " + clipName + " check scriptable object for " + m_animalType);
+            return AnimalState.Idling;
         }
 
-        return AnimalState.Idling;
+        return m_animStateMap[clipName];
     }
 }
+

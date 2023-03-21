@@ -59,14 +59,16 @@ public class AnimalEntryUi : MonoBehaviour
         }
 
         //init photos for available states
-        foreach (AnimalState availableState in animalInfo.m_availableStates)
+        foreach (AnimalAvailableStateScore availableStateAndScore in animalInfo.m_availableStateAndScore)
         {
-            AnimalPhotoUi photoUi = m_animalPhotosUi[availableState];
+            AnimalState state = availableStateAndScore.m_state;
 
-            if (dexEntry.m_photos.ContainsKey(availableState))
-                photoUi.InitInfo(availableState, dexEntry.m_photos[availableState]);
+            AnimalPhotoUi photoUi = m_animalPhotosUi[state];
+
+            if (dexEntry.m_photos.ContainsKey(state))
+                photoUi.InitInfo(state, dexEntry.m_photos[state]);
             else
-                photoUi.InitInfo(availableState, null);
+                photoUi.InitInfo(state, null);
 
             photoUi.gameObject.SetActive(true);
         }

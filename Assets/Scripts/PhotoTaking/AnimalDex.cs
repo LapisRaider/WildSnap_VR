@@ -29,6 +29,17 @@ public class AnimalDex : SingletonBase<AnimalDex>
     {
         return m_dexEntries;
     }
+
+    public AnimalDexEntry GetAnimalDexEntry(AnimalType animalType)
+    {
+        if (!m_dexEntries.ContainsKey(animalType))
+        {
+            Debug.LogError("ANIMAL DOES NOT EXIST");
+            return null;
+        }
+
+        return m_dexEntries[animalType];
+    }
 }
 
 [Serializable]
@@ -43,10 +54,16 @@ public class AnimalDexEntry
 
     public Animal_Info m_animalInfo = null;
     public Dictionary<AnimalState, AnimalPhotoInfo> m_photos = new Dictionary<AnimalState, AnimalPhotoInfo>();
+    public Dictionary<AnimalState, float> m_photoStateScoreMap = new Dictionary<AnimalState, float>();
 
     public AnimalDexEntry(Animal_Info animalInfo)
     {
         m_animalInfo = animalInfo;
+
+        foreach (AnimalAvailableStateScore stateScore in animalInfo.m_availableStateAndScore)
+        {
+            m_photoStateScoreMap.Add(stateScore.m_state, stateScore.m_score);
+        }
     }
 
     public bool UpdatePhotos(AnimalState animalState, int photoScore, Texture2D photo)
@@ -73,8 +90,6 @@ public class AnimalDexEntry
         }
 
         onAnimalPhotoUpdateCallback?.Invoke(animalState);
-
-        Debug.Log(animalState);
 
         return true;
     }
