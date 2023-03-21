@@ -30,7 +30,7 @@ public class AnimalDexSlotUi : MonoBehaviour
         m_animalImg.color = hasSeenAnimal ? SEEN_COLOR : NOT_SEEN_COLOR;
 
         //if the photos are updated for this animal, make the sprite visible
-        dexEntry.onAnimalPhotoUpdateCallback += SetSpriteVisible;
+        dexEntry.onAnimalNewlySeenCallback += SetSpriteVisible;
 
         dexSlotClickedCallback = clickCallback;
     }

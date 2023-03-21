@@ -1,20 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class AnimalPhotoUi : MonoBehaviour
 {
+    [Header("Ui objects")]
     public TextMeshProUGUI m_stateText;
     public TextMeshProUGUI m_scroreText;
-
     public RawImage m_rawImage;
 
-    public void UpdatePhotoUi(AnimalState animalState, AnimalPhotoInfo photoInfo)
+    [Header("Ui settings")]
+    public Color NO_PHOTO_COLOR = Color.black;
+
+    public void InitInfo(AnimalState animalState, AnimalPhotoInfo photoInfo)
     {
-        m_rawImage.texture = photoInfo.m_photoTaken;
-        m_scroreText.text = photoInfo.m_score.ToString();
+        if (photoInfo == null)
+        {
+            m_rawImage.texture = null;
+            m_rawImage.color = NO_PHOTO_COLOR;
+
+            m_scroreText.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_rawImage.texture = photoInfo.m_photoTaken;
+            m_rawImage.color = Color.white;
+
+            m_scroreText.text = photoInfo.m_score.ToString();
+            m_scroreText.gameObject.SetActive(true);
+        }
 
         m_stateText.text = animalState.ToString();
     }

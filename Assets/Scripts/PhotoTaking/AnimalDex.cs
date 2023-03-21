@@ -34,8 +34,12 @@ public class AnimalDex : SingletonBase<AnimalDex>
 [Serializable]
 public class AnimalDexEntry
 {
-    public delegate void OnAnimalPhotoUpdate();
+    public delegate void OnAnimalPhotoUpdate(AnimalState animalState);
     public OnAnimalPhotoUpdate onAnimalPhotoUpdateCallback;
+
+    //when animal was just captured
+    public delegate void OnAnimalNewlySeen();
+    public OnAnimalNewlySeen onAnimalNewlySeenCallback;
 
     public Animal_Info m_animalInfo = null;
     public Dictionary<AnimalState, AnimalPhotoInfo> m_photos = new Dictionary<AnimalState, AnimalPhotoInfo>();
@@ -47,6 +51,10 @@ public class AnimalDexEntry
 
     public bool UpdatePhotos(AnimalState animalState, int photoScore, Texture2D photo)
     {
+        //animal just got 1 photo
+        if (m_photos.Count == 0)
+            onAnimalNewlySeenCallback?.Invoke();
+
         //check if animal state exists, if don't exist just insert
         if (m_photos.ContainsKey(animalState))
         {
@@ -64,8 +72,8 @@ public class AnimalDexEntry
             m_photos.Add(animalState, new AnimalPhotoInfo(photo, photoScore));
         }
 
-        if (onAnimalPhotoUpdateCallback != null)
-            onAnimalPhotoUpdateCallback.Invoke();
+        onAnimalPhotoUpdateCallback?.Invoke(animalState);
+
         return true;
     }
 }
