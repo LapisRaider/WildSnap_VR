@@ -1199,7 +1199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b31002f73478bf45bc32febf67d5ed4, type: 3}
   m_Name: PRISMDirectionalLocalisedAntiAliasing
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enableDLAA:
     m_OverrideState: 1
     m_Value: 1

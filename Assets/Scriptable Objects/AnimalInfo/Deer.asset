@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab08aba76b3d4b4db7d745a9ac84c0d, type: 3}
+  m_Name: Deer
+  m_EditorClassIdentifier: 
+  m_type: 6
+  m_availableStates: 000000000100000002000000030000000400000005000000
+  m_dexSprite: {fileID: 21300000, guid: 6f254c7fdc547304a86ef1ecdeb574a7, type: 3}
+  m_displayName: Deer
+  m_description: Deer live in a variety of biomes, ranging from tundra to the tropical
+    rainforest. While often associated with forests, many deer are ecotone species
+    that live in transitional areas between forests and thickets (for cover) and
+    prairie and savanna (open space).
