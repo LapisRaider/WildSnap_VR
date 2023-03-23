@@ -7,7 +7,9 @@ public enum MotionState
 {
     Idle,
     Walking,
-    Running
+    Running,
+    Sleep,
+    WalkingApple
 }
 
 public class AnimalMotion : MonoBehaviour
@@ -24,10 +26,44 @@ public class AnimalMotion : MonoBehaviour
 
     public void SetIdle()
     {
-        m_animator.SetBool("IsIdling", true);
+        m_animator.SetInteger("ID", 0);
         m_navMeshAgent.isStopped = true;
         m_currentState = MotionState.Idle;
     }
+
+    public void WalkToPoint(Vector3 destination)
+    {
+        m_animator.SetInteger("ID", 1);
+        m_navMeshAgent.SetDestination(destination);
+        m_navMeshAgent.isStopped = false;
+        m_currentState = MotionState.Walking;
+    }
+
+    public void WalkToApple(Vector3 destination)
+    {
+        m_animator.SetInteger("ID", 1);
+        m_navMeshAgent.SetDestination(destination);
+        m_navMeshAgent.isStopped = false;
+        m_currentState = MotionState.WalkingApple;
+    }
+
+    public void SetDestination(Vector3 destination)
+    {
+        m_navMeshAgent.SetDestination(destination);
+    }
+
+    public void SetSleep()
+    {
+        m_animator.SetTrigger("Sleeping");
+        m_navMeshAgent.isStopped = true;
+        m_currentState = MotionState.Sleep;
+    }
+
+    public bool ReachedDestination()
+    {
+        return m_navMeshAgent.remainingDistance < 2.0f;
+    }
+
 
     public MotionState GetMotion()
     {

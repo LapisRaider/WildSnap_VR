@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sleep : MonoBehaviour
+public class Sleep : IState
 {
-    // Start is called before the first frame update
-    void Start()
+    AnimalMotion m_animalMotion;
+    public Sleep(AnimalMotion animalMotion)
     {
-        
+        m_animalMotion = animalMotion;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnEnter()
     {
-        
+        m_animalMotion.SetSleep();
     }
 }

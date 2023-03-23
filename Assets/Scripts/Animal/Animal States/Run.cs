@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Run : MonoBehaviour
+public class Run : IState
 {
-    // Start is called before the first frame update
-    void Start()
+    AnimalMotion m_animalMotion;
+    public Run(AnimalMotion animalMotion)
     {
-        
+        m_animalMotion = animalMotion;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

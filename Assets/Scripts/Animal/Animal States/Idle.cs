@@ -5,6 +5,7 @@ using UnityEngine;
 public class Idle : IState
 {
     AnimalMotion m_animalMotion;
+    private float m_idleTime;
     public Idle(AnimalMotion animalMotion)
     {
         m_animalMotion = animalMotion;
@@ -13,5 +14,16 @@ public class Idle : IState
     public override void OnEnter()
     {
         m_animalMotion.SetIdle();
+        m_idleTime = Random.Range(5, 10);
+    }
+
+    public override void Tick()
+    {
+        m_idleTime -= Time.deltaTime;
+    }
+
+    public override bool StateEnded()
+    {
+        return m_idleTime < 0;
     }
 }
