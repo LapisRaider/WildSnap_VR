@@ -78,7 +78,6 @@ public class PhotoCapture : MonoBehaviour
             return;
         }
 
-        Debug.Log(animal.m_animalType);
         float photoScore = CalculatePhotoScore(animal.m_animalType, animal.GetAnimalState(), (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
         AddPhotoToUiAlbum(animal, photoScore);
     }
@@ -115,11 +114,18 @@ public class PhotoCapture : MonoBehaviour
     public float CalculatePhotoScore(AnimalType type, AnimalState animalState, float rayHitProportion, float distance, float imageSize)
     {
         float baseScore = 10.0f;
-        float stateScore = AnimalDex.Instance.GetAnimalDexEntry(type).m_photoStateScoreMap[animalState];
+        float stateScoreMultiplier = AnimalDex.Instance.GetAnimalDexEntry(type).m_photoStateScoreMap[animalState];
 
-        // scale this based on animal properties i guess?
-        // ideas: rarity, how much of the frame contains the animal, etc.
-        return rayHitProportion * distance * imageSize * baseScore * stateScore;
+        // scale 0 - 1 to 1 - 30, bigger image should give more score
+        float imageSizeMultiplier = Mathf.Max(1.0f, imageSize * 30);
+
+        // scale 0 - MAX_DISTANCE to 1 - 10, closer image should give more score
+        float distanceMultiplier = Mathf.Max(1.0f, -10 * distance / m_maxAnimalDistance + 10);
+
+        // scale 0 - 1 to 1 - 30, more ray hits should give more score
+        float rayHitMultiplier = Mathf.Max(1.0f, rayHitProportion * 30);
+
+        return rayHitProportion * imageSizeMultiplier * distanceMultiplier * rayHitMultiplier * stateScoreMultiplier;
     }
 
     public void DetectFocusAnimal(out GameObject animal, out int raysHit, out float distance, out float imageSize)
@@ -146,6 +152,7 @@ public class PhotoCapture : MonoBehaviour
 
             int hitCount = 0;
 
+            // TODO: this ray thing is the most unstable thing ever, find a way to get a "random" part on animal's mesh
             for (int j = 0; j < m_raysShotPerAnimal; j++)
             {
                 Vector3 randomPointInBounds = new Vector3(
