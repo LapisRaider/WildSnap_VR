@@ -6,11 +6,10 @@ public class AnimalDexSlotUi : MonoBehaviour
 {
     [Header("UI Objects")]
     public Image m_animalImg;
+    public Image m_animalImgUnknown;
     public TextMeshProUGUI m_animalNameText;
 
     [Header("UI settings")]
-    public Color NOT_SEEN_COLOR = Color.black;
-    public Color SEEN_COLOR = Color.white;
     public string NOT_SEEN_TEXT = "";
 
     [Header("Internal info")]
@@ -27,7 +26,9 @@ public class AnimalDexSlotUi : MonoBehaviour
 
         //set sprite
         m_animalImg.sprite = dexEntry.m_animalInfo.m_dexSprite;
-        m_animalImg.color = hasSeenAnimal ? SEEN_COLOR : NOT_SEEN_COLOR;
+        m_animalImgUnknown.sprite = dexEntry.m_animalInfo.m_dexSprite;
+        m_animalImg.gameObject.SetActive(hasSeenAnimal);
+        m_animalImgUnknown.gameObject.SetActive(!hasSeenAnimal);
 
         //if the photos are updated for this animal, make the sprite visible
         dexEntry.onAnimalNewlySeenCallback += SetSpriteVisible;
@@ -37,7 +38,8 @@ public class AnimalDexSlotUi : MonoBehaviour
 
     public void SetSpriteVisible()
     {
-        m_animalImg.color = SEEN_COLOR;
+        m_animalImg.gameObject.SetActive(true);
+        m_animalImgUnknown.gameObject.SetActive(false);
     }
 
     public void Clicked()
