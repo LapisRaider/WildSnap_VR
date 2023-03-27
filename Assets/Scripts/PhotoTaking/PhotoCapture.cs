@@ -152,13 +152,20 @@ public class PhotoCapture : MonoBehaviour
 
             int hitCount = 0;
 
+            // constrict the bounds so that the rays are less likely to shoot at empty space
+            Vector3 boundMin = collider.bounds.min;
+            Vector3 boundMax = collider.bounds.max;
+            Vector3 boundShrinkAmount = collider.bounds.extents * 0.05f;
+            boundMin += boundShrinkAmount;
+            boundMax -= boundShrinkAmount;
+
             // TODO: this ray thing is the most unstable thing ever, find a way to get a "random" part on animal's mesh
             for (int j = 0; j < m_raysShotPerAnimal; j++)
             {
                 Vector3 randomPointInBounds = new Vector3(
-                    UnityEngine.Random.Range(collider.bounds.min.x, collider.bounds.max.x),
-                    UnityEngine.Random.Range(collider.bounds.min.y, collider.bounds.max.y),
-                    UnityEngine.Random.Range(collider.bounds.min.z, collider.bounds.max.z)
+                    UnityEngine.Random.Range(boundMin.x, boundMax.x),
+                    UnityEngine.Random.Range(boundMin.y, boundMax.y),
+                    UnityEngine.Random.Range(boundMin.z, boundMax.z)
                 );
 
                 // if random point out of frustum. reject
