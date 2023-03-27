@@ -5,15 +5,25 @@ using System;
 using System.Linq;
 using UnityEngine.InputSystem;
 
+public class ReverseSortFloats : IComparer<float>
+{
+    int IComparer<float>.Compare(float x, float y)
+    {
+        return x > y ? -1 : x < y ? 1 : 0;
+    }
+}
+
 public class PhotoCapture : MonoBehaviour
 {
     public RenderTexture m_photoTargetTexture;
     public InputActionReference m_takePhoto = null;
-
-    private WaitForEndOfFrame m_enumeratorEndOfFrame = new WaitForEndOfFrame();
     public Camera m_photoTakingCamera;
     public float m_maxAnimalDistance;
     public int m_raysShotPerAnimal;
+    public float m_rayThreshold;
+    public float m_imageSizeThreshold;
+
+    private WaitForEndOfFrame m_enumeratorEndOfFrame = new WaitForEndOfFrame();
     private Rect m_regionToRead;
     private int m_currPhotoCount = 0;
     private bool m_isTakingPhoto = false;
@@ -57,6 +67,7 @@ public class PhotoCapture : MonoBehaviour
         float imageSize;
 
         DetectFocusAnimal(out focusAnimal, out raysHit, out distance, out imageSize);
+
         if (focusAnimal == null)
             return;
 
@@ -103,11 +114,18 @@ public class PhotoCapture : MonoBehaviour
     public float CalculatePhotoScore(AnimalType type, AnimalState animalState, float rayHitProportion, float distance, float imageSize)
     {
         float baseScore = 10.0f;
-        float stateScore = AnimalDex.Instance.GetAnimalDexEntry(type).m_photoStateScoreMap[animalState];
+        float stateScoreMultiplier = AnimalDex.Instance.GetAnimalDexEntry(type).m_photoStateScoreMap[animalState];
 
-        // scale this based on animal properties i guess?
-        // ideas: rarity, how much of the frame contains the animal, etc.
-        return rayHitProportion * distance * imageSize * baseScore * stateScore;
+        // scale 0 - 1 to 1 - 30, bigger image should give more score
+        float imageSizeMultiplier = Mathf.Max(1.0f, imageSize * 30);
+
+        // scale 0 - MAX_DISTANCE to 1 - 10, closer image should give more score
+        float distanceMultiplier = Mathf.Max(1.0f, -10 * distance / m_maxAnimalDistance + 10);
+
+        // scale 0 - 1 to 1 - 30, more ray hits should give more score
+        float rayHitMultiplier = Mathf.Max(1.0f, rayHitProportion * 30);
+
+        return rayHitProportion * imageSizeMultiplier * distanceMultiplier * rayHitMultiplier * stateScoreMultiplier;
     }
 
     public void DetectFocusAnimal(out GameObject animal, out int raysHit, out float distance, out float imageSize)
@@ -119,12 +137,12 @@ public class PhotoCapture : MonoBehaviour
         float[] colliderDots = collidersInRadius.Select(
             collider => Vector3.Dot(cameraFrontVector, (collider.transform.position - m_photoTakingCamera.transform.position).normalized)
         ).ToArray();
-        // sort the colliders based on the dot values
-        Array.Sort(colliderDots, collidersInRadius);
+        // sort the colliders based on descending dot values
+        Array.Sort(colliderDots, collidersInRadius, new ReverseSortFloats());
 
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(m_photoTakingCamera);
 
-        for (int i = collidersInRadius.Length - 1; i >= 0; i--)
+        for (int i = 0; i < collidersInRadius.Length; i++)
         {
             Collider collider = collidersInRadius[i];
             float dot = colliderDots[i];
@@ -133,27 +151,45 @@ public class PhotoCapture : MonoBehaviour
             if (!GeometryUtility.TestPlanesAABB(planes, collider.bounds)) continue;
 
             int hitCount = 0;
-            // randomly sample the aabb and see if how many hit the animal
+
+            // constrict the bounds so that the rays are less likely to shoot at empty space
+            Vector3 boundMin = collider.bounds.min;
+            Vector3 boundMax = collider.bounds.max;
+            Vector3 boundShrinkAmount = collider.bounds.extents * 0.05f;
+            boundMin += boundShrinkAmount;
+            boundMax -= boundShrinkAmount;
+
+            // TODO: this ray thing is the most unstable thing ever, find a way to get a "random" part on animal's mesh
             for (int j = 0; j < m_raysShotPerAnimal; j++)
             {
                 Vector3 randomPointInBounds = new Vector3(
-                    UnityEngine.Random.Range(collider.bounds.min.x, collider.bounds.max.x),
-                    UnityEngine.Random.Range(collider.bounds.min.y, collider.bounds.max.y),
-                    UnityEngine.Random.Range(collider.bounds.min.z, collider.bounds.max.z)
+                    UnityEngine.Random.Range(boundMin.x, boundMax.x),
+                    UnityEngine.Random.Range(boundMin.y, boundMax.y),
+                    UnityEngine.Random.Range(boundMin.z, boundMax.z)
                 );
+
+                // if random point out of frustum. reject
+                Vector3 viewportCoords = m_photoTakingCamera.WorldToViewportPoint(randomPointInBounds);
+                if (viewportCoords.x < 0 || viewportCoords.x > 1 || 
+                    viewportCoords.y < 0 || viewportCoords.y > 1 || viewportCoords.z < 0) 
+                {
+                    continue;
+                }
+
                 RaycastHit hit;
-                Physics.Raycast(
+                bool hasHit = Physics.Raycast(
                     m_photoTakingCamera.transform.position,
                     randomPointInBounds - m_photoTakingCamera.transform.position,
                     out hit
                 );
-                if (collider.bounds.Contains(hit.point))
+
+                if (hasHit && collider.bounds.Contains(hit.point))
                 {
                     hitCount++;
                 }
             }
             
-            if (hitCount > 0.5f * m_raysShotPerAnimal)
+            if (hitCount > m_rayThreshold * m_raysShotPerAnimal)
             {
                 // the first one that reaches this is the most centered animal that is highly visible
                 raysHit = hitCount;
@@ -172,25 +208,26 @@ public class PhotoCapture : MonoBehaviour
                     new Vector3(collider.bounds.max.x, collider.bounds.min.y, collider.bounds.max.z),
                     new Vector3(collider.bounds.max.x, collider.bounds.max.y, collider.bounds.max.z)
                 };
-                Matrix4x4 viewMat = m_photoTakingCamera.worldToCameraMatrix;
-                Matrix4x4 projMat = m_photoTakingCamera.projectionMatrix;
 
-                float screenMinX = Mathf.Infinity;
-                float screenMaxX = -Mathf.Infinity;
-                float screenMinY = Mathf.Infinity;
-                float screenMaxY = -Mathf.Infinity;
+                float screenMinX = 1;
+                float screenMaxX = 0;
+                float screenMinY = 1;
+                float screenMaxY = 0;
 
                 foreach (Vector3 corner in boundsCorners)
                 {
-                    Vector4 homo = new Vector4(corner.x, corner.y, corner.z, 1);
-                    Vector4 screenSpace = projMat * viewMat * homo;
-                    screenMinX = Mathf.Min(screenMinX, screenSpace.x);
-                    screenMaxX = Mathf.Max(screenMaxX, screenSpace.x);
-                    screenMinY = Mathf.Min(screenMinY, screenSpace.y);
-                    screenMaxY = Mathf.Max(screenMaxY, screenSpace.y);
+                    Vector3 viewportCoords = m_photoTakingCamera.WorldToViewportPoint(corner);
+                    screenMinX = Mathf.Min(screenMinX, viewportCoords.x);
+                    screenMaxX = Mathf.Max(screenMaxX, viewportCoords.x);
+                    screenMinY = Mathf.Min(screenMinY, viewportCoords.y);
+                    screenMaxY = Mathf.Max(screenMaxY, viewportCoords.y);
                 }
 
                 imageSize = (screenMaxX - screenMinX) * (screenMaxY - screenMinY);
+                // if animal takes up too little space in the screen, reject
+                if (imageSize < m_imageSizeThreshold) {
+                    continue;
+                }
                 return;
             }
         }
