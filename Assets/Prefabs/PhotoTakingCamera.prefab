@@ -6282,11 +6282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5fcef38da112bc43bd5be64f2ecb36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_zoomInInput: {fileID: 4068212201681139182, guid: c348712bda248c246b8c49b3db54643f,
+  m_zoomInput: {fileID: -1279892795831576979, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
-  m_zoomOutInput: {fileID: -1239857797357771580, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  m_zoomFactor: 5
+  m_zoomFactor: 3
   m_zoomLerpSpeed: 10
   m_zoomLimit: {x: 10, y: 80}
 --- !u!114 &5793039974395690284
@@ -6303,7 +6301,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_photoTargetTexture: {fileID: 8400000, guid: ae0ecf493cc2cc740af87dc12b0f5382,
     type: 2}
-  m_takePhoto: {fileID: 0}
+  m_takePhoto: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
   m_photoTakingCamera: {fileID: 5793039974395690282}
   m_maxAnimalDistance: 200
   m_raysShotPerAnimal: 30
