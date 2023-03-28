@@ -479,7 +479,7 @@
                     "name": "",
                     "id": "afc129fa-1d49-4688-8785-5f93e37d8673",
                     "path": "<XRController>{LeftHand}/secondaryButton",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "YButton",
@@ -490,7 +490,7 @@
                     "name": "",
                     "id": "c7ca5cad-be81-4c6c-a8d7-c978763fac05",
                     "path": "<XRController>{LeftHand}/primaryButton",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "XButton",
@@ -1109,6 +1109,45 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0950f5c8-487e-4540-b523-9ffcd803e993",
+                    "path": "<XRController>{RightHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "WildSnapVR",
+            "id": "3905246f-8aca-48a0-84ef-b149be7f6868",
+            "actions": [
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "68899b82-d565-49c3-bc32-b809a1788045",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "440264b5-6be2-42f5-af2a-d7b3982364a3",
+                    "path": "<XRController>{LeftHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

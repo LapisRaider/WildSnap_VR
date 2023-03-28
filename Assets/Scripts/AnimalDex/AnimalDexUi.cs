@@ -20,15 +20,23 @@ public class AnimalDexUi : MonoBehaviour
             GameObject dexSlotUi = Instantiate(m_animalDexSlotPrefab, m_animalDexSlotParent.transform);
             AnimalDexSlotUi slotUi = dexSlotUi.GetComponent<AnimalDexSlotUi>();
 
-            slotUi.Init(dexEntry.Key, dexEntry.Value, SlotClicked);
+            slotUi.Init(dexEntry.Key, dexEntry.Value, AnimalSelected);
         }
+
+        AnimalDeselected();
     }
 
-    public void SlotClicked(AnimalType m_animalType)
+    public void AnimalSelected(AnimalType m_animalType)
     {
         m_animalDexSlotParent.SetActive(false);
 
         m_animalEntryUi.gameObject.SetActive(true);
         m_animalEntryUi.InitInfo(m_animalDexInfo.GetDexEntries()[m_animalType]);
+    }
+
+    public void AnimalDeselected()
+    {
+        m_animalDexSlotParent.SetActive(true);
+        m_animalEntryUi.gameObject.SetActive(false);
     }
 }

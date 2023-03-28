@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ab08aba76b3d4b4db7d745a9ac84c0d, type: 3}
-  m_Name: Horse
+  m_Name: Wolf
   m_EditorClassIdentifier: 
-  m_type: 1
+  m_type: 2
   m_availableStateAndScore: []
   m_animStateData: []
-  m_dexSprite: {fileID: 21300000, guid: f78dd62e517bc9348a6d654909965319, type: 3}
-  m_displayName: Horse
-  m_description: Humans began domesticating horses around 4000 BCE, and their domestication
-    is believed to have been widespread by 3000 BCE.
+  m_dexSprite: {fileID: 21300000, guid: dbf478a47e6fa0c4398ae8f279c86b86, type: 3}
+  m_displayName: Wolf
+  m_description: Wolves are cute.

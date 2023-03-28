@@ -5,8 +5,7 @@ public class PhotoCameraController : MonoBehaviour
 {
     [Header("Camera Interaction")]
     private bool m_cameraActivated = false;
-    public InputActionReference m_zoomInInput = null;
-    public InputActionReference m_zoomOutInput = null;
+    public InputActionReference m_zoomInput = null;
 
     [Header("zoom")]
     [SerializeField] private float m_zoomFactor = 2.0f;
@@ -27,7 +26,7 @@ public class PhotoCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int zoomInOut = m_zoomInInput.action.ReadValue<float>() > 0.1f ? -1 : m_zoomOutInput.action.ReadValue<float>() > 0.1f ? 1 : 0;
+        float zoomInOut = -m_zoomInput.action.ReadValue<Vector2>().y;
 
         //smaller FOV is zoom in
         m_targetZoomAmt += zoomInOut * m_zoomFactor;
