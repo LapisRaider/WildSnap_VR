@@ -65,6 +65,11 @@ public class AnimalMotion : MonoBehaviour
         return m_navMeshAgent.remainingDistance < 2.0f;
     }
 
+    public bool ReachedPlayer()
+    {
+        return m_navMeshAgent.remainingDistance < 10.0f;
+    }
+
 
     public MotionState GetMotion()
     {

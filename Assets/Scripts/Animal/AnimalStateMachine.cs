@@ -28,12 +28,16 @@ public class AnimalStateMachine : MonoBehaviour
         Walk walk = new Walk(m_animalMotion, m_animalWander);
         Sleep sleep = new Sleep(m_animalMotion);
         EatApple eatApple = new EatApple(m_animalMotion, m_animalDetection);
+        WalkToPlayer walkToPlayer = new WalkToPlayer(m_animalMotion, m_animalDetection);
 
         At(idle, walk, idle.StateEnded);
         At(walk, idle, walk.StateEnded);
         At(idle, eatApple, m_animalDetection.AppleInRange);
         At(walk, eatApple, m_animalDetection.AppleInRange);
+        At(idle, walkToPlayer, m_animalDetection.PlayerInRange);
+        At(walk, walkToPlayer, m_animalDetection.PlayerInRange);
         At(eatApple, idle, eatApple.StateEnded);
+        At(walkToPlayer, idle, walkToPlayer.StateEnded);
     }
 
     private void Start()

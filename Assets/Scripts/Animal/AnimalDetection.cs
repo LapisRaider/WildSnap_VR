@@ -15,14 +15,24 @@ public class AnimalDetection : MonoBehaviour
     private void Awake()
     {
         m_foodManager = GameObject.Find("FoodManager").GetComponent<FoodManager>();
-        //m_playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        m_playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
     }
 
     public bool PlayerInRange()
     {
-        return Vector3.SqrMagnitude(transform.position - m_playerTransform.position) < detectionRadius * detectionRadius;
+        if (Vector3.SqrMagnitude(transform.position - m_playerTransform.position) < detectionRadius * detectionRadius)
+        {
+            m_navMeshAgent.CalculatePath(m_playerTransform.position, path);
+            if (path.status != NavMeshPathStatus.PathComplete) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool AppleInRange()
@@ -43,6 +53,10 @@ public class AnimalDetection : MonoBehaviour
     public Vector3 GetApplePosition()
     {
         return m_currentAppleTransform.position;
+    }
+    public Vector3 GetPlayerPosition()
+    {
+        return m_playerTransform.position;
     }
 
 
