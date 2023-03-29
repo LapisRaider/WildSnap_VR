@@ -7,6 +7,7 @@ public class EatApple : IState
     private AnimalMotion m_animalMotion;
     private AnimalDetection m_animalDetection;
     private float time;
+    private float m_eatingTime;
     public EatApple(AnimalMotion animalMotion, AnimalDetection animalDetection)
     {
         m_animalMotion = animalMotion;
@@ -17,7 +18,7 @@ public class EatApple : IState
     {
         m_animalMotion.WalkToApple(m_animalDetection.GetApplePosition());
         time = 1.0f;
-
+        m_eatingTime = Random.Range(5, 10);
     }
 
     public override void Tick()

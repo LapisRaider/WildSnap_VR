@@ -8,11 +8,15 @@ public class AnimalDetection : MonoBehaviour
     public Transform m_currentAppleTransform;
     private FoodManager m_foodManager;
     private Transform m_playerTransform;
+    private UnityEngine.AI.NavMeshAgent m_navMeshAgent;
+    private UnityEngine.AI.NavMeshPath path;
 
     private void Awake()
     {
         m_foodManager = GameObject.Find("FoodManager").GetComponent<FoodManager>();
         //m_playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        m_navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        path = new UnityEngine.AI.NavMeshPath();
     }
 
     public bool PlayerInRange()
@@ -22,7 +26,18 @@ public class AnimalDetection : MonoBehaviour
 
     public bool AppleInRange()
     {
-        return m_foodManager.AppleInRange(this);
+        if (m_foodManager.AppleInRange(this))
+        {
+            print("apple detected");
+            m_navMeshAgent.CalculatePath(m_currentAppleTransform.position, path);
+            if (path.status != UnityEngine.AI.NavMeshPathStatus.PathComplete) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Vector3 GetApplePosition()
