@@ -37,12 +37,12 @@ public class WalkToPlayer : IState
     {
         if (m_animalMotion.ReachedPlayer() || reached){
             reached = true;
-            m_animalMotion.StartEating();
+            m_animalMotion.StartWatchingPlayer();
             if (m_eatingTime > 0){
                 m_eatingTime -= Time.deltaTime;
             }
             else {
-                m_animalMotion.EndEating();
+                m_animalMotion.EndWatchingPlayer();
                 reached = false;
                 return true;
             }
