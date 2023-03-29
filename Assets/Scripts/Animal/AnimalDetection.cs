@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AnimalDetection : MonoBehaviour
 {
@@ -8,15 +9,15 @@ public class AnimalDetection : MonoBehaviour
     public Transform m_currentAppleTransform;
     private FoodManager m_foodManager;
     private Transform m_playerTransform;
-    private UnityEngine.AI.NavMeshAgent m_navMeshAgent;
-    private UnityEngine.AI.NavMeshPath path;
+    private NavMeshAgent m_navMeshAgent;
+    private NavMeshPath path;
 
     private void Awake()
     {
         m_foodManager = GameObject.Find("FoodManager").GetComponent<FoodManager>();
         //m_playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        m_navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        path = new UnityEngine.AI.NavMeshPath();
+        m_navMeshAgent = GetComponent<NavMeshAgent>();
+        path = new NavMeshPath();
     }
 
     public bool PlayerInRange()
@@ -28,9 +29,8 @@ public class AnimalDetection : MonoBehaviour
     {
         if (m_foodManager.AppleInRange(this))
         {
-            print("apple detected");
             m_navMeshAgent.CalculatePath(m_currentAppleTransform.position, path);
-            if (path.status != UnityEngine.AI.NavMeshPathStatus.PathComplete) {
+            if (path.status != NavMeshPathStatus.PathComplete) {
                 return false;
             }
             else {

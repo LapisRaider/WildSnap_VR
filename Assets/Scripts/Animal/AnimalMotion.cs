@@ -9,7 +9,8 @@ public enum MotionState
     Walking,
     Running,
     Sleep,
-    WalkingApple
+    WalkingApple,
+    Eating
 }
 
 public class AnimalMotion : MonoBehaviour
@@ -68,5 +69,18 @@ public class AnimalMotion : MonoBehaviour
     public MotionState GetMotion()
     {
         return m_currentState;
+    }
+
+    public void StartEating()
+    {
+        m_animator.SetInteger("ID", 0);
+        m_navMeshAgent.isStopped = true;
+        m_currentState = MotionState.Eating;
+    }
+    public void EndEating()
+    {
+        m_animator.SetInteger("ID", 1);
+        m_navMeshAgent.isStopped = false;
+        m_currentState = MotionState.Idle;
     }
 }

@@ -8,14 +8,18 @@ public class EatApple : IState
     private AnimalDetection m_animalDetection;
     private float time;
     private float m_eatingTime;
+    private bool reached;
+
     public EatApple(AnimalMotion animalMotion, AnimalDetection animalDetection)
     {
         m_animalMotion = animalMotion;
         m_animalDetection = animalDetection;
+        reached = false;
     }
 
     public override void OnEnter()
     {
+        Debug.Log("apple");
         m_animalMotion.WalkToApple(m_animalDetection.GetApplePosition());
         time = 1.0f;
         m_eatingTime = Random.Range(5, 10);
@@ -25,7 +29,6 @@ public class EatApple : IState
     {
         if (time > 0)
         {
-
             time -= Time.deltaTime;
         }
         else
@@ -36,12 +39,25 @@ public class EatApple : IState
     }
 
     public override void OnExit()
-    {
+    { 
         m_animalDetection.DestroyApple();
     }
     public override bool StateEnded()
     {
-        return m_animalMotion.ReachedDestination();
+        if (m_animalMotion.ReachedDestination() || reached){
+            reached = true;
+            m_animalMotion.StartEating();
+            if (m_eatingTime > 0){
+                m_eatingTime -= Time.deltaTime;
+            }
+            else {
+                m_animalMotion.EndEating();
+                reached = false;
+                return true;
+            }
+
+        }
+        return false;
     }
 
 }
