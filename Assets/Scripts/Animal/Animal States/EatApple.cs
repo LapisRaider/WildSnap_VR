@@ -44,10 +44,10 @@ public class EatApple : IState
     }
     public override bool StateEnded()
     {
-        if (m_animalMotion.ReachedDestination() || reached){
+        if (m_animalMotion.ReachedDestination(3f) || reached){
             reached = true;
             m_animalMotion.StartEating();
-            if (m_eatingTime > 0){
+            if (m_eatingTime > 0 && m_animalDetection.appleExists()){
                 m_eatingTime -= Time.deltaTime;
             }
             else {

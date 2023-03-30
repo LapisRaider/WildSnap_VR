@@ -6,8 +6,10 @@ public class WalkToPlayer : IState
 {
     private AnimalMotion m_animalMotion;
     private AnimalDetection m_animalDetection;
-    private float m_eatingTime;
+    private float m_attackingTime;
     private bool reached;
+    private bool isAggressive;
+    private Vector3 endPos;
 
     public WalkToPlayer(AnimalMotion animalMotion, AnimalDetection animalDetection)
     {
@@ -18,15 +20,35 @@ public class WalkToPlayer : IState
 
     public override void OnEnter()
     {
+        
+        isAggressive = m_animalDetection.isAggressive;
         Debug.Log("player");
-        m_animalMotion.WalkToPoint(m_animalDetection.GetPlayerPosition());
+        if (isAggressive) { 
+            m_animalMotion.WalkToPoint(m_animalDetection.GetPlayerPosition());
+        }
+        else {
+            endPos = m_animalDetection.GetAnimalPosition() + (m_animalDetection.GetAnimalPosition() - m_animalDetection.GetPlayerPosition())*0.7f;
+            m_animalMotion.WalkToPoint(endPos);
+        }
  
-        m_eatingTime = Random.Range(5, 10);
+        m_attackingTime = 2f;
     }
 
     public override void Tick()
     {
-        m_animalMotion.SetDestination(m_animalDetection.GetPlayerPosition());
+        if (isAggressive ) { 
+            if (m_animalDetection.PlayerInRange()) {
+                m_animalMotion.SetDestination(m_animalDetection.GetPlayerPosition());
+            }
+            else {
+                m_animalMotion.SetDestination(m_animalDetection.GetAnimalPosition());
+            }
+
+        }
+
+        else {
+            m_animalMotion.SetDestination(endPos);
+        }
     }
 
     public override void OnExit()
@@ -35,19 +57,31 @@ public class WalkToPlayer : IState
     }
     public override bool StateEnded()
     {
-        if (m_animalMotion.ReachedPlayer() || reached){
-            reached = true;
-            m_animalMotion.StartWatchingPlayer();
-            if (m_eatingTime > 0){
-                m_eatingTime -= Time.deltaTime;
+        if (isAggressive) {
+            if (m_animalMotion.ReachedDestination(3f) || reached){
+                reached = true;
+                if (m_animalDetection.PlayerInRange()){
+                    m_animalMotion.StartWatchingPlayer();
+                }
+                if (m_attackingTime > 0){
+                    m_attackingTime -= Time.deltaTime;
+                }
+                else {
+                    
+                    m_animalMotion.EndWatchingPlayer();
+                    reached = false;
+                    return true;
+                }
             }
-            else {
-                m_animalMotion.EndWatchingPlayer();
-                reached = false;
+        }
+        else {
+
+            if (m_animalMotion.ReachedDestination(3f)) {
+                m_animalMotion.SetIdle();
                 return true;
             }
-
         }
+
         return false;
     }
 

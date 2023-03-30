@@ -22,6 +22,6 @@ public class Walk : IState
 
     public override bool StateEnded()
     {
-        return m_animalMotion.ReachedDestination();
+        return m_animalMotion.ReachedDestination(1f);
     }
 }

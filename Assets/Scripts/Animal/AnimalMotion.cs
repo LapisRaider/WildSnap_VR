@@ -28,14 +28,15 @@ public class AnimalMotion : MonoBehaviour
 
     public void SetIdle()
     {
-        m_animator.SetInteger("ID", 0);
+        m_animator.SetBool("isWalking", false);
+        m_animator.SetBool("isAttacking", false);
         m_navMeshAgent.isStopped = true;
         m_currentState = MotionState.Idle;
     }
 
     public void WalkToPoint(Vector3 destination)
     {
-        m_animator.SetInteger("ID", 1);
+        m_animator.SetBool("isWalking", true);
         m_navMeshAgent.SetDestination(destination);
         m_navMeshAgent.isStopped = false;
         m_currentState = MotionState.Walking;
@@ -43,7 +44,7 @@ public class AnimalMotion : MonoBehaviour
 
     public void WalkToApple(Vector3 destination)
     {
-        m_animator.SetInteger("ID", 1);
+        m_animator.SetBool("isWalking", true);
         m_navMeshAgent.SetDestination(destination);
         m_navMeshAgent.isStopped = false;
         m_currentState = MotionState.WalkingApple;
@@ -61,14 +62,9 @@ public class AnimalMotion : MonoBehaviour
         m_currentState = MotionState.Sleep;
     }
 
-    public bool ReachedDestination()
+    public bool ReachedDestination(float distanceFromDestination=2f)
     {
-        return m_navMeshAgent.remainingDistance < 2.0f;
-    }
-
-    public bool ReachedPlayer()
-    {
-        return m_navMeshAgent.remainingDistance < 10.0f;
+        return m_navMeshAgent.remainingDistance < distanceFromDestination;
     }
 
 
@@ -79,27 +75,26 @@ public class AnimalMotion : MonoBehaviour
 
     public void StartEating()
     {
-        m_animator.SetInteger("ID", 0);
+        m_animator.SetBool("isWalking", false);
         m_navMeshAgent.isStopped = true;
         m_currentState = MotionState.Eating;
     }
     public void EndEating()
     {
-        m_animator.SetInteger("ID", 1);
         m_navMeshAgent.isStopped = false;
         m_currentState = MotionState.Idle;
     }
 
     public void StartWatchingPlayer()
     {
-        m_animator.SetInteger("ID", 2);
+        m_animator.SetBool("isAttacking", true);
         m_navMeshAgent.isStopped = true;
         m_currentState = MotionState.WatchingPlayer;
     }
     public void EndWatchingPlayer()
     {
-        m_animator.SetInteger("ID", 0);
+        m_animator.SetBool("isAttacking", false);
         m_navMeshAgent.isStopped = false;
-        m_currentState = MotionState.WatchingPlayer;
+        m_currentState = MotionState.Idle;
     }
 }

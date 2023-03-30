@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class AnimalDetection : MonoBehaviour
 {
-    public float detectionRadius;
+    public float detectionRadius = 20;
+    public bool isAggressive = true;
     public Transform m_currentAppleTransform;
     private FoodManager m_foodManager;
     private Transform m_playerTransform;
@@ -24,13 +25,19 @@ public class AnimalDetection : MonoBehaviour
     {
         if (Vector3.SqrMagnitude(transform.position - m_playerTransform.position) < detectionRadius * detectionRadius)
         {
-            m_navMeshAgent.CalculatePath(m_playerTransform.position, path);
-            if (path.status != NavMeshPathStatus.PathComplete) {
-                return false;
+            if (isAggressive) {
+                m_navMeshAgent.CalculatePath(m_playerTransform.position, path);
+                if (path.status != NavMeshPathStatus.PathComplete) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
             }
             else {
                 return true;
             }
+
         }
         return false;
     }
@@ -52,17 +59,33 @@ public class AnimalDetection : MonoBehaviour
 
     public Vector3 GetApplePosition()
     {
-        return m_currentAppleTransform.position;
+        if (appleExists()) {
+            return m_currentAppleTransform.position;
+        }
+        else {
+            return transform.position;
+        }
     }
     public Vector3 GetPlayerPosition()
     {
         return m_playerTransform.position;
     }
 
+    public Vector3 GetAnimalPosition()
+    {
+        return transform.position;
+    }
+
 
     public void DestroyApple()
     {
-        m_foodManager.DestroyApple(this);
+        if (appleExists()) {
+            m_foodManager.DestroyApple(this);
+        }
+
     }
 
+    public bool appleExists() {
+        return (m_currentAppleTransform != null);
+    }
 }
