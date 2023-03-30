@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimalWander : MonoBehaviour
 {
-    [SerializeField] private float m_wanderRadius;
+    [SerializeField] private float m_wanderRadius=20;
     Vector3 m_anchorPosition;
     public void Awake()
     {

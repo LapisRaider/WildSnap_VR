@@ -6,7 +6,9 @@ using UnityEngine.AI;
 public class AnimalDetection : MonoBehaviour
 {
     public float detectionRadius = 20;
-    public bool isAggressive = true;
+    public bool isAggressive = false;
+    public bool isScared = false;
+    public float fleeingCoef = 0.7f;
     public Transform m_currentAppleTransform;
     private FoodManager m_foodManager;
     private Transform m_playerTransform;
@@ -23,6 +25,9 @@ public class AnimalDetection : MonoBehaviour
 
     public bool PlayerInRange()
     {
+        if (!isAggressive && !isScared) {
+            return false;
+        }
         if (Vector3.SqrMagnitude(transform.position - m_playerTransform.position) < detectionRadius * detectionRadius)
         {
             if (isAggressive) {

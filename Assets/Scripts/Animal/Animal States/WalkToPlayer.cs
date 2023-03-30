@@ -9,6 +9,7 @@ public class WalkToPlayer : IState
     private float m_attackingTime;
     private bool reached;
     private bool isAggressive;
+    private bool isScared;
     private Vector3 endPos;
 
     public WalkToPlayer(AnimalMotion animalMotion, AnimalDetection animalDetection)
@@ -27,7 +28,7 @@ public class WalkToPlayer : IState
             m_animalMotion.WalkToPoint(m_animalDetection.GetPlayerPosition());
         }
         else {
-            endPos = m_animalDetection.GetAnimalPosition() + (m_animalDetection.GetAnimalPosition() - m_animalDetection.GetPlayerPosition())*0.7f;
+            endPos = m_animalDetection.GetAnimalPosition() + (m_animalDetection.GetAnimalPosition() - m_animalDetection.GetPlayerPosition())*m_animalDetection.fleeingCoef;
             m_animalMotion.WalkToPoint(endPos);
         }
  
