@@ -65,8 +65,10 @@ public class PhotoCapture : MonoBehaviour
         int raysHit;
         float distance;
         float imageSize;
+        float facingCamera;
+        int animalsInFrame;
 
-        DetectFocusAnimal(out focusAnimal, out raysHit, out distance, out imageSize);
+        DetectFocusAnimal(out focusAnimal, out raysHit, out distance, out imageSize, out facingCamera, out animalsInFrame);
 
         if (focusAnimal == null)
             return;
@@ -78,7 +80,7 @@ public class PhotoCapture : MonoBehaviour
             return;
         }
 
-        float photoScore = CalculatePhotoScore(animal.m_animalType, animal.GetAnimalState(), (float)raysHit / m_raysShotPerAnimal, distance, imageSize);
+        float photoScore = CalculatePhotoScore(animal.m_animalType, animal.GetAnimalState(), (float)raysHit / m_raysShotPerAnimal, distance, imageSize, facingCamera, animalsInFrame);
         AddPhotoToUiAlbum(animal, photoScore);
     }
 
@@ -111,24 +113,40 @@ public class PhotoCapture : MonoBehaviour
             m_testCaptureParticle.Play();
     }
 
-    public float CalculatePhotoScore(AnimalType type, AnimalState animalState, float rayHitProportion, float distance, float imageSize)
+    public float CalculatePhotoScore(AnimalType type, AnimalState animalState, float rayHitProportion, float distance, float imageSize, float facingCamera, int animalsInFrame)
     {
         float baseScore = 10.0f;
-        float stateScoreMultiplier = AnimalDex.Instance.GetAnimalDexEntry(type).m_photoStateScoreMap[animalState];
 
-        // scale 0 - 1 to 1 - 30, bigger image should give more score
-        float imageSizeMultiplier = Mathf.Max(1.0f, imageSize * 30);
+        float stateScoreMultiplier = 1.0f;
+        AnimalDexEntry dexEntry = AnimalDex.Instance.GetAnimalDexEntry(type);
+        if (dexEntry != null && dexEntry.m_photoStateScoreMap.ContainsKey(animalState))
+        {
+            stateScoreMultiplier = dexEntry.m_photoStateScoreMap[animalState];
+        } else 
+        {
+            Debug.LogError("Cannot find multiplier for animal state");
+        }
 
-        // scale 0 - MAX_DISTANCE to 1 - 10, closer image should give more score
-        float distanceMultiplier = Mathf.Max(1.0f, -10 * distance / m_maxAnimalDistance + 10);
+        // scale 0 - 0.5 to 1 - 5, and 0.5 - 1 to 5
+        // bigger image should give more score, up to taking up 50% of the screen
+        float imageSizeMultiplier = Mathf.Max(1.0f, Math.min(imageSize * 10, 5.0f));
 
-        // scale 0 - 1 to 1 - 30, more ray hits should give more score
-        float rayHitMultiplier = Mathf.Max(1.0f, rayHitProportion * 30);
+        // scale 0 - MAX_DISTANCE to 1 - 5, closer image should give more score
+        float distanceMultiplier = Mathf.Max(1.0f, -5 * distance / m_maxAnimalDistance + 5);
 
-        return rayHitProportion * imageSizeMultiplier * distanceMultiplier * rayHitMultiplier * stateScoreMultiplier;
+        // scale 0 - 1 to 1 - 5, more ray hits should give more score
+        float rayHitMultiplier = Mathf.Max(1.0f, rayHitProportion * 10);
+
+        // scale 0 - 1 to 1 - 5, facing you should give more score
+        float facingCameraMultiplier = Mathf.Max(1.0f, facingCamera * 10);
+
+        // +5% score per other animal
+        float animalsInFrameMultiplier = 1.0f + 0.05f * animalsInFrame;
+
+        return baseScore * rayHitProportion * imageSizeMultiplier * distanceMultiplier * rayHitMultiplier * stateScoreMultiplier * facingCameraMultiplier * animalsInFrameMultiplier;
     }
 
-    public void DetectFocusAnimal(out GameObject animal, out int raysHit, out float distance, out float imageSize)
+    public void DetectFocusAnimal(out GameObject animal, out int raysHit, out float distance, out float imageSize, out float facingCamera, out int animalsInFrame)
     {
         Vector3 cameraFrontVector = m_photoTakingCamera.transform.forward;
         Collider[] collidersInRadius = Physics.OverlapSphere(m_photoTakingCamera.transform.position, m_maxAnimalDistance);
@@ -140,26 +158,67 @@ public class PhotoCapture : MonoBehaviour
         // sort the colliders based on descending dot values
         Array.Sort(colliderDots, collidersInRadius, new ReverseSortFloats());
 
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(m_photoTakingCamera);
+        animalsInFrame = 0;
+        bool animalFound = false;
+        GameObject foundAnimal = null;
+        int foundRaysHit = 0;
+        float foundDistance = 0;
+        float foundImageSize = 0;
+        float foundFacingCamera = 0;
 
         for (int i = 0; i < collidersInRadius.Length; i++)
         {
             Collider collider = collidersInRadius[i];
             float dot = colliderDots[i];
+            // if behind camera, skip collider
             if (dot < 0) continue;
-            // more accurate check that the animal is in the frustum
-            if (!GeometryUtility.TestPlanesAABB(planes, collider.bounds)) continue;
 
-            int hitCount = 0;
-
-            // constrict the bounds so that the rays are less likely to shoot at empty space
             Vector3 boundMin = collider.bounds.min;
             Vector3 boundMax = collider.bounds.max;
+            // use the corners of the bounds to get an estimate of how much space the image takes in the viewport
+            Vector3[] boundsCorners = {
+                new Vector3(boundMin.x, boundMin.y, boundMin.z),
+                new Vector3(boundMin.x, boundMin.y, boundMax.z),
+                new Vector3(boundMin.x, boundMax.y, boundMin.z),
+                new Vector3(boundMax.x, boundMin.y, boundMin.z),
+                new Vector3(boundMin.x, boundMax.y, boundMax.z),
+                new Vector3(boundMax.x, boundMax.y, boundMin.z),
+                new Vector3(boundMax.x, boundMin.y, boundMax.z),
+                new Vector3(boundMax.x, boundMax.y, boundMax.z)
+            };
+
+            float screenMinX = 1;
+            float screenMaxX = 0;
+            float screenMinY = 1;
+            float screenMaxY = 0;
+
+            foreach (Vector3 corner in boundsCorners)
+            {
+                Vector3 viewportCoords = m_photoTakingCamera.WorldToViewportPoint(corner);
+                screenMinX = Mathf.Min(screenMinX, viewportCoords.x);
+                screenMaxX = Mathf.Max(screenMaxX, viewportCoords.x);
+                screenMinY = Mathf.Min(screenMinY, viewportCoords.y);
+                screenMaxY = Mathf.Max(screenMaxY, viewportCoords.y);
+            }
+
+            float thisImageSize = (screenMaxX - screenMinX) * (screenMaxY - screenMinY);
+            // if animal takes up too little space in the screen, reject
+            if (thisImageSize < m_imageSizeThreshold) continue;
+
+            // counts number of animals that are "large enough"
+            // TODO: this does not shoot rays to the "other" animals, so it counts those occluded too
+            animalsInFrame++;
+
+            // only need to return the first animal that was found
+            if (animalFound) continue;
+
             Vector3 boundShrinkAmount = collider.bounds.extents * 0.05f;
             boundMin += boundShrinkAmount;
             boundMax -= boundShrinkAmount;
 
-            // TODO: this ray thing is the most unstable thing ever, find a way to get a "random" part on animal's mesh
+            int hitCount = 0;
+            // shoot rays at the collider to determine if it is visible
+            // TODO: shoot rays at hardcoded parts of the animal?
             for (int j = 0; j < m_raysShotPerAnimal; j++)
             {
                 Vector3 randomPointInBounds = new Vector3(
@@ -188,53 +247,28 @@ public class PhotoCapture : MonoBehaviour
                     hitCount++;
                 }
             }
-            
+
             if (hitCount > m_rayThreshold * m_raysShotPerAnimal)
             {
                 // the first one that reaches this is the most centered animal that is highly visible
-                raysHit = hitCount;
-                animal = collider.gameObject;
+                animalFound = true;
+                foundImageSize = thisImageSize;
+                foundRaysHit = hitCount;
+                foundAnimal = collider.gameObject;
                 Vector3 closestPoint = collider.ClosestPoint(m_photoTakingCamera.transform.position);
-                distance = (closestPoint - m_photoTakingCamera.transform.position).sqrMagnitude;
-
-                // use the bounds to get an estimate of how much space the image takes
-                Vector3[] boundsCorners = {
-                    new Vector3(collider.bounds.min.x, collider.bounds.min.y, collider.bounds.min.z),
-                    new Vector3(collider.bounds.min.x, collider.bounds.min.y, collider.bounds.max.z),
-                    new Vector3(collider.bounds.min.x, collider.bounds.max.y, collider.bounds.min.z),
-                    new Vector3(collider.bounds.max.x, collider.bounds.min.y, collider.bounds.min.z),
-                    new Vector3(collider.bounds.min.x, collider.bounds.max.y, collider.bounds.max.z),
-                    new Vector3(collider.bounds.max.x, collider.bounds.max.y, collider.bounds.min.z),
-                    new Vector3(collider.bounds.max.x, collider.bounds.min.y, collider.bounds.max.z),
-                    new Vector3(collider.bounds.max.x, collider.bounds.max.y, collider.bounds.max.z)
-                };
-
-                float screenMinX = 1;
-                float screenMaxX = 0;
-                float screenMinY = 1;
-                float screenMaxY = 0;
-
-                foreach (Vector3 corner in boundsCorners)
-                {
-                    Vector3 viewportCoords = m_photoTakingCamera.WorldToViewportPoint(corner);
-                    screenMinX = Mathf.Min(screenMinX, viewportCoords.x);
-                    screenMaxX = Mathf.Max(screenMaxX, viewportCoords.x);
-                    screenMinY = Mathf.Min(screenMinY, viewportCoords.y);
-                    screenMaxY = Mathf.Max(screenMaxY, viewportCoords.y);
-                }
-
-                imageSize = (screenMaxX - screenMinX) * (screenMaxY - screenMinY);
-                // if animal takes up too little space in the screen, reject
-                if (imageSize < m_imageSizeThreshold) {
-                    continue;
-                }
-                return;
+                foundDistance = (closestPoint - m_photoTakingCamera.transform.position).sqrMagnitude;
+                
+                Vector3 animalForward = foundAnimal.transform.forward;
+                foundFacingCamera = Vector3.Dot(-animalForward, cameraFrontVector);
+                foundFacingCamera = Math.Max(0.0f, foundFacingCamera);
             }
         }
-        animal = null;
-        raysHit = 0;
-        distance = 0;
-        imageSize = 0;
+
+        animal = foundAnimal;
+        raysHit = foundRaysHit;
+        distance = foundDistance;
+        imageSize = foundImageSize;
+        facingCamera = foundFacingCamera;
         return;
     }
 }
