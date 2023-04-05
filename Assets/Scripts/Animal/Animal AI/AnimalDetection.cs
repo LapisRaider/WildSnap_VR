@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class AnimalDetection : MonoBehaviour
 {
-    public float detectionRadius = 20;
+    public float detectionRadius;
+    public float playerDetectionRadius = 10f;
     public bool isAggressive = false;
     public bool isScared = false;
     public float fleeingCoef = 0.7f;
@@ -21,6 +22,7 @@ public class AnimalDetection : MonoBehaviour
         m_playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
+        detectionRadius = 5;
     }
 
     public bool PlayerInRange()
@@ -28,8 +30,9 @@ public class AnimalDetection : MonoBehaviour
         if (!isAggressive && !isScared) {
             return false;
         }
-        if (Vector3.SqrMagnitude(transform.position - m_playerTransform.position) < detectionRadius * detectionRadius)
+        if (Vector3.SqrMagnitude(transform.position - m_playerTransform.position) < playerDetectionRadius * playerDetectionRadius)
         {
+            /*
             if (isAggressive) {
                 m_navMeshAgent.CalculatePath(m_playerTransform.position, path);
                 if (path.status != NavMeshPathStatus.PathComplete) {
@@ -41,7 +44,8 @@ public class AnimalDetection : MonoBehaviour
             }
             else {
                 return true;
-            }
+            }*/
+            return true;
 
         }
         return false;

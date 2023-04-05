@@ -62,7 +62,7 @@ public class AnimalMotion : MonoBehaviour
         m_currentState = MotionState.Sleep;
     }
 
-    public bool ReachedDestination(float distanceFromDestination=2f)
+    public bool ReachedDestination(float distanceFromDestination=0.5f)
     {
         return m_navMeshAgent.remainingDistance < distanceFromDestination;
     }

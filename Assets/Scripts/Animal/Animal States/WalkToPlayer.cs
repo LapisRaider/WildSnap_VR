@@ -29,6 +29,7 @@ public class WalkToPlayer : IState
         }
         else {
             endPos = m_animalDetection.GetAnimalPosition() + (m_animalDetection.GetAnimalPosition() - m_animalDetection.GetPlayerPosition())*m_animalDetection.fleeingCoef;
+            endPos += new Vector3(0f,1f,0f);
             m_animalMotion.WalkToPoint(endPos);
         }
  
@@ -59,7 +60,7 @@ public class WalkToPlayer : IState
     public override bool StateEnded()
     {
         if (isAggressive) {
-            if (m_animalMotion.ReachedDestination(3f) || reached){
+            if (m_animalMotion.ReachedDestination(1f) || reached){
                 reached = true;
                 if (m_animalDetection.PlayerInRange()){
                     m_animalMotion.StartWatchingPlayer();
