@@ -66,9 +66,13 @@ public class AnimalEntryUi : MonoBehaviour
             AnimalPhotoUi photoUi = m_animalPhotosUi[state];
 
             if (dexEntry.m_photos.ContainsKey(state))
+            {
                 photoUi.InitInfo(state, dexEntry.m_photos[state]);
+            }
             else
+            {
                 photoUi.InitInfo(state, null);
+            }
 
             photoUi.gameObject.SetActive(true);
         }

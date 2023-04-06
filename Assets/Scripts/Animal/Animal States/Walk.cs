@@ -15,7 +15,6 @@ public class Walk : IState
 
     public override void OnEnter()
     {
-        Debug.Log("walk");
         wanderPosition = m_animalWander.GetRandomPointInCircle();
         m_animalMotion.WalkToPoint(wanderPosition);
     }

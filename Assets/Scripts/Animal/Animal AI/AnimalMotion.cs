@@ -24,6 +24,7 @@ public class AnimalMotion : MonoBehaviour
     {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_animator = GetComponent<Animator>();
+        m_animator.logWarnings = false;
     }
 
     public void SetIdle()

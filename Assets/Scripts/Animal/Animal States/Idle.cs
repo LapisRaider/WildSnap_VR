@@ -13,7 +13,6 @@ public class Idle : IState
 
     public override void OnEnter()
     {
-        Debug.Log("idle");
         m_animalMotion.SetIdle();
         m_idleTime = Random.Range(10, 20);
     }

@@ -34,12 +34,12 @@ public class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            if (m_ShuttingDown)
+            /* if (m_ShuttingDown)
             {
                 Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
                     "' already destroyed. Returning null.");
                 return null;
-            }
+            } */
 
             lock (m_Lock)
             {
