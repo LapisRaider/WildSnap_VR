@@ -45,10 +45,11 @@ public class PhotoCapture : MonoBehaviour
         m_photoScreenHeight = photoScreenSize.y * m_photoScreen.transform.localScale.y;
     }
 
-    void Start()
-    {
-        InvokeRepeating("DrawIndicatorOnCamera", 0.5f, 0.5f);
-    }
+    // uncomment if too laggy
+    // void Start()
+    // {
+    //     InvokeRepeating("DrawIndicatorOnCamera", 0.2f, 0.2f);
+    // }
 
     private void OnEnable()
     {
@@ -62,6 +63,8 @@ public class PhotoCapture : MonoBehaviour
 
     private void Update()
     {
+        // comment out if too laggy, use InvokeRepeating instead of calling every frame
+        DrawIndicatorOnCamera();
         if (m_takePhoto.action.triggered)
             TakePhoto();
     }

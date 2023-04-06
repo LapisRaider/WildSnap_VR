@@ -5503,9 +5503,9 @@ MonoBehaviour:
   m_takePhoto: {fileID: 0}
   m_photoTakingCamera: {fileID: 5793039974395690282}
   m_photoScreen: {fileID: 5793039973318545651}
-  m_maxAnimalDistance: 200
-  m_raysShotPerAnimal: 30
-  m_rayThreshold: 0.4
+  m_maxAnimalDistance: 500
+  m_raysShotPerAnimal: 100
+  m_rayThreshold: 0.5
   m_imageSizeThreshold: 0.01
   m_outlineIndicator: {fileID: 7298044113393239210}
   m_testCaptureParticle: {fileID: 5793039972882917905}
