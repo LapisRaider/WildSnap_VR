@@ -113,7 +113,6 @@ public class PhotoCapture : MonoBehaviour
 
     public float CalculatePhotoScore(AnimalType type, AnimalState animalState, float rayHitProportion, float distance, float imageSize)
     {
-        float baseScore = 10.0f;
         float stateScoreMultiplier = AnimalDex.Instance.GetAnimalDexEntry(type).m_photoStateScoreMap[animalState];
 
         // scale 0 - 1 to 1 - 30, bigger image should give more score

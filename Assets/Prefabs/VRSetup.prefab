@@ -2793,6 +2793,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Animal Dex
       objectReference: {fileID: 0}
+    - target: {fileID: 7867893593304373452, guid: 63678ff373f93884facaaaedf94ab1a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7867893593304373458, guid: 63678ff373f93884facaaaedf94ab1a0,
         type: 3}
       propertyPath: m_Pivot.x
