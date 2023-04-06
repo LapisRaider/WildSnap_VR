@@ -28,8 +28,10 @@ public class PhotoCapture : MonoBehaviour
     private int m_currPhotoCount = 0;
     private bool m_isTakingPhoto = false;
 
-    //TODO: THIS IS FOR TESTING, REMOVE LATER
-    public ParticleSystem m_testCaptureParticle; 
+    [Header("On Take Photo")]
+    public ParticleSystem m_flashParticles; 
+    public Animator m_flashAnim;
+    public AudioSource m_flashAudioSource;
 
     // Start is called before the first frame update
     void Awake()
@@ -49,8 +51,7 @@ public class PhotoCapture : MonoBehaviour
 
     private void Update()
     {
-        if (m_takePhoto.action.triggered)
-            TakePhoto();
+        if (m_takePhoto.action.triggered) OnTakePhoto();       
     }
 
     private void RenderPipelineManager_endCameraRendering(ScriptableRenderContext arg1, List<Camera> arg2)
@@ -103,12 +104,15 @@ public class PhotoCapture : MonoBehaviour
         ++m_currPhotoCount;
     }
 
-    public void TakePhoto()
+    public void OnTakePhoto()
     {
         m_isTakingPhoto = true;
 
-        if (m_testCaptureParticle != null)
-            m_testCaptureParticle.Play();
+        if (m_flashParticles != null) m_flashParticles.Play();
+    
+        if (m_flashAnim != null) m_flashAnim.SetTrigger("Flash");
+
+        if (m_flashAudioSource != null) m_flashAudioSource.Play();
     }
 
     public float CalculatePhotoScore(AnimalType type, AnimalState animalState, float rayHitProportion, float distance, float imageSize)
