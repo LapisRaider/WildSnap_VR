@@ -1928,8 +1928,8 @@ MonoBehaviour:
   m_photoTakingCamera: {fileID: 5793039974395690282}
   m_photoScreen: {fileID: 5793039973318545651}
   m_maxAnimalDistance: 300
-  m_raysShotPerAnimal: 49
-  m_rayThreshold: 0.4
+  m_raysShotPerAnimal: 64
+  m_rayThreshold: 0.3
   m_imageSizeThreshold: 0.01
   m_outlineIndicator: {fileID: 7298044113393239210}
   m_flashParticles: {fileID: 7587406257437284272}

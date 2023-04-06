@@ -31,6 +31,7 @@ public class PhotoCapture : MonoBehaviour
     private bool m_isTakingPhoto = false;
     private float m_photoScreenWidth;
     private float m_photoScreenHeight;
+    private int m_raysShotPerAnimalPerAxis;
 
     [Header("On Take Photo")]
     public ParticleSystem m_flashParticles; 
@@ -46,6 +47,10 @@ public class PhotoCapture : MonoBehaviour
         m_photoScreenWidth = photoScreenSize.x * m_photoScreen.transform.localScale.x;
         m_photoScreenHeight = photoScreenSize.y * m_photoScreen.transform.localScale.y;
         m_outlineIndicator.SetWidth(0.001f, 0.001f);
+
+        // round down to the nearest cube number to do uniform sampling (so the score doesn't flicker)
+        m_raysShotPerAnimalPerAxis = (int)Mathf.Pow(m_raysShotPerAnimal, 1f / 3f);
+        m_raysShotPerAnimal = m_raysShotPerAnimalPerAxis * m_raysShotPerAnimalPerAxis * m_raysShotPerAnimalPerAxis;
     }
 
     // uncomment if too laggy
@@ -289,39 +294,44 @@ public class PhotoCapture : MonoBehaviour
             // only need to return the first animal that was found
             if (animalFound) continue;
 
-            Vector3 boundShrinkAmount = collider.bounds.extents * 0.05f;
-            boundMin += boundShrinkAmount;
-            boundMax -= boundShrinkAmount;
+            Vector3 rayStart = boundMin + collider.bounds.extents * 0.05f;
+            Vector3 boundLength = collider.bounds.extents * 0.9f;
+            Vector3 gridLength = boundLength / (float)m_raysShotPerAnimalPerAxis;
+            rayStart += 0.5f * gridLength;
 
             int hitCount = 0;
-            // shoot rays at the collider to determine if it is visible
-            // TODO: shoot rays at hardcoded parts of the animal?
-            for (int j = 0; j < m_raysShotPerAnimal; j++)
+            // don't worry about the triple loop it's not spaghetti
+            for (int rayX = 0; rayX < m_raysShotPerAnimalPerAxis; rayX++)
             {
-                Vector3 randomPointInBounds = new Vector3(
-                    UnityEngine.Random.Range(boundMin.x, boundMax.x),
-                    UnityEngine.Random.Range(boundMin.y, boundMax.y),
-                    UnityEngine.Random.Range(boundMin.z, boundMax.z)
-                );
-
-                // if random point out of frustum. reject
-                Vector3 viewportCoords = m_photoTakingCamera.WorldToViewportPoint(randomPointInBounds);
-                if (viewportCoords.x < 0 || viewportCoords.x > 1 || 
-                    viewportCoords.y < 0 || viewportCoords.y > 1 || viewportCoords.z < 0) 
+                for (int rayY = 0; rayY < m_raysShotPerAnimalPerAxis; rayY++)
                 {
-                    continue;
-                }
+                    for (int rayZ = 0; rayZ < m_raysShotPerAnimalPerAxis; rayZ++)
+                    {
+                        Vector3 shootAt = rayStart + new Vector3(
+                            rayX * gridLength.x, 
+                            rayY * gridLength.y, 
+                            rayZ * gridLength.z);
 
-                RaycastHit hit;
-                bool hasHit = Physics.Raycast(
-                    m_photoTakingCamera.transform.position,
-                    randomPointInBounds - m_photoTakingCamera.transform.position,
-                    out hit
-                );
+                        // if random point out of frustum. reject
+                        Vector3 viewportCoords = m_photoTakingCamera.WorldToViewportPoint(shootAt);
+                        if (viewportCoords.x < 0 || viewportCoords.x > 1 || 
+                            viewportCoords.y < 0 || viewportCoords.y > 1 || viewportCoords.z < 0) 
+                        {
+                            continue;
+                        }
 
-                if (hasHit && collider.bounds.Contains(hit.point))
-                {
-                    hitCount++;
+                        RaycastHit hit;
+                        bool hasHit = Physics.Raycast(
+                            m_photoTakingCamera.transform.position,
+                            shootAt - m_photoTakingCamera.transform.position,
+                            out hit
+                        );
+
+                        if (hasHit && collider.bounds.Contains(hit.point))
+                        {
+                            hitCount++;
+                        }
+                    }
                 }
             }
 
