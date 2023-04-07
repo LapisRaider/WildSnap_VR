@@ -20,24 +20,26 @@ MonoBehaviour:
     m_score: 1.1
   - m_state: 2
     m_score: 1.2
-  - m_state: 10
+  - m_state: 12
+    m_score: 1.5
+  - m_state: 3
     m_score: 1.5
   m_animStateData:
-  - m_animStateName: Rabbit_Idle
+  - m_animStateName: Idle
     m_state: 5
-  - m_animStateName: LookOut
-    m_state: 5
-  - m_animStateName: Walking
+  - m_animStateName: Walk
     m_state: 0
-  - m_animStateName: Rabbit_Run
+  - m_animStateName: Run
     m_state: 2
-  - m_animStateName: Rabbit_Jump_Up
-    m_state: 10
+  - m_animStateName: Flying
+    m_state: 12
+  - m_animStateName: Attack
+    m_state: 3
   m_dexSprite: {fileID: 21300000, guid: 0fbef5d0097f0e240865bcc09c6ae9a8, type: 3}
   m_displayName: Parrot
   m_scientificName: Psittaciformes
   m_habitat: Grasslands, forests, deserts
-  m_diet: seeds, nuts, fruit, buds
+  m_diet: Seeds, nuts, fruit, buds
   m_description: Parrots are highly intelligent birds and are known for their ability
     to mimic human speech and other sounds. Some parrot species, such as the African
     grey parrot, have been known to learn hundreds of words and phrases!
