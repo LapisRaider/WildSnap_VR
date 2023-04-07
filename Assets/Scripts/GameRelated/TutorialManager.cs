@@ -19,7 +19,7 @@ public class TutorialManager : MonoBehaviour
         new string[] {"If you would like a tutorial,\n point your right controller at me and press the side trigger button!" } ,
         new string[] {"Great job! If you ever want to interact with any other object, just do what u just did!", "Now try moving with your joystick" },
         new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
-        new string[] {"That's great! Meet me at the farmhouse across the bridge!" },
+        new string[] {"That's great! Meet me at the farmhouse across the bridge!", "See you!" },
         new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of doggo here by clicking the back trigger!" },
         new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the Y button on the left controller" },
         new string[] {"You can view all the photos you have taken here",
@@ -27,7 +27,13 @@ public class TutorialManager : MonoBehaviour
             "You might notice some animals have various actions",
             "try to photograph them all!",
             "Let me teach you a way to get one of those actions, come to the apple table here."},
+        //TODO, talking to players abt the diff state photos, lead them to animal table
+        //teach players how to grab apples
+        //teach players how to throw apples at animals
+        //tell players abt the scoring system
+
     };
+
     private int m_currDialogueState = -1;
     private int m_currSentence = 0;
 
@@ -62,11 +68,8 @@ public class TutorialManager : MonoBehaviour
     private bool m_isPointing = false; //whether player is pointing or not on obj
     private bool m_isClicked = false;
 
-    private bool m_pauseTutorialUpdate = false;
-
     delegate void TutorialCallbacks();
     List<TutorialCallbacks> m_tutorialFunctions = new List<TutorialCallbacks>();
-
     List<TutorialCallbacks> m_initTutorialFunctions = new List<TutorialCallbacks>();
 
     // Start is called before the first frame update
@@ -96,9 +99,6 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (m_pauseTutorialUpdate)
-            return;
-
         if (m_currState < m_tutorialFunctions.Count)
             m_tutorialFunctions[m_currState]();
     }
@@ -106,7 +106,9 @@ public class TutorialManager : MonoBehaviour
     void NextState()
     {
         ++m_currState;
-        m_initTutorialFunctions[m_currState]();
+
+        if (m_currState < m_initTutorialFunctions.Count)
+            m_initTutorialFunctions[m_currState]();
     }
 
     // state 1, teach basic interaction via hovering
@@ -194,12 +196,13 @@ public class TutorialManager : MonoBehaviour
     {
         StartNextDialogue();
         m_farmhouseNotifier.onTriggerCallback += PlayerAtFarmHouse;
-        m_tutorialHuman.SetDestination(m_farmLocation.position);
     }
 
     void Tutorial_4()
     {
-        //nothing here
+        //wait for statement to finish first, then start running
+        if (m_currSentence > 1)
+            m_tutorialHuman.SetDestination(m_farmLocation.position);
     }
 
     void End_Tutorial_4()
@@ -290,6 +293,8 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator TypeDialogue()
     {
+        //TODO: start human talking interaction
+
         m_speechText.text = "";
         foreach (char letter in TUTORIAL_DIALOGUES[m_currDialogueState][m_currSentence].ToCharArray())
         {
