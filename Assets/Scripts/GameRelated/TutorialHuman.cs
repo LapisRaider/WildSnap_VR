@@ -21,7 +21,11 @@ public class TutorialHuman : MonoBehaviour
         if (m_agent.remainingDistance > m_agent.stoppingDistance)
             m_character.Move(m_agent.desiredVelocity, false, false);
         else
+        {
+            //character not moving
             m_character.Move(Vector3.zero, false, false);
+            //TODO rotate to face the player
+        }
     }
 
     public void SetDestination(Vector3 pos)

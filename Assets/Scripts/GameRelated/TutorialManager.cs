@@ -21,12 +21,15 @@ public class TutorialManager : MonoBehaviour
         new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
         new string[] {"That's great! Meet me at the farmhouse across the bridge!" },
         new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of doggo here by clicking the back trigger!" },
-        new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the XXXX button" },
-        new string[] {"You can view all the photos you have taken here", "TODO, INSERT HERE HOW TO VIEW PHOTOS", "If you look through the animal dex, you" },
+        new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the Y button on the left controller" },
+        new string[] {"You can view all the photos you have taken here",
+            "TODO, INSERT HERE HOW TO VIEW PHOTOS",
+            "You might notice some animals have various actions",
+            "try to photograph them all!",
+            "Let me teach you a way to get one of those actions, come to the apple table here."},
     };
     private int m_currDialogueState = -1;
     private int m_currSentence = 0;
-    private HashSet<int> m_spokenDialogues = new HashSet<int>(); //if dialogue have been spoken, do not run the animation anymore, or speech
 
     [Header("Tutorial 1")]
 
@@ -45,6 +48,14 @@ public class TutorialManager : MonoBehaviour
     [Header("Tutorial 5")]
     public PhotoCapture m_photoCapture = null;
 
+    [Header("Tutorial 6")]
+    public InputActionProperty m_openMenuButton;
+
+    [Header("Tutorial 7")]
+    public Transform m_appleLocation = null;
+
+    //i need a way to check when player picks up an apple and throw it
+    //try throwing to doggo here, and then take a photo of him
 
 
     private int m_currState = 0;
@@ -232,8 +243,27 @@ public class TutorialManager : MonoBehaviour
 
     void Tutorial_6()
     {
-        //nothing here
+        // if press the open dex button move on to next scene
+        if (m_openMenuButton.action.ReadValue<float>() > 0)
+            Exit_Tutorial_6();
     }
+
+    void Exit_Tutorial_6()
+    {
+        NextState();
+    }
+    #endregion
+
+    #region TUTORIAL 7 - Tell players about animal diff state photos, lead them to apple table
+    #endregion
+
+    #region TUTORIAL 8 - teach players how to grab apples
+    #endregion
+
+    #region TUTORIAL 9 - teach players how to throw apples at animals
+    #endregion
+
+    #region TUTORIAL 10 - Tell players about the scoring system, END
     #endregion
 
     #region VR INTERACTIONS
@@ -273,6 +303,10 @@ public class TutorialManager : MonoBehaviour
             yield return new WaitForSeconds(1);
 
             StartCoroutine(TypeDialogue()); // type the next sentence in the dialogue
+        }
+        else
+        {
+            //TODO: human stop talking animation
         }
     }
     #endregion
