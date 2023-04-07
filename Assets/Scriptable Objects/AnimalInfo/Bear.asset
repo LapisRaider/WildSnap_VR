@@ -13,10 +13,26 @@ MonoBehaviour:
   m_Name: Bear
   m_EditorClassIdentifier: 
   m_type: 4
-  m_availableStates: 000000000100000002000000030000000400000005000000
+  m_availableStateAndScore:
+  - m_state: 5
+    m_score: 1
+  - m_state: 0
+    m_score: 1.1
+  - m_state: 3
+    m_score: 1.5
+  m_animStateData:
+  - m_animStateName: Idle
+    m_state: 5
+  - m_animStateName: Walk
+    m_state: 0
+  - m_animStateName: Attack
+    m_state: 3
   m_dexSprite: {fileID: 21300000, guid: 00194bfff17440f469498b6d91e82279, type: 3}
   m_displayName: Bear
-  m_description: 'Bears have been hunted since prehistoric times for their meat and
-    fur; they have been used for bear-baiting and other forms of entertainment, such
-    as being made to dance. With their powerful physical presence, they play a prominent
-    role in the arts, mythology, and other cultural aspects of various human societies. '
+  m_scientificName: Ursus arctos
+  m_habitat: Forests, tundra, mountains
+  m_diet: Berries, nuts, fish, meat
+  m_description: Large and powerful, with a distinctive hump on their shoulders.
+    Known for their sharp claws and powerful jaws. Can weigh up to 600kg and reach
+    up to 2.5 meters in height when standing. Solitary animals, except during mating
+    season. Hibernate during winter.

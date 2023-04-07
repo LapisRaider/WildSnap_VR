@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab08aba76b3d4b4db7d745a9ac84c0d, type: 3}
+  m_Name: Rabbit
+  m_EditorClassIdentifier: 
+  m_type: 8
+  m_availableStateAndScore:
+  - m_state: 5
+    m_score: 1
+  - m_state: 0
+    m_score: 1.1
+  - m_state: 2
+    m_score: 1.2
+  - m_state: 10
+    m_score: 1.5
+  m_animStateData:
+  - m_animStateName: Rabbit_Idle
+    m_state: 5
+  - m_animStateName: LookOut
+    m_state: 5
+  - m_animStateName: Walking
+    m_state: 0
+  - m_animStateName: Rabbit_Run
+    m_state: 2
+  - m_animStateName: Rabbit_Jump_Up
+    m_state: 10
+  m_dexSprite: {fileID: 21300000, guid: f3a7715d778bc4c4dbf49024e8e8fa6f, type: 3}
+  m_displayName: Rabbit
+  m_scientificName: Oryctolagus cuniculus
+  m_habitat: Grasslands, forests, deserts
+  m_diet: Grass, herbs, vegetables
+  m_description: Small and fast, with long ears and a fluffy tail. Able to jump up
+    to 3 meters in a single bound. Social animals, living in large groups. Often
+    active at dawn and dusk, when they come out to forage for food. Can be found
+    in many different colors, including white, brown, and black.

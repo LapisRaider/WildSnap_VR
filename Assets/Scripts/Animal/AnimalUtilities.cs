@@ -1,7 +1,18 @@
 
 public enum AnimalState
 {
-    Walking, Standing, Running, Attacking, Dead, Idling, SHAKING, SITTING, SLEEPING
+    Walking,
+    Standing,
+    Running,
+    Attacking,
+    Dead,
+    Idling,
+    Shaking,
+    Sitting,
+    Sleeping,
+    Eating,
+    Jumping,
+    Barking,
 }
 
 public enum AnimalType
@@ -13,5 +24,6 @@ public enum AnimalType
     BEAR,
     HUMAN,
     DEER,
-    DOG
+    DOG,
+    RABBIT,
 }

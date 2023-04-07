@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Animal/Animal States.meta
+guid: 4cef778dec8c3d344a2070f8c950f05b
+folderAsset: yes
+========
 guid: 8dc67afdb3052ff45b0b725be038492b
+>>>>>>>> master:Assets/Plugins/BOXOPHOBIC/BOXOPHOBIC/Polyverse Skies/Demo/Demo.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

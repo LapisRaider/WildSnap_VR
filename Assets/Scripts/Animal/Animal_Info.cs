@@ -16,6 +16,9 @@ public class Animal_Info : ScriptableObject
     [Header("Dex display information")]
     public Sprite m_dexSprite;
     public string m_displayName;
+    public string m_scientificName;
+    public string m_habitat;
+    public string m_diet;
     [TextArea] public string m_description;
 }
 
