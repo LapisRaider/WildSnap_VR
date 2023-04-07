@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
@@ -8,9 +6,16 @@ public class TutorialHuman : MonoBehaviour
 {
     public ThirdPersonCharacter m_character;
     public NavMeshAgent m_agent;
+    public Transform m_player;
+    private Animator m_animator;
 
     [HideInInspector]
     public bool m_isDestinationReached = false;
+
+    private void Awake()
+    {
+        m_animator = GetComponent<Animator>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +35,7 @@ public class TutorialHuman : MonoBehaviour
             //character not moving
             m_character.Move(Vector3.zero, false, false);
             m_isDestinationReached = true;
-            //TODO rotate to face the player
+            transform.LookAt(m_player);
         }
     }
 
@@ -38,5 +43,10 @@ public class TutorialHuman : MonoBehaviour
     {
         m_agent.SetDestination(pos);
         m_isDestinationReached = false;
+    }
+
+    public void Talking(bool isTalking)
+    {
+        m_animator.SetBool("Talking", isTalking);
     }
 }

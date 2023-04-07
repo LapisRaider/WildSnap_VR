@@ -4614,6 +4614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_character: {fileID: 1318479214533707958}
   m_agent: {fileID: 1318479214533707953}
+  m_player: {fileID: 0}
   m_isDestinationReached: 0
 --- !u!1 &1318479214533708327
 GameObject:

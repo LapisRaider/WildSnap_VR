@@ -21,7 +21,7 @@ public class TutorialManager : MonoBehaviour
         new string[] {"If you would like a tutorial,\n point your right controller at me and press the side trigger button!" } ,
         new string[] {"Great job! If you ever want to interact with any other object, just do what u just did!", "Now try moving with your joystick" },
         new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
-        new string[] {"That's great! Meet me at the farmhouse across the bridge!", "See you!" },
+        new string[] {"That's great! Meet me across the bridge!", "See you!" },
         new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of Baxter the dog here by clicking the back trigger!" },
         new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the Y button on the left controller" },
         new string[] {"You can view all the photos you have taken here",
@@ -225,7 +225,10 @@ public class TutorialManager : MonoBehaviour
     {
         //wait for statement to finish first, then start running
         if (m_currSentence > 1)
+        {
+            m_speechText.gameObject.SetActive(false);
             m_tutorialHuman.SetDestination(m_farmLocation.position);
+        }
     }
 
     void End_Tutorial_4()
@@ -249,6 +252,7 @@ public class TutorialManager : MonoBehaviour
 
         m_cameraTutorialController.gameObject.SetActive(true);
         m_cameraTutorialController.ShowBackTriggerTutorial(true);
+        m_speechText.gameObject.SetActive(true);
     }
 
     void Exit_Tutorial_5(AnimalType animal)
@@ -396,6 +400,7 @@ public class TutorialManager : MonoBehaviour
     {
         ++m_currDialogueState;
         m_currSentence = 0;
+        m_tutorialHuman.Talking(true);
 
         StopAllCoroutines();
         StartCoroutine(TypeDialogue());
@@ -403,8 +408,6 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator TypeDialogue()
     {
-        //TODO: start human talking interaction
-
         m_speechText.text = "";
         foreach (char letter in TUTORIAL_DIALOGUES[m_currDialogueState][m_currSentence].ToCharArray())
         {
@@ -421,7 +424,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            //TODO: human stop talking animation
+            m_tutorialHuman.Talking(false);
         }
     }
     #endregion

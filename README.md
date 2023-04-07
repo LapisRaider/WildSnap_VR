@@ -12,3 +12,6 @@ https://sketchfab.com/3d-models/low-poly-rocks-9823ec262054408dbe26f6ddb9c0406e
 
 Human animations and ThirdPersonCharacter script:
 https://github.com/Brackeys/NavMesh-Tutorial
+
+Talking animation:
+https://www.mixamo.com/#/?page=1&query=talking
