@@ -33,6 +33,9 @@ public class PhotoCapture : MonoBehaviour
     private float m_photoScreenHeight;
     private int m_raysShotPerAnimalPerAxis;
 
+    public delegate void PhotoTakenCallback(AnimalType type);
+    public PhotoTakenCallback m_photoTakenCallback;
+
     [Header("On Take Photo")]
     public ParticleSystem m_flashParticles; 
     public Animator m_flashAnim;
@@ -145,6 +148,8 @@ public class PhotoCapture : MonoBehaviour
 
         AnimalDex.Instance.AddPhotoToDexEntry(animal.m_animalType, animal.GetAnimalState(), (int)photoScore, photoTaken);
 
+        if (m_photoTakenCallback != null)
+            m_photoTakenCallback.Invoke(animal.m_animalType);
         //SavePhotosToFolder(photoTaken);
     }
 

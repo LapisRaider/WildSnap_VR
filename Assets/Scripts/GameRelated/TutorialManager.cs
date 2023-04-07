@@ -16,12 +16,12 @@ public class TutorialManager : MonoBehaviour
     private string[][] TUTORIAL_DIALOGUES = new string[][]
     {
         new string[] {"If you would like a tutorial,\n point your right controller at me and press the side trigger button!" } ,
-        new string[] {"Great job! Now try moving with your joystick" },
+        new string[] {"Great job! If you ever want to interact with any other object, just do what u just did!", "Now try moving with your joystick" },
         new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
         new string[] {"That's great! Meet me at the farmhouse across the bridge!" },
         new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of doggo here by clicking the back trigger!" },
-        new string[] {"Great work! You can also zoom in and out using the left joystick" },
-        new string[] {"Now try opening the animal dex, by clicking the XXXX button" },
+        new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the XXXX button" },
+        new string[] {"You can view all the photos you have taken here", "TODO, INSERT HERE HOW TO VIEW PHOTOS", "If you look through the animal dex, you" },
     };
     private int m_currDialogueState = -1;
     private int m_currSentence = 0;
@@ -39,6 +39,9 @@ public class TutorialManager : MonoBehaviour
     [Header("Tutorial 4")]
     public TriggerNotifier m_farmhouseNotifier = null;
     bool m_playerReachFarmHouse = false;
+
+    [Header("Tutorial 5")]
+    public PhotoCapture m_photoCapture = null;
 
 
 
@@ -60,11 +63,16 @@ public class TutorialManager : MonoBehaviour
         m_tutorialFunctions.Add(Tutorial_2);
         m_tutorialFunctions.Add(Tutorial_3);
         m_tutorialFunctions.Add(Tutorial_4);
+        m_tutorialFunctions.Add(Tutorial_5);
+        m_tutorialFunctions.Add(Tutorial_6);
+
 
         m_initTutorialFunctions.Add(Start_Tutorial_1);
         m_initTutorialFunctions.Add(Start_Tutorial_2);
         m_initTutorialFunctions.Add(Start_Tutorial_3);
         m_initTutorialFunctions.Add(Start_Tutorial_4);
+        m_initTutorialFunctions.Add(Start_Tutorial_5);
+        m_initTutorialFunctions.Add(Start_Tutorial_6);
     }
 
     private void Start()
@@ -193,6 +201,38 @@ public class TutorialManager : MonoBehaviour
     }
     #endregion
 
+    #region TUTORIAL 5 - Teach player how to take photos
+    void Start_Tutorial_5()
+    {
+        m_photoCapture.m_photoTakenCallback += PhotoTaken;
+        StartNextDialogue();
+    }
+
+    void PhotoTaken(AnimalType animal)
+    {
+        //ends when player has successfully taken a photo
+        m_photoCapture.m_photoTakenCallback -= PhotoTaken;
+        NextState();
+    }
+
+    void Tutorial_5()
+    {
+        //nothing here
+    }
+    #endregion
+
+    #region TUTORIAL 6 - Teach players about opening animal dex
+    void Start_Tutorial_6()
+    {
+        StartNextDialogue();
+    }
+
+    void Tutorial_6()
+    {
+        //nothing here
+    }
+    #endregion
+
     #region VR INTERACTIONS
     public void SetPointing(bool isPointing)
     {
@@ -205,6 +245,7 @@ public class TutorialManager : MonoBehaviour
     }
     #endregion
 
+    #region DIALOGUE
     void StartNextDialogue()
     {
         ++m_currDialogueState;
@@ -226,7 +267,10 @@ public class TutorialManager : MonoBehaviour
         ++m_currSentence;
         if (m_currSentence < TUTORIAL_DIALOGUES[m_currDialogueState].Length)
         {
+            yield return new WaitForSeconds(1);
+
             StartCoroutine(TypeDialogue()); // type the next sentence in the dialogue
         }
     }
+    #endregion
 }
