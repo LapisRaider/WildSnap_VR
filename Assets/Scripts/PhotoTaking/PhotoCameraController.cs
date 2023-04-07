@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PhotoCameraController : MonoBehaviour
 {
@@ -12,10 +13,14 @@ public class PhotoCameraController : MonoBehaviour
     [SerializeField] private float m_zoomLerpSpeed = 1.0f;
     [Tooltip("Smaller number means zoom in")]
     [SerializeField] private Vector2 m_zoomLimit = new Vector2(10, 80);
+    [SerializeField] private XRBaseController leftController;
+    [SerializeField] private float vibrationInterval = 0.2f;
+    [SerializeField] private float vibrationAmplitude = 0.2f;
+    [SerializeField] private float vibrationDuration = 0.01f;
+    private float timeSinceLastVibration;
 
     private float m_targetZoomAmt = 0.0f;
     private Camera m_photoTakingCamera;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,7 +31,19 @@ public class PhotoCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timeSinceLastVibration += Time.deltaTime;
+
         float zoomInOut = -m_zoomInput.action.ReadValue<Vector2>().y;
+
+        // if the zoom level is changing
+        if (timeSinceLastVibration >= vibrationInterval)
+        {
+            if (zoomInOut != 0)
+            {
+                timeSinceLastVibration = 0.0f;
+                leftController.SendHapticImpulse(vibrationAmplitude, vibrationDuration);
+            }
+        }
 
         //smaller FOV is zoom in
         m_targetZoomAmt += zoomInOut * m_zoomFactor;

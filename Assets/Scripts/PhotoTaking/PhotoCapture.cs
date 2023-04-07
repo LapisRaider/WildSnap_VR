@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using System;
 using System.Linq;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ReverseSortFloats : IComparer<float>
 {
@@ -46,9 +47,12 @@ public class PhotoCapture : MonoBehaviour
     public PhotoTakenCallback m_photoTakenCallback;
 
     [Header("On Take Photo")]
-    public ParticleSystem m_flashParticles; 
+    public ParticleSystem m_flashParticles;
     public Animator m_flashAnim;
     public AudioSource m_flashAudioSource;
+    [SerializeField] private XRBaseController leftController;
+    [SerializeField] private float vibrationAmplitude = 1.0f;
+    [SerializeField] private float vibrationDuration = 0.01f;
 
     // Start is called before the first frame update
     void Awake()
@@ -108,7 +112,7 @@ public class PhotoCapture : MonoBehaviour
             size.x = (maxX - minX) * m_photoScreenWidth / m_reticle.transform.localScale.x;
             size.y = (maxY - minY) * m_photoScreenHeight / m_reticle.transform.localScale.y;
             m_reticle.size = size;
-            
+
             if (photoScore >= m_minScoreGold)
             {
                 m_scoreIndicator.color = m_gold;
@@ -172,15 +176,19 @@ public class PhotoCapture : MonoBehaviour
         m_isTakingPhoto = true;
 
         if (m_flashParticles != null) m_flashParticles.Play();
-    
+
         if (m_flashAnim != null) m_flashAnim.SetTrigger("Flash");
 
         if (m_flashAudioSource != null) m_flashAudioSource.Play();
+
+        if (m_flashAudioSource != null) m_flashAudioSource.Play();
+
+        leftController.SendHapticImpulse(vibrationAmplitude, vibrationDuration);
     }
 
     public float CalculatePhotoScore(
-        AnimalType type, AnimalState animalState, float rayHitProportion, float distance, 
-        float imageSize, float distFromCenter, float facingCamera, int animalsInFrame)
+        AnimalType type, AnimalState animalState, float rayHitProportion, float distance,
+            float imageSize, float distFromCenter, float facingCamera, int animalsInFrame)
     {
         float score = 100.0f;
 
@@ -189,7 +197,8 @@ public class PhotoCapture : MonoBehaviour
         if (dexEntry != null && dexEntry.m_photoStateScoreMap.ContainsKey(animalState))
         {
             stateScoreMultiplier = dexEntry.m_photoStateScoreMap[animalState];
-        } else 
+        }
+        else
         {
             Debug.LogError("Cannot find multiplier for animal state");
         }
@@ -228,14 +237,14 @@ public class PhotoCapture : MonoBehaviour
     }
 
     public void DetectFocusAnimal(
-        out GameObject animal, out int raysHit, out float distance, 
+        out GameObject animal, out int raysHit, out float distance,
         out float minX, out float maxX, out float minY,
         out float maxY, out float facingCamera, out int animalsInFrame)
     {
         Vector3 cameraFrontVector = m_photoTakingCamera.transform.forward;
         Collider[] collidersInRadius = Physics.OverlapSphere(m_photoTakingCamera.transform.position, m_maxAnimalDistance);
         collidersInRadius = collidersInRadius.Where(collider => collider.tag == "Animal").ToArray();
-        
+
         float[] colliderDots = collidersInRadius.Select(
             collider => Vector3.Dot(cameraFrontVector, (collider.transform.position - m_photoTakingCamera.transform.position).normalized)
         ).ToArray();
@@ -287,7 +296,7 @@ public class PhotoCapture : MonoBehaviour
                 screenMinY = Mathf.Min(screenMinY, viewportCoords.y);
                 screenMaxY = Mathf.Max(screenMaxY, viewportCoords.y);
             }
-            
+
             screenMinX = Mathf.Max(screenMinX, 0.0f);
             screenMaxX = Mathf.Min(screenMaxX, 1.0f);
             screenMinY = Mathf.Max(screenMinY, 0.0f);
@@ -318,14 +327,14 @@ public class PhotoCapture : MonoBehaviour
                     for (int rayZ = 0; rayZ < m_raysShotPerAnimalPerAxis; rayZ++)
                     {
                         Vector3 shootAt = rayStart + new Vector3(
-                            rayX * gridLength.x, 
-                            rayY * gridLength.y, 
+                            rayX * gridLength.x,
+                            rayY * gridLength.y,
                             rayZ * gridLength.z);
 
                         // if random point out of frustum. reject
                         Vector3 viewportCoords = m_photoTakingCamera.WorldToViewportPoint(shootAt);
-                        if (viewportCoords.x < 0 || viewportCoords.x > 1 || 
-                            viewportCoords.y < 0 || viewportCoords.y > 1 || viewportCoords.z < 0) 
+                        if (viewportCoords.x < 0 || viewportCoords.x > 1 ||
+                            viewportCoords.y < 0 || viewportCoords.y > 1 || viewportCoords.z < 0)
                         {
                             continue;
                         }
@@ -358,7 +367,7 @@ public class PhotoCapture : MonoBehaviour
                 foundAnimal = collider.gameObject;
                 Vector3 closestPoint = collider.ClosestPoint(m_photoTakingCamera.transform.position);
                 foundDistance = (closestPoint - m_photoTakingCamera.transform.position).magnitude;
-                
+
                 Vector3 animalForward = foundAnimal.transform.forward;
                 foundFacingCamera = Vector3.Dot(-animalForward, cameraFrontVector);
                 foundFacingCamera = Math.Max(0.0f, foundFacingCamera);
@@ -377,7 +386,7 @@ public class PhotoCapture : MonoBehaviour
     }
 
     public float GetPhotoScoreAndStats(
-        out Animal_Behaviour animal, out float minX, out float maxX, 
+        out Animal_Behaviour animal, out float minX, out float maxX,
         out float minY, out float maxY)
     {
         animal = null;
@@ -388,7 +397,7 @@ public class PhotoCapture : MonoBehaviour
         int animalsInFrame;
 
         DetectFocusAnimal(
-            out focusAnimal, out raysHit, out distance, out minX, out maxX, 
+            out focusAnimal, out raysHit, out distance, out minX, out maxX,
             out minY, out maxY, out facingCamera, out animalsInFrame
         );
 
@@ -411,7 +420,7 @@ public class PhotoCapture : MonoBehaviour
         }
 
         return CalculatePhotoScore(
-            animal.m_animalType, animal.GetAnimalState(), rayHitProportion, 
+            animal.m_animalType, animal.GetAnimalState(), rayHitProportion,
             distance, imageSize, distFromCenter, facingCamera, animalsInFrame
         );
     }
