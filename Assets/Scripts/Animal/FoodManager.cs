@@ -6,6 +6,9 @@ public class FoodManager : MonoBehaviour
 {
     List<Transform> m_appleTransforms = new List<Transform>();
 
+    public delegate void OnAppleEaten();
+    public OnAppleEaten onAppleEatenCallback;
+
     private void Awake()
     {
         GameObject[] apples = GameObject.FindGameObjectsWithTag("Apple");
@@ -34,5 +37,8 @@ public class FoodManager : MonoBehaviour
         m_appleTransforms.Remove(animalDetection.m_currentAppleTransform);
         Destroy(animalDetection.m_currentAppleTransform.gameObject);
         animalDetection.m_currentAppleTransform = null;
+
+        if (onAppleEatenCallback != null)
+            onAppleEatenCallback.Invoke();
     }
 }

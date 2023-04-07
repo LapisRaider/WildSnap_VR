@@ -11,6 +11,8 @@ public class TutorialManager : MonoBehaviour
     [Header("Interface objects")]
     public TextMeshPro m_speechText;
     public TutorialControllerManager m_tutorialController;
+    public TutorialControllerManager m_cameraTutorialController;
+
     public TutorialHuman m_tutorialHuman;
 
     [Header("Dialogue settings")]
@@ -20,18 +22,23 @@ public class TutorialManager : MonoBehaviour
         new string[] {"Great job! If you ever want to interact with any other object, just do what u just did!", "Now try moving with your joystick" },
         new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
         new string[] {"That's great! Meet me at the farmhouse across the bridge!", "See you!" },
-        new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of doggo here by clicking the back trigger!" },
+        new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of Baxter the dog here by clicking the back trigger!" },
         new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the Y button on the left controller" },
         new string[] {"You can view all the photos you have taken here",
             "TODO, INSERT HERE HOW TO VIEW PHOTOS",
-            "You might notice some animals have various actions",
-            "try to photograph them all!",
+            "You might notice some animals have various actions you can photograph.",
             "Let me teach you a way to get one of those actions, come to the apple table here."},
-        //TODO, talking to players abt the diff state photos, lead them to animal table
-        //teach players how to grab apples
-        //teach players how to throw apples at animals
-        //tell players abt the scoring system
-
+        new string[] { "Grab an apple!",
+            "With your right controller, try picking it up with the side trigger button",},
+        new string[] { "Nice! Now try feeding an animal with it. ",
+            "You can toss the apple to an animal, or try feeding Baxter here"
+        },
+        new string[] { "Great work! Try to photograph as many new animals and actions as you can!",
+            "Fill up that animal dex of yours.",
+            "Each photograph will also be graded based on how well you took that photo!",
+            "You'll also get bonus points if there are multiple animals in the photo.",
+            "That's all from me! Have fun!"
+        }
     };
 
     private int m_currDialogueState = -1;
@@ -44,7 +51,6 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Tutorial 3")]
     public TeleportationProvider m_teleportor = null;
-    private bool m_teleported = false;
 
     [Header("Tutorial 4")]
     public TriggerNotifier m_farmhouseNotifier = null;
@@ -60,8 +66,11 @@ public class TutorialManager : MonoBehaviour
     [Header("Tutorial 7")]
     public Transform m_appleLocation = null;
 
-    //i need a way to check when player picks up an apple and throw it
-    //try throwing to doggo here, and then take a photo of him
+    [Header("Tutorial 8")]
+    public XRDirectInteractor m_directInteractor;
+
+    [Header("Tutorial 9")]
+    public FoodManager m_foodManager = null;
 
 
     private int m_currState = 0;
@@ -81,7 +90,10 @@ public class TutorialManager : MonoBehaviour
         m_tutorialFunctions.Add(Tutorial_4);
         m_tutorialFunctions.Add(Tutorial_5);
         m_tutorialFunctions.Add(Tutorial_6);
-
+        m_tutorialFunctions.Add(Tutorial_7);
+        m_tutorialFunctions.Add(Tutorial_8);
+        m_tutorialFunctions.Add(Tutorial_9);
+        m_tutorialFunctions.Add(Tutorial_10);
 
         m_initTutorialFunctions.Add(Start_Tutorial_1);
         m_initTutorialFunctions.Add(Start_Tutorial_2);
@@ -89,6 +101,10 @@ public class TutorialManager : MonoBehaviour
         m_initTutorialFunctions.Add(Start_Tutorial_4);
         m_initTutorialFunctions.Add(Start_Tutorial_5);
         m_initTutorialFunctions.Add(Start_Tutorial_6);
+        m_initTutorialFunctions.Add(Start_Tutorial_7);
+        m_initTutorialFunctions.Add(Start_Tutorial_8);
+        m_initTutorialFunctions.Add(Start_Tutorial_9);
+        m_initTutorialFunctions.Add(Start_Tutorial_10);
     }
 
     private void Start()
@@ -167,27 +183,21 @@ public class TutorialManager : MonoBehaviour
     void Start_Tutorial_3()
     {
         StartNextDialogue();
-        m_teleportor.endLocomotion += TeleportationActivated;
+        m_teleportor.endLocomotion += End_Tutorial_3;
         m_tutorialController.ShowBackTriggerTutorial(true);
     }
 
-    void TeleportationActivated(LocomotionSystem system)
+    void End_Tutorial_3(LocomotionSystem system)
     {
-        m_teleported = true;
-        End_Tutorial_3();
+        m_teleportor.endLocomotion -= End_Tutorial_3;
+        m_tutorialController.ShowBackTriggerTutorial(false);
+
+        NextState();
     }
 
     void Tutorial_3()
     {
         //nothing here
-    }
-
-    void End_Tutorial_3()
-    {
-        m_teleportor.endLocomotion -= TeleportationActivated;
-        m_tutorialController.ShowBackTriggerTutorial(false);
-
-        NextState();
     }
     #endregion
 
@@ -221,14 +231,14 @@ public class TutorialManager : MonoBehaviour
     #region TUTORIAL 5 - Teach player how to take photos
     void Start_Tutorial_5()
     {
-        m_photoCapture.m_photoTakenCallback += PhotoTaken;
+        m_photoCapture.m_photoTakenCallback += Exit_Tutorial_5;
         StartNextDialogue();
     }
 
-    void PhotoTaken(AnimalType animal)
+    void Exit_Tutorial_5(AnimalType animal)
     {
         //ends when player has successfully taken a photo
-        m_photoCapture.m_photoTakenCallback -= PhotoTaken;
+        m_photoCapture.m_photoTakenCallback -= Exit_Tutorial_5;
         NextState();
     }
 
@@ -258,15 +268,76 @@ public class TutorialManager : MonoBehaviour
     #endregion
 
     #region TUTORIAL 7 - Tell players about animal diff state photos, lead them to apple table
+    void Start_Tutorial_7()
+    {
+        StartNextDialogue();
+    }
+
+    void Tutorial_7()
+    {
+        //once finish speech
+        if (m_currSentence == TUTORIAL_DIALOGUES[6].Length)
+            m_tutorialHuman.SetDestination(m_appleLocation.position);
+
+        //once reach destination then go next state
+        if (m_tutorialHuman.m_isDestinationReached)
+            NextState();
+    }
     #endregion
+
 
     #region TUTORIAL 8 - teach players how to grab apples
+    void Start_Tutorial_8()
+    {
+        StartNextDialogue();
+        m_directInteractor.selectEntered.AddListener(Exit_Tutorial_8);
+    }
+
+    void Tutorial_8()
+    {
+        return;
+    }
+
+    void Exit_Tutorial_8(SelectEnterEventArgs args)
+    {
+        XRBaseInteractable interactable = (XRBaseInteractable)args.interactableObject;
+        if (interactable.tag != "Apple")
+            return;
+
+        NextState();
+        m_directInteractor.selectEntered.RemoveListener(Exit_Tutorial_8);
+    }
     #endregion
 
-    #region TUTORIAL 9 - teach players how to throw apples at animals
+    #region TUTORIAL 9 - teach players how to feed apples to animals
+    void Start_Tutorial_9()
+    {
+        StartNextDialogue();
+        m_foodManager.onAppleEatenCallback += End_Tutorial_9;
+    }
+
+    void Tutorial_9()
+    {
+        return;
+    }
+
+    void End_Tutorial_9()
+    {
+        m_foodManager.onAppleEatenCallback -= End_Tutorial_9;
+    }
     #endregion
 
     #region TUTORIAL 10 - Tell players about the scoring system, END
+    void Start_Tutorial_10()
+    {
+        StartNextDialogue();
+        m_foodManager.onAppleEatenCallback += End_Tutorial_9;
+    }
+
+    void Tutorial_10()
+    {
+        //TODO: should wait for speech to finish
+    }
     #endregion
 
     #region VR INTERACTIONS
