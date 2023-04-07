@@ -15,13 +15,13 @@ MonoBehaviour:
   m_type: 8
   m_availableStateAndScore:
   - m_state: 5
-    m_score: 10
+    m_score: 1
   - m_state: 0
-    m_score: 20
+    m_score: 1.1
   - m_state: 2
-    m_score: 30
+    m_score: 1.2
   - m_state: 10
-    m_score: 100
+    m_score: 1.5
   m_animStateData:
   - m_animStateName: Rabbit_Idle
     m_state: 5

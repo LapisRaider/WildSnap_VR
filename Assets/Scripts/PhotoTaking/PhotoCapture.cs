@@ -23,7 +23,16 @@ public class PhotoCapture : MonoBehaviour
     public int m_raysShotPerAnimal;
     public float m_rayThreshold;
     public float m_imageSizeThreshold;
-    public LineRenderer m_outlineIndicator;
+
+    [Header("Reticle")]
+    public SpriteRenderer m_reticle;
+    public SpriteRenderer m_scoreIndicator;
+    public Color m_gold;
+    public Color m_silver;
+    public Color m_bronze;
+    public int m_minScoreGold;
+    public int m_minScoreSilver;
+
 
     private WaitForEndOfFrame m_enumeratorEndOfFrame = new WaitForEndOfFrame();
     private Rect m_regionToRead;
@@ -49,8 +58,6 @@ public class PhotoCapture : MonoBehaviour
 
         m_photoScreenWidth = photoScreenSize.x * m_photoScreen.transform.localScale.x;
         m_photoScreenHeight = photoScreenSize.y * m_photoScreen.transform.localScale.y;
-        m_outlineIndicator.startWidth = 0.001f;
-        m_outlineIndicator.endWidth = 0.001f;
 
         // round down to the nearest cube number to do uniform sampling (so the score doesn't flicker)
         m_raysShotPerAnimalPerAxis = (int)Mathf.Pow(m_raysShotPerAnimal, 1f / 3f);
@@ -90,35 +97,33 @@ public class PhotoCapture : MonoBehaviour
         float maxY;
         float photoScore = GetPhotoScoreAndStats(out animal, out minX, out maxX, out minY, out maxY);
 
-        if (animal == null)
+        if (animal != null)
         {
-            m_outlineIndicator.enabled = false;
-        } else 
-        {
-            Vector3[] linePositions = {
-                new Vector3(maxX * m_photoScreenWidth, maxY * m_photoScreenHeight, 0),
-                new Vector3(minX * m_photoScreenWidth, maxY * m_photoScreenHeight, 0),
-                new Vector3(minX * m_photoScreenWidth, minY * m_photoScreenHeight, 0),
-                new Vector3(maxX * m_photoScreenWidth, minY * m_photoScreenHeight, 0),
-            };
-            m_outlineIndicator.SetPositions(linePositions);
+            Vector3 center = m_reticle.transform.localPosition;
+            center.x = ((maxX + minX) / 2) * m_photoScreenWidth;
+            center.y = ((maxY + minY) / 2) * m_photoScreenHeight;
+            m_reticle.transform.localPosition = center;
 
-            if (photoScore > 1000)
-            {
-                m_outlineIndicator.startColor = Color.green;
-                m_outlineIndicator.endColor = Color.green;
-            } else if (photoScore > 500)
-            {
-                m_outlineIndicator.startColor = Color.yellow;
-                m_outlineIndicator.endColor = Color.yellow;
-            } else
-            {
-                m_outlineIndicator.startColor = Color.red;
-                m_outlineIndicator.endColor = Color.red;
-            }
+            Vector2 size = Vector2.one;
+            size.x = (maxX - minX) * m_photoScreenWidth / m_reticle.transform.localScale.x;
+            size.y = (maxY - minY) * m_photoScreenHeight / m_reticle.transform.localScale.y;
+            m_reticle.size = size;
             
-            m_outlineIndicator.enabled = true;
+            if (photoScore >= m_minScoreGold)
+            {
+                m_scoreIndicator.color = m_gold;
+            }
+            else if (photoScore >= m_minScoreSilver)
+            {
+                m_scoreIndicator.color = m_silver;
+            }
+            else
+            {
+                m_scoreIndicator.color = m_bronze;
+            }
         }
+
+        m_reticle.gameObject.SetActive(animal != null);
     }
 
     private void RenderPipelineManager_endCameraRendering(ScriptableRenderContext arg1, List<Camera> arg2)

@@ -15,9 +15,9 @@ MonoBehaviour:
   m_type: 7
   m_availableStateAndScore:
   - m_state: 5
-    m_score: 10
+    m_score: 1
   - m_state: 11
-    m_score: 50
+    m_score: 1.2
   m_animStateData:
   - m_animStateName: Idle
     m_state: 5

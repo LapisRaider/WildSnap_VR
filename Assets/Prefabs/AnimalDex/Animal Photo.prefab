@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.745283, g: 0.388323, b: 0.19264857, a: 1}
+  m_Color: {r: 0.802, g: 0.51328, b: 0.32079998, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -621,7 +621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.82836753, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.87856454, b: 0.29622638, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -697,8 +697,8 @@ MonoBehaviour:
   m_gold: {fileID: 5903145662439788179}
   m_silver: {fileID: 7047252214473030780}
   m_bronze: {fileID: 2374993410313983144}
-  m_minScoreGold: 20000
-  m_minScoreSilver: 10000
+  m_minScoreGold: 2000
+  m_minScoreSilver: 1000
 --- !u!1 &6567727877389475121
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,7 +765,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 12345
+  m_text: '1234
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a29f40ca58b156848896b62f4429e495, type: 2}
   m_sharedMaterial: {fileID: -5554273155930248582, guid: a29f40ca58b156848896b62f4429e495,
@@ -894,7 +896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
+  m_Color: {r: 0.7, g: 0.7, b: 0.7, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

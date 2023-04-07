@@ -19,7 +19,6 @@ public class EatApple : IState
 
     public override void OnEnter()
     {
-        Debug.Log("apple");
         m_animalMotion.WalkToApple(m_animalDetection.GetApplePosition());
         time = 1.0f;
         m_eatingTime = Random.Range(5, 10);
