@@ -18,8 +18,8 @@ public class UiManager : MonoBehaviour
 
     private void ToggleAnimalDex(InputAction.CallbackContext obj)
     {
-        print("hi");
         isAnimalDexOpen = !isAnimalDexOpen;
         m_animalDex.SetActive(isAnimalDexOpen);
+        // TODO make it face player
     }
 }

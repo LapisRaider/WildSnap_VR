@@ -13,9 +13,7 @@ public class Animal_Behaviour : MonoBehaviour
     private Animator m_animator;
     private Dictionary<string, AnimalState> m_animStateMap = new Dictionary<string, AnimalState>();
 
-
-    // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         m_boxCollider = transform.GetComponentInChildren<BoxCollider>();
         m_navMeshAgent = transform.GetComponent<NavMeshAgent>();
