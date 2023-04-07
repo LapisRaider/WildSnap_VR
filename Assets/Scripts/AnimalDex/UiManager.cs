@@ -23,7 +23,7 @@ public class UiManager : MonoBehaviour
     {
         isAnimalDexOpen = !isAnimalDexOpen;
         
-        if (isAnimalDexOpen && this.gameObject.activeInHierarchy)
+        if (isAnimalDexOpen && this != null)
         {
             transform.position = m_playerCamera.position;
             Vector3 newEulerAngles = transform.eulerAngles;
