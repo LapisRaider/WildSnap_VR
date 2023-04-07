@@ -170,6 +170,8 @@ namespace PolyverseSkies
                 byte[] imgBytes = img.EncodeToPNG();
                 File.WriteAllBytes(path, imgBytes);
 
+                #if UNITY_EDITOR
+
                 AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 
                 TextureImporter texImporter = AssetImporter.GetAtPath(path) as TextureImporter;
@@ -187,6 +189,8 @@ namespace PolyverseSkies
                 {
                     RenderSettings.skybox.SetTexture("_CloudsCubemap", AssetDatabase.LoadAssetAtPath<Cubemap>(path));
                 }
+
+                #endif
 
                 Debug.Log("[Polyverse Skies] The Generated Cubemap is saved to the Assets folder!");
 
