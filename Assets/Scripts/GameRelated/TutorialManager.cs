@@ -5,7 +5,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -16,8 +15,7 @@ public class TutorialManager : MonoBehaviour
     [Header("Dialogue settings")]
     private string[][] TUTORIAL_DIALOGUES = new string[][]
     {
-        new string[] {"Start tutorial by pointing at me with your right controller!" } ,
-        new string[] {"Talk to me by pressing the side trigger button!" },
+        new string[] {"If you would like a tutorial,\n point your right controller at me and press the side trigger button!" } ,
         new string[] {"Great job! Now try moving with your joystick" },
         new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
         new string[] {"That's great! Meet me at the farmhouse across the bridge!" },
@@ -25,21 +23,21 @@ public class TutorialManager : MonoBehaviour
         new string[] {"Great work! You can also zoom in and out using the left joystick" },
         new string[] {"Now try opening the animal dex, by clicking the XXXX button" },
     };
-    private int m_currDialogueState = 0;
+    private int m_currDialogueState = -1;
     private int m_currSentence = 0;
-
+    private HashSet<int> m_spokenDialogues = new HashSet<int>(); //if dialogue have been spoken, do not run the animation anymore, or speech
 
     [Header("Tutorial 1")]
 
     [Header("Tutorial 2")]
-    public InputActionReference m_moveJoystick = null;
+    public InputActionProperty m_moveJoystick;
 
     [Header("Tutorial 3")]
-    public LocomotionProvider m_teleportor = null;
+    public TeleportationProvider m_teleportor = null;
     private bool m_teleported = false;
 
     [Header("Tutorial 4")]
-    //public TriggerNotifier m_farmhouseNotifier = null;
+    public TriggerNotifier m_farmhouseNotifier = null;
     bool playerReachFarmHouse = false;
 
 
@@ -53,6 +51,8 @@ public class TutorialManager : MonoBehaviour
     delegate void TutorialCallbacks();
     List<TutorialCallbacks> m_tutorialFunctions = new List<TutorialCallbacks>();
 
+    List<TutorialCallbacks> m_initTutorialFunctions = new List<TutorialCallbacks>();
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -60,6 +60,16 @@ public class TutorialManager : MonoBehaviour
         m_tutorialFunctions.Add(Tutorial_2);
         m_tutorialFunctions.Add(Tutorial_3);
         m_tutorialFunctions.Add(Tutorial_4);
+
+        m_initTutorialFunctions.Add(Start_Tutorial_1);
+        m_initTutorialFunctions.Add(Start_Tutorial_2);
+        m_initTutorialFunctions.Add(Start_Tutorial_3);
+        m_initTutorialFunctions.Add(Start_Tutorial_4);
+    }
+
+    private void Start()
+    {
+        Start_Tutorial_1();
     }
 
     // Update is called once per frame
@@ -75,63 +85,67 @@ public class TutorialManager : MonoBehaviour
     void NextState()
     {
         ++m_currState;
-
+        m_initTutorialFunctions[m_currState]();
     }
 
     // state 1, teach basic interaction via hovering
     #region TUTORIAL 1 - basic interactions
-    void Tutorial_1()
+    void Start_Tutorial_1()
     {
-        //play idle animation, waits for player to point at professor with right controller
-        if (!m_isPointing)
-        {
-            m_speechText.text = "Start tutorial by pointing at me with your right controller!";
-            m_tutorialController.ShowSideTriggerTutorial(false);
-            return;
-        }
-            
-        //once pointed, change the text in UI to ask player to click at them
-        m_speechText.text = "Talk to me by pressing the side trigger button!";
+        StartNextDialogue();
         m_tutorialController.ShowSideTriggerTutorial(true);
 
+        //play idle animation
+    }
+
+    void Tutorial_1()
+    {
         //once clicked, go next stage
-        if (m_isClicked)
+        if (m_isClicked && m_isPointing)
         {
-            ++m_currState;
-            m_isClicked = false;
-            m_tutorialController.ShowSideTriggerTutorial(false);
+            Exit_Tutorial_1();
         }
+    }
+
+    void Exit_Tutorial_1()
+    {
+        m_isClicked = false;
+        m_tutorialController.ShowSideTriggerTutorial(false);
+
+        NextState();
     }
     #endregion
 
     //teach player to move via locomotion
     #region TUTORIAL 2 - move via locomotion
+    void Start_Tutorial_2()
+    {
+        StartNextDialogue();
+        m_tutorialController.ShowJoyStick(true);
+    }
+
     void Tutorial_2()
     {
-        m_speechText.text = "Great job! Now try moving with your joystick";
-        m_tutorialController.ShowJoyStick(true);
-
         Vector2 controllerOffset = m_moveJoystick.action.ReadValue<Vector2>();
         if (controllerOffset.sqrMagnitude > 0.0f)
         {
-            m_tutorialController.ShowJoyStick(false);
-            ++m_currState;
-            Start_Tutorial_3();
+            Exit_Tutorial_2();
         }
+    }
+
+    void Exit_Tutorial_2()
+    {
+        m_tutorialController.ShowJoyStick(false);
+        NextState();
     }
     #endregion
 
     #region TUTORIAL 3 - teleporting
     void Start_Tutorial_3()
     {
+        StartNextDialogue();
         m_teleportor.endLocomotion += TeleportationActivated;
-    }
-
-    void End_Tutorial_3()
-    {
-        m_teleportor.endLocomotion -= TeleportationActivated;
-        m_tutorialController.ShowBackTriggerTutorial(false);
-        ++m_currState;
+        m_tutorialController.ShowBackTriggerTutorial(true);
     }
 
     void TeleportationActivated(LocomotionSystem system)
@@ -142,23 +156,27 @@ public class TutorialManager : MonoBehaviour
     // teleporting
     void Tutorial_3()
     {
-        m_speechText.text = "Nice! Now let's try teleporting \n Hold the back trigger, point, and let go";
-        m_tutorialController.ShowBackTriggerTutorial(true);
-
         //change text to move to the farmhouse and make the npc walk there
         if (m_teleported)
         {
-            m_speechText.text = "That's great! Meet me at the farmhouse across the bridge!";
             End_Tutorial_3();
-            Start_Tutorial_4();
-        }  
+        }
+    }
+
+    void End_Tutorial_3()
+    {
+        m_teleportor.endLocomotion -= TeleportationActivated;
+        m_tutorialController.ShowBackTriggerTutorial(false);
+
+        NextState();
     }
     #endregion
 
     #region TUTORIAL 4 - taking photos
     void Start_Tutorial_4()
     {
-        m_farmhouseNotifier.onTriggerCallback += PlayerAtFarmHouse;
+        m_speechText.text = "You made it! Let's try to take a photo! ";
+        //m_farmhouseNotifier.onTriggerCallback += PlayerAtFarmHouse;
         m_pauseTutorialUpdate = true;
     }
 
@@ -204,9 +222,28 @@ public class TutorialManager : MonoBehaviour
     }
     #endregion
 
+    void StartNextDialogue()
+    {
+        ++m_currDialogueState;
+        m_currSentence = 0;
 
-    //IEnumerator TypeLine()
-    //{
-    //    //foreach (char letter in )
-    //}
+        StopAllCoroutines();
+        StartCoroutine(TypeDialogue());
+    }
+
+    IEnumerator TypeDialogue()
+    {
+        m_speechText.text = "";
+        foreach (char letter in TUTORIAL_DIALOGUES[m_currDialogueState][m_currSentence].ToCharArray())
+        {
+            m_speechText.text += letter;
+            yield return null;
+        }
+
+        ++m_currSentence;
+        if (m_currSentence < TUTORIAL_DIALOGUES[m_currDialogueState].Length)
+        {
+            StartCoroutine(TypeDialogue()); // type the next sentence in the dialogue
+        }
+    }
 }
