@@ -33,7 +33,7 @@ MonoBehaviour:
     m_state: 2
   - m_animStateName: Rabbit_Jump_Up
     m_state: 10
-  m_dexSprite: {fileID: 21300004, guid: be58d75910f124ede9f517d31b5ea78f, type: 3}
+  m_dexSprite: {fileID: 21300000, guid: f3a7715d778bc4c4dbf49024e8e8fa6f, type: 3}
   m_displayName: Rabbit
   m_scientificName: Oryctolagus cuniculus
   m_habitat: Grasslands, forests, deserts

@@ -25,7 +25,7 @@ MonoBehaviour:
     m_state: 5
   - m_animStateName: Bark
     m_state: 11
-  m_dexSprite: {fileID: 21300004, guid: be58d75910f124ede9f517d31b5ea78f, type: 3}
+  m_dexSprite: {fileID: 21300000, guid: 02181f6c08909e34989c6f62df2a3a8a, type: 3}
   m_displayName: Golden Retriever
   m_scientificName: Canis lupus familiaris
   m_habitat: Domesticated
