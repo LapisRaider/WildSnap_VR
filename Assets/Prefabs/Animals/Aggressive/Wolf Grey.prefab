@@ -1807,7 +1807,7 @@ GameObject:
   - component: {fileID: 6734314446328575846}
   m_Layer: 0
   m_Name: Wolf Grey
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2116,6 +2116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionRadius: 20
+  playerDetectionRadius: 10
   isAggressive: 1
   isScared: 0
   fleeingCoef: 0.7
