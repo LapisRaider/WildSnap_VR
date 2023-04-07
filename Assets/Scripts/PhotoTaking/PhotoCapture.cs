@@ -49,7 +49,8 @@ public class PhotoCapture : MonoBehaviour
 
         m_photoScreenWidth = photoScreenSize.x * m_photoScreen.transform.localScale.x;
         m_photoScreenHeight = photoScreenSize.y * m_photoScreen.transform.localScale.y;
-        m_outlineIndicator.SetWidth(0.001f, 0.001f);
+        m_outlineIndicator.startWidth = 0.001f;
+        m_outlineIndicator.endWidth = 0.001f;
 
         // round down to the nearest cube number to do uniform sampling (so the score doesn't flicker)
         m_raysShotPerAnimalPerAxis = (int)Mathf.Pow(m_raysShotPerAnimal, 1f / 3f);
@@ -241,7 +242,6 @@ public class PhotoCapture : MonoBehaviour
         GameObject foundAnimal = null;
         int foundRaysHit = 0;
         float foundDistance = 0;
-        float foundImageSize = 0;
         float foundFacingCamera = 0;
         float foundMinX = 0;
         float foundMaxX = 0;

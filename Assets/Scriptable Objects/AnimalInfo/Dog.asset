@@ -16,9 +16,22 @@ MonoBehaviour:
   m_availableStateAndScore:
   - m_state: 5
     m_score: 10
+  - m_state: 11
+    m_score: 50
   m_animStateData:
-  - m_animStateName: 
+  - m_animStateName: Idle
     m_state: 5
-  m_dexSprite: {fileID: 21300000, guid: dbf478a47e6fa0c4398ae8f279c86b86, type: 3}
-  m_displayName: Dog
-  m_description: Dogs are cute.
+  - m_animStateName: Sit
+    m_state: 5
+  - m_animStateName: Bark
+    m_state: 11
+  m_dexSprite: {fileID: 21300004, guid: be58d75910f124ede9f517d31b5ea78f, type: 3}
+  m_displayName: Golden Retriever
+  m_scientificName: Canis lupus familiaris
+  m_habitat: Domesticated
+  m_diet: Dog food, treats
+  m_description: Friendly and loyal, with a playful and energetic personality. Used
+    as companion and therapy animals. Intelligent and easy to train. Have a thick
+    coat of golden fur and a muscular build. Often used as hunting and service dogs.
+    Known for their love of water and ability to retrieve objects. Require regular
+    exercise and attention.
