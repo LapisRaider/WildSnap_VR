@@ -70,6 +70,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Tutorial 8")]
     public XRDirectInteractor m_directInteractor;
+    public Transform m_controllerPos_8;
 
     [Header("Tutorial 9")]
     public FoodManager m_foodManager = null;
@@ -245,12 +246,17 @@ public class TutorialManager : MonoBehaviour
     {
         m_photoCapture.m_photoTakenCallback += Exit_Tutorial_5;
         StartNextDialogue();
+
+        m_cameraTutorialController.gameObject.SetActive(true);
+        m_cameraTutorialController.ShowBackTriggerTutorial(true);
     }
 
     void Exit_Tutorial_5(AnimalType animal)
     {
         //ends when player has successfully taken a photo
         m_photoCapture.m_photoTakenCallback -= Exit_Tutorial_5;
+        m_cameraTutorialController.ShowBackTriggerTutorial(false);
+
         NextState();
     }
 
@@ -260,10 +266,13 @@ public class TutorialManager : MonoBehaviour
     }
     #endregion
 
-    #region TUTORIAL 6 - Teach players about opening animal dex
+    #region TUTORIAL 6 - Teach players about opening animal dex and zoom in and out camera
     void Start_Tutorial_6()
     {
         StartNextDialogue();
+
+        m_cameraTutorialController.ShowJoyStick(true);
+        m_cameraTutorialController.ShowYButton(true);
     }
 
     void Tutorial_6()
@@ -276,6 +285,10 @@ public class TutorialManager : MonoBehaviour
     void Exit_Tutorial_6()
     {
         NextState();
+        m_cameraTutorialController.ShowJoyStick(false);
+        m_cameraTutorialController.ShowYButton(false);
+
+        m_cameraTutorialController.gameObject.SetActive(false);
     }
     #endregion
 
@@ -303,6 +316,11 @@ public class TutorialManager : MonoBehaviour
     {
         StartNextDialogue();
         m_directInteractor.selectEntered.AddListener(Exit_Tutorial_8);
+
+        m_tutorialController.gameObject.SetActive(true);
+        m_tutorialController.ShowSideTriggerTutorial(true);
+        m_tutorialController.ShowInteractionRay(true);
+        SetObjectPosRot(m_tutorialController.transform, m_controllerPos_8);
     }
 
     void Tutorial_8()
@@ -318,6 +336,7 @@ public class TutorialManager : MonoBehaviour
 
         NextState();
         m_directInteractor.selectEntered.RemoveListener(Exit_Tutorial_8);
+        m_tutorialController.gameObject.SetActive(false);
     }
     #endregion
 
