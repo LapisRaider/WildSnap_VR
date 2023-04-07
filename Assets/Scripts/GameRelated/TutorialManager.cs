@@ -11,6 +11,7 @@ public class TutorialManager : MonoBehaviour
     [Header("Interface objects")]
     public TextMeshPro m_speechText;
     public TutorialControllerManager m_tutorialController;
+    public TutorialHuman m_tutorialHuman;
 
     [Header("Dialogue settings")]
     private string[][] TUTORIAL_DIALOGUES = new string[][]
@@ -38,6 +39,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Tutorial 4")]
     public TriggerNotifier m_farmhouseNotifier = null;
+    public Transform m_farmLocation = null;
     bool m_playerReachFarmHouse = false;
 
     [Header("Tutorial 5")]
@@ -181,6 +183,7 @@ public class TutorialManager : MonoBehaviour
     {
         StartNextDialogue();
         m_farmhouseNotifier.onTriggerCallback += PlayerAtFarmHouse;
+        m_tutorialHuman.SetDestination(m_farmLocation.position);
     }
 
     void Tutorial_4()
