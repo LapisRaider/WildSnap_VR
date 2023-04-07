@@ -38,7 +38,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Tutorial 4")]
     public TriggerNotifier m_farmhouseNotifier = null;
-    bool playerReachFarmHouse = false;
+    bool m_playerReachFarmHouse = false;
 
 
 
@@ -151,16 +151,12 @@ public class TutorialManager : MonoBehaviour
     void TeleportationActivated(LocomotionSystem system)
     {
         m_teleported = true;
+        End_Tutorial_3();
     }
 
-    // teleporting
     void Tutorial_3()
     {
-        //change text to move to the farmhouse and make the npc walk there
-        if (m_teleported)
-        {
-            End_Tutorial_3();
-        }
+        //nothing here
     }
 
     void End_Tutorial_3()
@@ -172,41 +168,28 @@ public class TutorialManager : MonoBehaviour
     }
     #endregion
 
-    #region TUTORIAL 4 - taking photos
+    #region TUTORIAL 4 - Ask player to get to the farm house
     void Start_Tutorial_4()
     {
-        m_speechText.text = "You made it! Let's try to take a photo! ";
-        //m_farmhouseNotifier.onTriggerCallback += PlayerAtFarmHouse;
-        m_pauseTutorialUpdate = true;
+        StartNextDialogue();
+        m_farmhouseNotifier.onTriggerCallback += PlayerAtFarmHouse;
+    }
+
+    void Tutorial_4()
+    {
+        //nothing here
     }
 
     void End_Tutorial_4()
     {
         m_farmhouseNotifier.onTriggerCallback -= PlayerAtFarmHouse;
-        ++m_currState;
+        NextState();
     }
 
     void PlayerAtFarmHouse(bool enteredHouse)
     {
-        playerReachFarmHouse = enteredHouse;
-
         if (enteredHouse)
-        {
-            m_pauseTutorialUpdate = true;
-            m_speechText.text = "You made it! Let's try to take a photo! ";
-        }
-    }
-
-    void Tutorial_4()
-    {
-
-        //once reach the farmhouse, there should be a bigass collider box here
-
-
-        //should activate new speech, teaching players to throw apples
-        //afterwards teach them to take photos
-
-
+            End_Tutorial_4();
     }
     #endregion
 
