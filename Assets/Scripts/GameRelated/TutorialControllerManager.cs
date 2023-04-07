@@ -3,9 +3,15 @@ using UnityEngine;
 public class TutorialControllerManager : MonoBehaviour
 {
     [Header("Helper Text Objs")]
-    public GameObject m_sideTriggerButton;
-    public GameObject m_backTriggerButton;
-    public GameObject m_joyStick;
+    public GameObject m_sideTriggerButton = null;
+    public GameObject m_backTriggerButton = null;
+    public GameObject m_joyStick = null;
+    public GameObject m_yButton = null;
+
+    [Header("Rays")]
+    public GameObject m_teleportationRay = null;
+    public GameObject m_interactionRay = null;
+
 
     [Header("Current animation state")]
     bool m_showSideTrigger = false;
@@ -17,6 +23,9 @@ public class TutorialControllerManager : MonoBehaviour
     bool m_showJoyStick = false;
     float m_joyStickOffset = -1.0f;
 
+    bool m_showYButton = false;
+    float m_yButtonOffset = 0.0f;
+
 
     private Animator m_animator;
 
@@ -24,9 +33,23 @@ public class TutorialControllerManager : MonoBehaviour
     void Awake()
     {
         m_animator = GetComponent<Animator>();
-        m_sideTriggerButton.SetActive(false);
-        m_backTriggerButton.SetActive(false);
-        m_joyStick.SetActive(false);
+        if (m_sideTriggerButton)
+            m_sideTriggerButton.SetActive(false);
+
+        if (m_backTriggerButton)
+            m_backTriggerButton.SetActive(false);
+
+        if (m_joyStick)
+            m_joyStick.SetActive(false);
+
+        if (m_yButton)
+            m_yButton.SetActive(true);
+
+        if (m_teleportationRay)
+            m_teleportationRay.SetActive(false);
+
+        if (m_interactionRay)
+            m_interactionRay.SetActive(false);
     }
 
     private void Update()
@@ -45,8 +68,14 @@ public class TutorialControllerManager : MonoBehaviour
 
         if (m_showJoyStick)
         {
-            m_joyStickOffset = Mathf.PingPong(Time.time, 1.0f);
+            m_joyStickOffset = Mathf.PingPong(Time.time, 2.0f) - 1.0f;
             m_animator.SetFloat("JoyY", m_joyStickOffset);
+        }
+
+        if (m_showYButton)
+        {
+            m_yButtonOffset = Mathf.PingPong(Time.time, 1.0f);
+            m_animator.SetFloat("Button 1", m_yButtonOffset);
         }
     }
 
@@ -75,5 +104,24 @@ public class TutorialControllerManager : MonoBehaviour
 
         if (!show)
             m_animator.SetFloat("JoyY", 0.0f);
+    }
+
+    public void ShowYButton(bool show = true)
+    {
+        m_yButton.SetActive(show);
+        m_showYButton = show;
+
+        if (!show)
+            m_animator.SetFloat("Button 1", 0.0f);
+    }
+
+    public void ShowTeleportationRay(bool show = true)
+    {
+        m_teleportationRay.SetActive(show);
+    }
+
+    public void ShowInteractionRay(bool show = true)
+    {
+        m_interactionRay.SetActive(show);
     }
 }

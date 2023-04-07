@@ -45,12 +45,14 @@ public class TutorialManager : MonoBehaviour
     private int m_currSentence = 0;
 
     [Header("Tutorial 1")]
+    public Transform m_tutorialControllerPos_1 = null;
 
     [Header("Tutorial 2")]
     public InputActionProperty m_moveJoystick;
 
     [Header("Tutorial 3")]
     public TeleportationProvider m_teleportor = null;
+    public Transform m_tutorialControllerPos_3 = null;
 
     [Header("Tutorial 4")]
     public TriggerNotifier m_farmhouseNotifier = null;
@@ -109,6 +111,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
+        m_cameraTutorialController.gameObject.SetActive(false);
+
         Start_Tutorial_1();
     }
 
@@ -133,8 +137,9 @@ public class TutorialManager : MonoBehaviour
     {
         StartNextDialogue();
         m_tutorialController.ShowSideTriggerTutorial(true);
+        m_tutorialController.ShowInteractionRay(true);
 
-        //play idle animation
+        SetObjectPosRot(m_tutorialController.gameObject.transform, m_tutorialControllerPos_1);
     }
 
     void Tutorial_1()
@@ -150,6 +155,7 @@ public class TutorialManager : MonoBehaviour
     {
         m_isClicked = false;
         m_tutorialController.ShowSideTriggerTutorial(false);
+        m_tutorialController.ShowInteractionRay(false);
 
         NextState();
     }
@@ -185,12 +191,18 @@ public class TutorialManager : MonoBehaviour
         StartNextDialogue();
         m_teleportor.endLocomotion += End_Tutorial_3;
         m_tutorialController.ShowBackTriggerTutorial(true);
+        m_tutorialController.ShowTeleportationRay(true);
+
+        SetObjectPosRot(m_tutorialController.gameObject.transform, m_tutorialControllerPos_3);
     }
 
     void End_Tutorial_3(LocomotionSystem system)
     {
         m_teleportor.endLocomotion -= End_Tutorial_3;
         m_tutorialController.ShowBackTriggerTutorial(false);
+        m_tutorialController.ShowTeleportationRay(false);
+
+        m_tutorialController.gameObject.SetActive(false);
 
         NextState();
     }
@@ -349,6 +361,14 @@ public class TutorialManager : MonoBehaviour
     public void Clicked(bool isClicked)
     {
         m_isClicked = isClicked;
+    }
+    #endregion
+
+    #region HELPER FUNCTIONS
+    void SetObjectPosRot(Transform obj, Transform newTransform)
+    {
+        obj.position = newTransform.position;
+        obj.rotation = newTransform.rotation;
     }
     #endregion
 
