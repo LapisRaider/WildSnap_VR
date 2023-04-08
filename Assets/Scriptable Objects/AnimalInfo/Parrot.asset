@@ -25,15 +25,15 @@ MonoBehaviour:
   - m_state: 3
     m_score: 1.5
   m_animStateData:
-  - m_animStateName: Idle
+  - m_animStateName: Parrot_Idle
     m_state: 5
-  - m_animStateName: Walk
+  - m_animStateName: Parrot_Walk
     m_state: 0
-  - m_animStateName: Run
+  - m_animStateName: Parrot_Run
     m_state: 2
-  - m_animStateName: Flying
+  - m_animStateName: Parrot_Fly
     m_state: 12
-  - m_animStateName: Attack
+  - m_animStateName: Parrot_Attack
     m_state: 3
   m_dexSprite: {fileID: 21300000, guid: 0fbef5d0097f0e240865bcc09c6ae9a8, type: 3}
   m_displayName: Parrot
