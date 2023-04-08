@@ -21,9 +21,8 @@ public class WalkToPlayer : IState
 
     public override void OnEnter()
     {
-        
         isAggressive = m_animalDetection.isAggressive;
-        Debug.Log("player");
+        
         if (isAggressive) { 
             m_animalMotion.WalkToPoint(m_animalDetection.GetPlayerPosition());
         }

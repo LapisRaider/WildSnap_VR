@@ -11,6 +11,7 @@ public class Parrot : MonoBehaviour
     private Transform playerTransform;
     private NavMeshAgent agent;
     private Animator animator;
+    private AnimalMotion animalMotion;
     private Vector3 initialPos;
     private Vector3 goalPos;
     private bool isAscending; // Whether the bird is ascending or descending
@@ -24,7 +25,7 @@ public class Parrot : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
+        animalMotion = GetComponent<AnimalMotion>();
         isAscending = true; // Set bird to ascending initially
         if (playerTransform == null)
         {
@@ -53,6 +54,7 @@ public class Parrot : MonoBehaviour
 
             agent.SetDestination(goalPos);
             animator.SetBool("isFlying", true);
+            animalMotion.SetFlying();
         }
 
         if (isRunningAway)
@@ -63,6 +65,7 @@ public class Parrot : MonoBehaviour
                 moveTimer = 0f;
                 isRunningAway = false;
                 animator.SetBool("isFlying", false);
+                animalMotion.SetIdling();
             }
         }
     }

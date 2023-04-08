@@ -12,12 +12,14 @@ public class Animal_Behaviour : MonoBehaviour
     private NavMeshAgent m_navMeshAgent;
     private Animator m_animator;
     private Dictionary<string, AnimalState> m_animStateMap = new Dictionary<string, AnimalState>();
+    private AnimalMotion m_animalMotion;
 
     void Start()
     {
         m_boxCollider = transform.GetComponentInChildren<BoxCollider>();
         m_navMeshAgent = transform.GetComponent<NavMeshAgent>();
         m_animator = transform.GetComponent<Animator>();
+        m_animalMotion = transform.GetComponent<AnimalMotion>();
 
         AnimalDexEntry dexEntry = AnimalDex.Instance.GetAnimalDexEntry(m_animalType);
         Animal_Info info = dexEntry.m_animalInfo;
@@ -48,6 +50,7 @@ public class Animal_Behaviour : MonoBehaviour
 
     public AnimalState GetAnimalState()
     {
+        /*
         AnimatorClipInfo[] currClipInfo = m_animator.GetCurrentAnimatorClipInfo(0);
         string clipName = currClipInfo[0].clip.name;
 
@@ -58,6 +61,8 @@ public class Animal_Behaviour : MonoBehaviour
         }
 
         return m_animStateMap[clipName];
+        */
+        return m_animalMotion.GetMotion();
     }
 }
 

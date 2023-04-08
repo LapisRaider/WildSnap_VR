@@ -9,37 +9,37 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class TutorialManager : MonoBehaviour
 {
     [Header("Interface objects")]
-    public TextMeshPro m_speechText;
+    public GameObject m_speechBubble;
+    public TextMeshProUGUI m_speechText;
     public TutorialControllerManager m_tutorialController;
     public TutorialControllerManager m_cameraTutorialController;
-    public float m_sentencePauseTime = 2.0f;
+    public float m_sentencePauseTime = 3.0f;
 
     public TutorialHuman m_tutorialHuman;
 
     [Header("Dialogue settings")]
     private string[][] TUTORIAL_DIALOGUES = new string[][]
     {
-        new string[] {"If you would like a tutorial,\n point your right controller at me and press the side trigger button!" } ,
-        new string[] {"Great job! If you ever want to interact with any other object, just do what u just did!", "Now try moving with your joystick" },
-        new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
+        new string[] {"Hi! If you would like a tour, point your right controller at me and press the grip button." } ,
+        new string[] {"Great job! I'm Steve, and I'll be your guide for today.", "Try moving around with your right joystick." },
+        new string[] {"Nice! Now, let's try teleporting. Hold the right trigger, point, and let go." },
         new string[] {"That's great! Meet me across the bridge!", "See you!", "" },
-        new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of Baxter the dog here by clicking the back trigger!" },
-        new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the Y button on the left controller" },
-        new string[] {"You can view all the photos you have taken here",
-            "With your right controller, just point and click on the icons in the animal dex with the back trigger"},
+        new string[] {"You made it! Let's try to take a photo.", "Your camera is in your left hand.",  "Try taking a photo of any animal by clicking the left trigger!" },
+        new string[] {"Great work! You can also zoom in and out by moving the left joystick up and down.", "Now try opening the Animal Dex by clicking the Y button on the left controller." },
+        new string[] {"You can view all the photos you have taken here.",
+            "Interact with the Animal Dex with your right trigger."},
         new string[] {
-            "You might notice some animals have various actions you can photograph.",
-            "Let me teach you a way to get one of those actions",
-            "Grab an apple from this table!",
-            "With your right controller, try picking it up with the side trigger button",},
-        new string[] { "Nice! Now try feeding an animal with it. ",
-            "You can toss the apple to an animal, or try feeding Baxter here"
+            "Animals look great doing different actions.",
+            "Your best photo of each unique action will be saved in your Animal Dex!",
+            "Let's grab an apple from this table.",
+            "Try picking it up with the right grip.",},
+        new string[] { "Nice! I wonder which animal around here would like an apple...",
+            "Try tossing the apple to them by swinging and letting go of the right grip!"
         },
-        new string[] { "Great work! Try to photograph as many new animals and actions as you can!",
-            "Fill up that animal dex of yours.",
-            "Each photograph will also be graded based on how well you took that photo!",
-            "You'll also get bonus points if there are multiple animals in the photo.",
-            "That's all from me! Have fun!"
+        new string[] { "Great work! Now take a picture while they're eating!",
+            "Each photograph will be scored based on how nice the photo is.",
+            "You also get bonus points for cool actions and multiple animals in a photo!",
+            "That's all from me! Go fill up that Animal Dex! Have fun!"
         }
     };
 
@@ -228,7 +228,7 @@ public class TutorialManager : MonoBehaviour
         if (m_currSentence == TUTORIAL_DIALOGUES[m_currState].Length)
         {
             ++m_currSentence;//hack to run this portion once
-            m_speechText.gameObject.SetActive(false);
+            m_speechBubble.gameObject.SetActive(false);
             m_tutorialHuman.SetDestination(m_farmLocation.position);
         }
     }
@@ -254,7 +254,7 @@ public class TutorialManager : MonoBehaviour
 
         m_cameraTutorialController.gameObject.SetActive(true);
         m_cameraTutorialController.ShowBackTriggerTutorial(true);
-        m_speechText.gameObject.SetActive(true);
+        m_speechBubble.gameObject.SetActive(true);
     }
 
     void Exit_Tutorial_5(AnimalType animal)
