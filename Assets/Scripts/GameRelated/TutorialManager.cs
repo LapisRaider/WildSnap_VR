@@ -12,6 +12,7 @@ public class TutorialManager : MonoBehaviour
     public TextMeshPro m_speechText;
     public TutorialControllerManager m_tutorialController;
     public TutorialControllerManager m_cameraTutorialController;
+    public float m_sentencePauseTime = 2.0f;
 
     public TutorialHuman m_tutorialHuman;
 
@@ -27,7 +28,8 @@ public class TutorialManager : MonoBehaviour
         new string[] {"You can view all the photos you have taken here",
             "TODO, INSERT HERE HOW TO VIEW PHOTOS",
             "You might notice some animals have various actions you can photograph.",
-            "Let me teach you a way to get one of those actions, come to the apple table here."},
+            "Let me teach you a way to get one of those actions, come to the apple table here.",
+        ""},
         new string[] { "Grab an apple!",
             "With your right controller, try picking it up with the side trigger button",},
         new string[] { "Nice! Now try feeding an animal with it. ",
@@ -299,6 +301,7 @@ public class TutorialManager : MonoBehaviour
     void Start_Tutorial_7()
     {
         StartNextDialogue();
+        m_tutorialHuman.SetDestination(m_appleLocation.position);
     }
 
     void Tutorial_7()
@@ -358,6 +361,7 @@ public class TutorialManager : MonoBehaviour
     void End_Tutorial_9()
     {
         m_foodManager.onAppleEatenCallback -= End_Tutorial_9;
+        NextState();
     }
     #endregion
 
@@ -365,7 +369,6 @@ public class TutorialManager : MonoBehaviour
     void Start_Tutorial_10()
     {
         StartNextDialogue();
-        m_foodManager.onAppleEatenCallback += End_Tutorial_9;
     }
 
     void Tutorial_10()
@@ -417,7 +420,7 @@ public class TutorialManager : MonoBehaviour
         ++m_currSentence;
         if (m_currSentence < TUTORIAL_DIALOGUES[m_currState].Length)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(m_sentencePauseTime);
 
             StartCoroutine(TypeDialogue()); // type the next sentence in the dialogue
         }

@@ -36,7 +36,7 @@ public class TutorialDogController : MonoBehaviour
         {
             m_animator.SetBool("isBarking", true);
             m_animator.SetBool("isRunning", false);
-            //transform.LookAt(m_humanLookAt);
+            transform.LookAt(m_humanLookAt);
         }
     }
 }

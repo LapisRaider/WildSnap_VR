@@ -6334,6 +6334,7 @@ MonoBehaviour:
   m_speechText: {fileID: 1318479214324517462}
   m_tutorialController: {fileID: 1318479215281862713}
   m_cameraTutorialController: {fileID: 309613625}
+  m_sentencePauseTime: 2
   m_tutorialHuman: {fileID: 1318479214533707952}
   m_tutorialControllerPos_1: {fileID: 1195164503}
   m_moveJoystick:
