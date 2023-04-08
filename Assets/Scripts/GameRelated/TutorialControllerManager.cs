@@ -43,7 +43,7 @@ public class TutorialControllerManager : MonoBehaviour
             m_joyStick.SetActive(false);
 
         if (m_yButton)
-            m_yButton.SetActive(true);
+            m_yButton.SetActive(false);
 
         if (m_teleportationRay)
             m_teleportationRay.SetActive(false);

@@ -303,11 +303,14 @@ public class TutorialManager : MonoBehaviour
     {
         StartNextDialogue();
         m_animalDex.onUiPressedCallback += End_Tutorial_7;
+        m_tutorialController.gameObject.SetActive(true);
+        m_tutorialController.ShowBackTriggerTutorial(true);
     }
 
     void End_Tutorial_7()
     {
         m_animalDex.onUiPressedCallback -= End_Tutorial_7;
+        m_tutorialController.ShowBackTriggerTutorial(false);
         NextState();
     }
 
