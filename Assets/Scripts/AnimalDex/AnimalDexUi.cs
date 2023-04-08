@@ -10,6 +10,9 @@ public class AnimalDexUi : MonoBehaviour
 
     public AnimalEntryUi m_animalEntryUi;
 
+    public delegate void UiPressedCallback();
+    public UiPressedCallback onUiPressedCallback;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -32,6 +35,9 @@ public class AnimalDexUi : MonoBehaviour
 
         m_animalEntryUi.gameObject.SetActive(true);
         m_animalEntryUi.InitInfo(m_animalDexInfo.GetDexEntries()[m_animalType]);
+
+        if (onUiPressedCallback != null)
+            onUiPressedCallback.Invoke();
     }
 
     public void AnimalDeselected()

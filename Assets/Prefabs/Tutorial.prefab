@@ -6368,7 +6368,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: -160020527567978557, guid: da2b439d1a2de5c46a4f428f8cf4fe19,
       type: 3}
-  m_appleLocation: {fileID: 0}
+  m_animalDex: {fileID: 0}
   m_directInteractor: {fileID: 0}
   m_controllerPos_8: {fileID: 1121959149}
   m_foodManager: {fileID: 0}
