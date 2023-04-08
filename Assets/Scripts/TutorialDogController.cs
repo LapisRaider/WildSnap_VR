@@ -25,8 +25,6 @@ public class TutorialDogController : MonoBehaviour
     public void MoveDog(Vector3 pos)
     {
         m_agent.SetDestination(pos);
-        m_animator.SetBool("isBarking", false);
-        m_animator.SetBool("isRunning", true);
     }
 
     // Update is called once per frame
@@ -37,6 +35,11 @@ public class TutorialDogController : MonoBehaviour
             m_animator.SetBool("isBarking", true);
             m_animator.SetBool("isRunning", false);
             transform.LookAt(m_humanLookAt);
+        }
+        else
+        {
+            m_animator.SetBool("isBarking", false);
+            m_animator.SetBool("isRunning", true);
         }
     }
 }

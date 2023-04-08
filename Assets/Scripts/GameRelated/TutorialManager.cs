@@ -26,7 +26,7 @@ public class TutorialManager : MonoBehaviour
         new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of Baxter the dog here by clicking the back trigger!" },
         new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the Y button on the left controller" },
         new string[] {"You can view all the photos you have taken here",
-            "TODO, INSERT HERE HOW TO VIEW PHOTOS",
+            "With your right controller, just point and click on the icons in the animal dex",
             "You might notice some animals have various actions you can photograph.",
             "Let me teach you a way to get one of those actions, come to the apple table here.",
         ""},
@@ -225,8 +225,9 @@ public class TutorialManager : MonoBehaviour
     void Tutorial_4()
     {
         //wait for statement to finish first, then start running
-        if (m_currSentence >= TUTORIAL_DIALOGUES[m_currState].Length)
+        if (m_currSentence == TUTORIAL_DIALOGUES[m_currState].Length)
         {
+            ++m_currSentence;//hack to run this portion once
             m_speechText.gameObject.SetActive(false);
             m_tutorialHuman.SetDestination(m_farmLocation.position);
         }
@@ -301,18 +302,21 @@ public class TutorialManager : MonoBehaviour
     void Start_Tutorial_7()
     {
         StartNextDialogue();
-        m_tutorialHuman.SetDestination(m_appleLocation.position);
     }
 
     void Tutorial_7()
     {
         //once finish speech
         if (m_currSentence == TUTORIAL_DIALOGUES[6].Length)
+        {
+            ++m_currSentence;
             m_tutorialHuman.SetDestination(m_appleLocation.position);
-
-        //once reach destination then go next state
-        if (m_tutorialHuman.m_isDestinationReached)
+        }
+        else if (m_currSentence > TUTORIAL_DIALOGUES[6].Length && m_tutorialHuman.m_isDestinationReached)
+        {
             NextState();
+        }
+
     }
     #endregion
 

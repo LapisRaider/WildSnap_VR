@@ -30,6 +30,13 @@ public class TutorialHuman : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!m_agent.enabled)
+        {
+            m_character.Move(Vector3.zero, false, false);
+            transform.LookAt(new Vector3(m_player.position.x, transform.position.y, m_player.position.z));
+            return;
+        }
+
         if (m_agent.remainingDistance > m_agent.stoppingDistance)
         {
             m_character.Move(m_agent.desiredVelocity, false, false);
@@ -37,20 +44,19 @@ public class TutorialHuman : MonoBehaviour
         else
         {
             //character not moving
-            m_character.Move(Vector3.zero, false, false);
             m_isDestinationReached = true;
-
-            transform.LookAt(new Vector3(m_player.position.x, transform.position.y, m_player.position.z));
+            m_agent.enabled = false;
         }
     }
 
     public void SetDestination(Vector3 pos)
     {
-
+        m_agent.enabled = true;
         m_agent.SetDestination(pos);
         m_isDestinationReached = false;
 
         m_doggo.MoveDog(pos);
+
     }
 
     public void Talking(bool isTalking)
