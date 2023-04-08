@@ -17,12 +17,10 @@ MonoBehaviour:
   - m_state: 5
     m_score: 1
   - m_state: 0
-    m_score: 1.1
-  - m_state: 2
     m_score: 1.2
-  - m_state: 12
+  - m_state: 9
     m_score: 1.5
-  - m_state: 3
+  - m_state: 12
     m_score: 1.5
   m_animStateData:
   - m_animStateName: Parrot_Idle

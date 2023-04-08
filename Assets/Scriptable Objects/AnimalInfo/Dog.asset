@@ -16,10 +16,10 @@ MonoBehaviour:
   m_availableStateAndScore:
   - m_state: 5
     m_score: 1
-  - m_state: 11
+  - m_state: 0
     m_score: 1.2
-  - m_state: 2
-    m_score: 1.3
+  - m_state: 9
+    m_score: 1.5
   m_animStateData:
   - m_animStateName: Dog-GoldenRetriever_Idle
     m_state: 5

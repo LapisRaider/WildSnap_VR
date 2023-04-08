@@ -200,7 +200,8 @@ public class PhotoCapture : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Cannot find multiplier for animal state");
+            Debug.LogError(type + ": Cannot find multiplier for animal state " + animalState);
+            stateScoreMultiplier = 1.0f;
         }
         score *= stateScoreMultiplier;
 
