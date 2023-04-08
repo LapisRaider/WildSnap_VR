@@ -25,9 +25,9 @@ MonoBehaviour:
   m_animStateData:
   - m_animStateName: Rabbit_Idle
     m_state: 5
-  - m_animStateName: LookOut
+  - m_animStateName: Rabbit_LookOut
     m_state: 5
-  - m_animStateName: Walking
+  - m_animStateName: Rabbit_Jump_Walk
     m_state: 0
   - m_animStateName: Rabbit_Run
     m_state: 2
