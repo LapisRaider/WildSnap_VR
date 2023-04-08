@@ -330,11 +330,11 @@ public class TutorialManager : MonoBehaviour
         m_tutorialController.gameObject.SetActive(true);
         m_tutorialController.ShowSideTriggerTutorial(true);
         m_tutorialController.ShowInteractionRay(true);
-        SetObjectPosRot(m_tutorialController.transform, m_controllerPos_8);
     }
 
     void Tutorial_8()
     {
+        SetObjectPosRot(m_tutorialController.transform, m_controllerPos_8);
         return;
     }
 
