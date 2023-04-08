@@ -4,6 +4,10 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 public class TutorialHuman : MonoBehaviour
 {
+    [Header("Doggo follower")]
+    public TutorialDogController m_doggo;
+
+    [Header("Character related")]
     public ThirdPersonCharacter m_character;
     public NavMeshAgent m_agent;
     public Transform m_player;
@@ -35,14 +39,18 @@ public class TutorialHuman : MonoBehaviour
             //character not moving
             m_character.Move(Vector3.zero, false, false);
             m_isDestinationReached = true;
-            transform.LookAt(m_player);
+
+            transform.LookAt(new Vector3(m_player.position.x, transform.position.y, m_player.position.z));
         }
     }
 
     public void SetDestination(Vector3 pos)
     {
+
         m_agent.SetDestination(pos);
         m_isDestinationReached = false;
+
+        m_doggo.MoveDog(pos);
     }
 
     public void Talking(bool isTalking)

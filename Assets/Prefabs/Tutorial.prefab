@@ -4612,6 +4612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1c9c8bdd239494bb1e60d36ef394de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_doggo: {fileID: 0}
   m_character: {fileID: 1318479214533707958}
   m_agent: {fileID: 1318479214533707953}
   m_player: {fileID: 0}
@@ -6370,6 +6371,7 @@ MonoBehaviour:
   m_directInteractor: {fileID: 0}
   m_controllerPos_8: {fileID: 1121959149}
   m_foodManager: {fileID: 0}
+  m_currState: 0
 --- !u!1 &1318479215761782400
 GameObject:
   m_ObjectHideFlags: 0

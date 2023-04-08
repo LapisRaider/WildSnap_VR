@@ -21,7 +21,7 @@ public class TutorialManager : MonoBehaviour
         new string[] {"If you would like a tutorial,\n point your right controller at me and press the side trigger button!" } ,
         new string[] {"Great job! If you ever want to interact with any other object, just do what u just did!", "Now try moving with your joystick" },
         new string[] {"Nice! Now let's try teleporting \n Hold the back trigger, point, and let go" },
-        new string[] {"That's great! Meet me across the bridge!", "See you!" },
+        new string[] {"That's great! Meet me across the bridge!", "See you!", "" },
         new string[] {"You made it! Let's try to take a photo.", "Your camera is on your left hand.",  "Try taking a photo of Baxter the dog here by clicking the back trigger!" },
         new string[] {"Great work! You can also zoom in and out using the left joystick", "Now try opening the animal dex, by clicking the Y button on the left controller" },
         new string[] {"You can view all the photos you have taken here",
@@ -41,7 +41,6 @@ public class TutorialManager : MonoBehaviour
         }
     };
 
-    private int m_currDialogueState = -1;
     private int m_currSentence = 0;
 
     [Header("Tutorial 1")]
@@ -75,8 +74,8 @@ public class TutorialManager : MonoBehaviour
     [Header("Tutorial 9")]
     public FoodManager m_foodManager = null;
 
-
-    private int m_currState = 0;
+    [Header("Debugging state")]
+    public int m_currState = 0;
     private bool m_isPointing = false; //whether player is pointing or not on obj
     private bool m_isClicked = false;
 
@@ -114,7 +113,7 @@ public class TutorialManager : MonoBehaviour
     {
         m_cameraTutorialController.gameObject.SetActive(false);
 
-        Start_Tutorial_1();
+        m_initTutorialFunctions[m_currState]();
     }
 
     // Update is called once per frame
@@ -224,7 +223,7 @@ public class TutorialManager : MonoBehaviour
     void Tutorial_4()
     {
         //wait for statement to finish first, then start running
-        if (m_currSentence > 1)
+        if (m_currSentence >= TUTORIAL_DIALOGUES[m_currState].Length)
         {
             m_speechText.gameObject.SetActive(false);
             m_tutorialHuman.SetDestination(m_farmLocation.position);
@@ -398,7 +397,7 @@ public class TutorialManager : MonoBehaviour
     #region DIALOGUE
     void StartNextDialogue()
     {
-        ++m_currDialogueState;
+        //++m_currDialogueState;
         m_currSentence = 0;
         m_tutorialHuman.Talking(true);
 
@@ -409,14 +408,14 @@ public class TutorialManager : MonoBehaviour
     IEnumerator TypeDialogue()
     {
         m_speechText.text = "";
-        foreach (char letter in TUTORIAL_DIALOGUES[m_currDialogueState][m_currSentence].ToCharArray())
+        foreach (char letter in TUTORIAL_DIALOGUES[m_currState][m_currSentence].ToCharArray())
         {
             m_speechText.text += letter;
             yield return null;
         }
 
         ++m_currSentence;
-        if (m_currSentence < TUTORIAL_DIALOGUES[m_currDialogueState].Length)
+        if (m_currSentence < TUTORIAL_DIALOGUES[m_currState].Length)
         {
             yield return new WaitForSeconds(1);
 
