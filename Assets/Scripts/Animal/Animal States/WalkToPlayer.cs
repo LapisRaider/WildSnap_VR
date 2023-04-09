@@ -58,10 +58,14 @@ public class WalkToPlayer : IState
     }
     public override bool StateEnded()
     {
+        
         if (isAggressive) {
-            if (m_animalMotion.ReachedDestination(1f) || reached){
+            if (m_animalMotion.ReachedDestination(4f) || reached || Vector3.SqrMagnitude(m_animalDetection.GetAnimalPosition() - m_animalDetection.GetPlayerPosition()) < 4f){
                 reached = true;
                 if (m_animalDetection.PlayerInRange()){
+                    Vector3 direction = (m_animalDetection.GetPlayerPosition() - m_animalDetection.GetAnimalPosition()).normalized;
+                    Quaternion lookRotation = Quaternion.LookRotation(direction);
+                    m_animalDetection.transform.rotation = Quaternion.Slerp(m_animalDetection.transform.rotation, lookRotation, 2*Time.deltaTime);
                     m_animalMotion.StartWatchingPlayer();
                 }
                 if (m_attackingTime > 0){
@@ -76,7 +80,7 @@ public class WalkToPlayer : IState
             }
         }
         else {
-
+            
             if (m_animalMotion.ReachedDestination(3f)) {
                 m_animalMotion.SetIdle();
                 return true;
