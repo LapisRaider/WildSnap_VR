@@ -19,9 +19,12 @@ MonoBehaviour:
   m_animStateData:
   - m_animStateName: Swim_0
     m_state: 13
-  m_dexSprite: {fileID: 21300000, guid: 0ccc508108fa6ed4fa11b4a467d7f609, type: 3}
-  m_displayName: Fish
-  m_scientificName: 
-  m_habitat: 
-  m_diet: 
-  m_description: 
+  m_dexSprite: {fileID: 21300000, guid: ac7d24be50da862438fbab23d41640b1, type: 3}
+  m_displayName: Sea Goldie
+  m_scientificName: Pseudanthias squamipinnis
+  m_habitat: Coral reefs in tropical waters
+  m_diet: Plankton, small invertebrates
+  m_description: Small and brightly colored, with a slender body and large dorsal
+    fin. Known for their social behavior and tendency to form schools. Can be found
+    in a variety of colors, including orange, pink, and yellow. Often used as ornamental
+    fish in aquariums.
