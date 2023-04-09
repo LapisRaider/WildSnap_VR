@@ -1893,6 +1893,9 @@ MonoBehaviour:
   m_bronze: {r: 0.8039216, g: 0.27058825, b: 0.16078432, a: 0.29803923}
   m_minScoreGold: 2000
   m_minScoreSilver: 1000
+  m_RaycastMask:
+    serializedVersion: 2
+    m_Bits: 243
   m_flashParticles: {fileID: 7587406257437284272}
   m_flashAnim: {fileID: 3559089979317325335}
   m_flashAudioSource: {fileID: 2822169663849634799}

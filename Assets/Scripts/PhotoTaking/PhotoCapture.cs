@@ -45,6 +45,7 @@ public class PhotoCapture : MonoBehaviour
 
     public delegate void PhotoTakenCallback(AnimalType type);
     public PhotoTakenCallback m_photoTakenCallback;
+    [SerializeField] private LayerMask m_RaycastMask = -1;
 
     [Header("On Take Photo")]
     public ParticleSystem m_flashParticles;
@@ -181,9 +182,12 @@ public class PhotoCapture : MonoBehaviour
     }
 
     public float CalculatePhotoScore(
-        AnimalType type, AnimalState animalState, float rayHitProportion, float distance,
+        Animal_Behaviour animalBehaviour, float rayHitProportion, float distance,
             float imageSize, float distFromCenter, float facingCamera, int animalsInFrame)
     {
+        AnimalType type = animalBehaviour.m_animalType;
+        AnimalState animalState = animalBehaviour.GetAnimalState();
+
         float score = 100.0f;
 
         float stateScoreMultiplier = 1.0f;
@@ -350,7 +354,8 @@ public class PhotoCapture : MonoBehaviour
                         bool hasHit = Physics.Raycast(
                             m_photoTakingCamera.transform.position,
                             shootAt - m_photoTakingCamera.transform.position,
-                            out hit
+                            out hit,
+                            m_RaycastMask
                         );
 
                         if (hasHit && hit.collider == collider)
@@ -428,8 +433,8 @@ public class PhotoCapture : MonoBehaviour
         }
 
         return CalculatePhotoScore(
-            animal.m_animalType, animal.GetAnimalState(), rayHitProportion,
-            distance, imageSize, distFromCenter, facingCamera, animalsInFrame
+            animal, rayHitProportion, distance, imageSize, 
+            distFromCenter, facingCamera, animalsInFrame
         );
     }
 }
