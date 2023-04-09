@@ -62,6 +62,15 @@ public class Animal_Behaviour : MonoBehaviour
 
         return m_animStateMap[clipName];
         */
+        if (m_animalMotion == null)
+        {
+            foreach (KeyValuePair<string, AnimalState> possibleState in m_animStateMap)
+            {
+                return possibleState.Value;
+            }
+        }
+            
+
         return m_animalMotion.GetMotion();
     }
 }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab08aba76b3d4b4db7d745a9ac84c0d, type: 3}
+  m_Name: Fish
+  m_EditorClassIdentifier: 
+  m_type: 10
+  m_availableStateAndScore:
+  - m_state: 13
+    m_score: 100
+  m_animStateData:
+  - m_animStateName: Swim_0
+    m_state: 13
+  m_dexSprite: {fileID: 21300000, guid: 0ccc508108fa6ed4fa11b4a467d7f609, type: 3}
+  m_displayName: Fish
+  m_scientificName: 
+  m_habitat: 
+  m_diet: 
+  m_description: 
