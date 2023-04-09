@@ -37,6 +37,9 @@ public class TutorialHuman : MonoBehaviour
             return;
         }
 
+        if (m_agent.pathPending)
+            return;
+
         if (m_agent.remainingDistance > m_agent.stoppingDistance)
         {
             m_character.Move(m_agent.desiredVelocity, false, false);
@@ -56,7 +59,6 @@ public class TutorialHuman : MonoBehaviour
         m_isDestinationReached = false;
 
         m_doggo.MoveDog(pos);
-
     }
 
     public void Talking(bool isTalking)
