@@ -68,12 +68,6 @@ public class PhotoCapture : MonoBehaviour
         m_raysShotPerAnimal = m_raysShotPerAnimalPerAxis * m_raysShotPerAnimalPerAxis * m_raysShotPerAnimalPerAxis;
     }
 
-    // uncomment if too laggy
-    // void Start()
-    // {
-    //     InvokeRepeating("DrawIndicatorOnCamera", 0.2f, 0.2f);
-    // }
-
     private void OnEnable()
     {
         RenderPipelineManager.endContextRendering += RenderPipelineManager_endCameraRendering;
@@ -238,7 +232,7 @@ public class PhotoCapture : MonoBehaviour
     }
 
     public void DetectFocusAnimal(
-        out GameObject animal, out int raysHit, out float distance,
+        out GameObject animal, out float rayHitProportion, out float distance,
         out float minX, out float maxX, out float minY,
         out float maxY, out float facingCamera, out int animalsInFrame)
     {
@@ -255,7 +249,7 @@ public class PhotoCapture : MonoBehaviour
         animalsInFrame = 0;
         bool animalFound = false;
         GameObject foundAnimal = null;
-        int foundRaysHit = 0;
+        float foundRayHitProportion = 0;
         float foundDistance = 0;
         float foundFacingCamera = 0;
         float foundMinX = 0;
@@ -266,9 +260,18 @@ public class PhotoCapture : MonoBehaviour
         for (int i = 0; i < collidersInRadius.Length; i++)
         {
             Collider collider = collidersInRadius[i];
+
             float dot = colliderDots[i];
             // if behind camera, skip collider
             if (dot < 0) continue;
+
+            // Possible idea:
+            // uniformly sample renderer
+            // get depth values of those sampled points in image
+            // compare pixel depth values with image depth values
+            // But too bad i can't get the depth values without shaders (knowledge gap)
+
+            // so instead, we can still use collider, but not eliminate out of frame rays
 
             Vector3 boundMin = collider.bounds.min;
             Vector3 boundMax = collider.bounds.max;
@@ -308,18 +311,20 @@ public class PhotoCapture : MonoBehaviour
             if (imageSize < m_imageSizeThreshold) continue;
 
             // counts number of animals that are "large enough"
-            // TODO: this does not shoot rays to the "other" animals, so it counts those occluded too
+            // this does not shoot rays to the "other" animals, so it counts those occluded too
             animalsInFrame++;
 
             // only need to return the first animal that was found
             if (animalFound) continue;
 
-            Vector3 rayStart = boundMin + collider.bounds.extents * 0.05f;
-            Vector3 boundLength = collider.bounds.extents * 0.9f;
+            // shrink the bounds because the corners are usually empty
+            Vector3 rayStart = boundMin + collider.bounds.extents * 0.1f;
+            Vector3 boundLength = collider.bounds.size * 0.9f;
             Vector3 gridLength = boundLength / (float)m_raysShotPerAnimalPerAxis;
             rayStart += 0.5f * gridLength;
 
             int hitCount = 0;
+            int validRays = 0;
             // don't worry about the triple loop it's not spaghetti
             for (int rayX = 0; rayX < m_raysShotPerAnimalPerAxis; rayX++)
             {
@@ -339,6 +344,7 @@ public class PhotoCapture : MonoBehaviour
                         {
                             continue;
                         }
+                        validRays++;
 
                         RaycastHit hit;
                         bool hasHit = Physics.Raycast(
@@ -355,7 +361,10 @@ public class PhotoCapture : MonoBehaviour
                 }
             }
 
-            if (hitCount > m_rayThreshold * m_raysShotPerAnimal)
+            if (validRays == 0) continue;
+            float hitProportion = (float)hitCount / (float)validRays;
+
+            if (hitProportion > m_rayThreshold)
             {
                 // the first one that reaches this is the most centered animal that is highly visible
                 animalFound = true;
@@ -364,7 +373,7 @@ public class PhotoCapture : MonoBehaviour
                 foundMaxX = screenMaxX - 0.5f;
                 foundMinY = screenMinY - 0.5f;
                 foundMaxY = screenMaxY - 0.5f;
-                foundRaysHit = hitCount;
+                foundRayHitProportion = hitProportion;
                 foundAnimal = collider.gameObject;
                 Vector3 closestPoint = collider.ClosestPoint(m_photoTakingCamera.transform.position);
                 foundDistance = (closestPoint - m_photoTakingCamera.transform.position).magnitude;
@@ -376,7 +385,7 @@ public class PhotoCapture : MonoBehaviour
         }
 
         animal = foundAnimal;
-        raysHit = foundRaysHit;
+        rayHitProportion = foundRayHitProportion;
         distance = foundDistance;
         minX = foundMinX;
         maxX = foundMaxX;
@@ -392,13 +401,13 @@ public class PhotoCapture : MonoBehaviour
     {
         animal = null;
         GameObject focusAnimal;
-        int raysHit;
+        float rayHitProportion;
         float distance;
         float facingCamera;
         int animalsInFrame;
 
         DetectFocusAnimal(
-            out focusAnimal, out raysHit, out distance, out minX, out maxX,
+            out focusAnimal, out rayHitProportion, out distance, out minX, out maxX,
             out minY, out maxY, out facingCamera, out animalsInFrame
         );
 
@@ -407,8 +416,6 @@ public class PhotoCapture : MonoBehaviour
         float centerX = ((maxX - minX) / 2.0f) * m_photoScreenWidth;
         float centerY = ((maxY - minY) / 2.0f) * m_photoScreenHeight;
         float distFromCenter = Mathf.Sqrt(centerX * centerX + centerY * centerY);
-
-        float rayHitProportion = (float)raysHit / m_raysShotPerAnimal;
 
         if (focusAnimal == null)
             return 0.0f;
