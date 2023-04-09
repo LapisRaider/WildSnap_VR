@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,13 +17,21 @@ public class TutorialManager : MonoBehaviour
 
     public TutorialHuman m_tutorialHuman;
 
+    [System.Serializable]
+    public struct AudioClips
+    {
+        public AudioClip[] audioClips;
+    }
+
     [Header("Dialogue settings")]
+    public AudioSource m_audioSource;
+    public AudioClips[] m_tutorialAudio;
     private string[][] TUTORIAL_DIALOGUES = new string[][]
     {
         new string[] {"Hi! If you would like a tour, point your right controller at me and press the grip button." } ,
         new string[] {"Great job! I'm Steve, and I'll be your guide for today.", "Try moving around with your right joystick." },
         new string[] {"Nice! Now, let's try teleporting. Hold the right trigger, point, and let go." },
-        new string[] {"That's great! Meet me across the bridge!", "See you!", "" },
+        new string[] {"That's great! Meet me across the bridge!"},
         new string[] {"You made it! Let's try to take a photo.", "Your camera is in your left hand.",  "Try taking a photo of any animal by clicking the left trigger!" },
         new string[] {"Great work! You can also zoom in and out by moving the left joystick up and down.", "Now try opening the Animal Dex by clicking the Y button on the left controller." },
         new string[] {"You can view all the photos you have taken here.",
@@ -404,7 +412,6 @@ public class TutorialManager : MonoBehaviour
     #region DIALOGUE
     void StartNextDialogue()
     {
-        //++m_currDialogueState;
         m_currSentence = 0;
         m_tutorialHuman.Talking(true);
 
@@ -414,6 +421,10 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator TypeDialogue()
     {
+        // Typing ...
+        float startTime = Time.time;
+        m_audioSource.Stop();
+        m_audioSource.PlayOneShot(m_tutorialAudio[m_currState].audioClips[m_currSentence]);
         m_speechText.text = "";
         foreach (char letter in TUTORIAL_DIALOGUES[m_currState][m_currSentence].ToCharArray())
         {
@@ -421,12 +432,17 @@ public class TutorialManager : MonoBehaviour
             yield return null;
         }
 
+        // Wait for audio to finish
+        float remainingTime = m_tutorialAudio[m_currState].audioClips[m_currSentence].length - (Time.time - startTime);
+        if (remainingTime > 0) yield return new WaitForSeconds(remainingTime);
+
+        // Move to next sentence
         ++m_currSentence;
         if (m_currSentence < TUTORIAL_DIALOGUES[m_currState].Length)
         {
-            yield return new WaitForSeconds(m_sentencePauseTime);
+            //yield return new WaitForSeconds(m_sentencePauseTime);
 
-            StartCoroutine(TypeDialogue()); // type the next sentence in the dialogue
+            StartCoroutine(TypeDialogue());
         }
         else
         {
