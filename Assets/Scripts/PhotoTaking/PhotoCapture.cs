@@ -353,7 +353,7 @@ public class PhotoCapture : MonoBehaviour
                             out hit
                         );
 
-                        if (hasHit && collider.bounds.Contains(hit.point))
+                        if (hasHit && hit.collider == collider)
                         {
                             hitCount++;
                         }
