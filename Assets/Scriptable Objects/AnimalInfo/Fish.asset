@@ -15,7 +15,7 @@ MonoBehaviour:
   m_type: 10
   m_availableStateAndScore:
   - m_state: 13
-    m_score: 100
+    m_score: 1.2
   m_animStateData:
   - m_animStateName: Swim_0
     m_state: 13
