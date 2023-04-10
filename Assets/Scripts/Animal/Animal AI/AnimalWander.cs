@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimalWander : MonoBehaviour
 {
-    [SerializeField] private float m_wanderRadius=20;
+    [SerializeField] private float m_wanderRadius = 20;
     Vector3 m_anchorPosition;
     public void Awake()
     {
@@ -15,5 +15,11 @@ public class AnimalWander : MonoBehaviour
     {
         Vector2 randomCircle = Random.insideUnitCircle;
         return m_anchorPosition + new Vector3(randomCircle.x, 0, randomCircle.y) * m_wanderRadius;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, m_wanderRadius);
     }
 }

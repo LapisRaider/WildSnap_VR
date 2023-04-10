@@ -14,6 +14,8 @@ public class FoodManager : MonoBehaviour
     public delegate void OnAppleEaten();
     public OnAppleEaten onAppleEatenCallback;
 
+    private const float THRESHOLD_DIST = 0.5f;
+
     private void Awake()
     {
         GameObject[] apples = GameObject.FindGameObjectsWithTag("Apple");
@@ -27,9 +29,16 @@ public class FoodManager : MonoBehaviour
 
     public bool AppleInRange(AnimalDetection animalDetection)
     {
-        foreach (Transform apple in m_appleTransforms)
+        for (int i = 0; i < m_appleTransforms.Count; i++)
         {
-            if (Vector3.SqrMagnitude(animalDetection.transform.position - apple.position) < animalDetection.detectionRadius * animalDetection.detectionRadius)
+            Transform apple = m_appleTransforms[i];
+
+            if (Vector3.SqrMagnitude(apple.position - m_initialPositions[i]) < THRESHOLD_DIST * THRESHOLD_DIST)
+            {
+                return false;
+            }
+
+            if (Vector3.SqrMagnitude(animalDetection.transform.position - apple.position) < AnimalDetection.detectionRadius * AnimalDetection.detectionRadius)
             {
                 animalDetection.m_currentAppleTransform = apple;
                 return true;

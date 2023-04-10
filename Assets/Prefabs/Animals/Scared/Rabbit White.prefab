@@ -2041,8 +2041,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469f7c029f2d714a8684d9ed8cbf5ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 20
-  playerDetectionRadius: 10
+  detectionRadius: 3
+  playerDetectionRadius: 8
   isAggressive: 0
   isScared: 1
   fleeingCoef: 0.7
