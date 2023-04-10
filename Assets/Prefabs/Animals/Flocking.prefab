@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2311469922171522792}
   - component: {fileID: 2311469922171522795}
   - component: {fileID: 2311469922171522793}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Flocking
   m_TagString: Untagged
   m_Icon: {fileID: 0}
