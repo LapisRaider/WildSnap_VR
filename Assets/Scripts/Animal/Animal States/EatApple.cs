@@ -41,11 +41,14 @@ public class EatApple : IState
     { 
         m_animalDetection.DestroyApple();
     }
+
     public override bool StateEnded()
     {
         if (m_animalMotion.ReachedDestination(3f) || reached){
             reached = true;
             m_animalMotion.StartEating();
+            m_animalDetection.StartEatingApple();
+
             if (m_eatingTime > 0 && m_animalDetection.appleExists()){
                 m_eatingTime -= Time.deltaTime;
             }

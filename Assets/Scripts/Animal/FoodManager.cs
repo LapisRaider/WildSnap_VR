@@ -35,7 +35,7 @@ public class FoodManager : MonoBehaviour
 
             if (Vector3.SqrMagnitude(apple.position - m_initialPositions[i]) < THRESHOLD_DIST * THRESHOLD_DIST)
             {
-                return false;
+                continue;
             }
 
             if (Vector3.SqrMagnitude(animalDetection.transform.position - apple.position) < AnimalDetection.detectionRadius * AnimalDetection.detectionRadius)

@@ -91,11 +91,16 @@ public class AnimalDetection : MonoBehaviour
         if (appleExists()) {
             m_foodManager.DestroyApple(this);
         }
-
     }
 
-    public bool appleExists() {
+    public bool appleExists()
+    {
         return (m_currentAppleTransform != null);
+    }
+    
+    public void StartEatingApple()
+    {
+        m_currentAppleTransform.GetComponent<Apple>().Eat();
     }
 
     void OnDrawGizmosSelected()
