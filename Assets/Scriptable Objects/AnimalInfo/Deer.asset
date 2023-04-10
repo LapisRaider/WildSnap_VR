@@ -13,9 +13,19 @@ MonoBehaviour:
   m_Name: Deer
   m_EditorClassIdentifier: 
   m_type: 6
-  m_availableStates: 000000000100000002000000030000000400000005000000
+  m_availableStateAndScore:
+  - m_state: 5
+    m_score: 1
+  - m_state: 0
+    m_score: 1.2
+  - m_state: 9
+    m_score: 1.5
+  m_animStateData: []
   m_dexSprite: {fileID: 21300000, guid: 6f254c7fdc547304a86ef1ecdeb574a7, type: 3}
   m_displayName: Deer
+  m_scientificName: Cervus elaphus
+  m_habitat: Forests, mountains
+  m_diet: Vegetation, acorns, nuts
   m_description: Deer live in a variety of biomes, ranging from tundra to the tropical
     rainforest. While often associated with forests, many deer are ecotone species
     that live in transitional areas between forests and thickets (for cover) and
