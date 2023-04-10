@@ -21,6 +21,11 @@ public class UiManager : MonoBehaviour
 
     private void ToggleAnimalDex(InputAction.CallbackContext obj)
     {
+        ToggleAnimalDex();
+    }
+
+    public void ToggleAnimalDex()
+    {
         isAnimalDexOpen = !isAnimalDexOpen;
         
         if (isAnimalDexOpen && this != null)

@@ -7,6 +7,7 @@ public class AnimalDexUi : MonoBehaviour
     [Header("UI info")]
     public GameObject m_animalDexSlotPrefab;
     public GameObject m_animalDexSlotParent;
+    public GameObject m_selectionScreen;
 
     public AnimalEntryUi m_animalEntryUi;
 
@@ -31,7 +32,7 @@ public class AnimalDexUi : MonoBehaviour
 
     public void AnimalSelected(AnimalType m_animalType)
     {
-        m_animalDexSlotParent.SetActive(false);
+        m_selectionScreen.SetActive(false);
 
         m_animalEntryUi.gameObject.SetActive(true);
         m_animalEntryUi.InitInfo(m_animalDexInfo.GetDexEntries()[m_animalType]);
@@ -42,7 +43,7 @@ public class AnimalDexUi : MonoBehaviour
 
     public void AnimalDeselected()
     {
-        m_animalDexSlotParent.SetActive(true);
+        m_selectionScreen.SetActive(true);
         m_animalEntryUi.gameObject.SetActive(false);
     }
 }
