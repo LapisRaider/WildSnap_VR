@@ -14,6 +14,7 @@ public enum AnimalState
     Jumping,
     Barking,
     Flying,
+    Swiming,
 }
 
 public enum AnimalType
@@ -28,4 +29,5 @@ public enum AnimalType
     DOG,
     RABBIT,
     PARROT,
+    FISH,
 }

@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 1270750815294941354}
   - component: {fileID: 1270750815294941355}
   - component: {fileID: 1270750815294941356}
+  - component: {fileID: 7834981300991960074}
   m_Layer: 0
   m_Name: Lion
   m_TagString: Animal
@@ -328,12 +329,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469f7c029f2d714a8684d9ed8cbf5ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 20
-  playerDetectionRadius: 10
+  detectionRadius: 3
+  playerDetectionRadius: 8
   isAggressive: 1
   isScared: 0
   fleeingCoef: 0.7
   m_currentAppleTransform: {fileID: 0}
+--- !u!114 &7834981300991960074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271824137426779597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e8f1c9593920a4f91d05d51fa5fd4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_animalType: 3
 --- !u!1001 &1648777349713661028
 PrefabInstance:
   m_ObjectHideFlags: 0

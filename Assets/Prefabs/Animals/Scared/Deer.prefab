@@ -1876,6 +1876,7 @@ GameObject:
   - component: {fileID: 7189160615895920302}
   - component: {fileID: 5802818591324755765}
   - component: {fileID: 6072212779868164193}
+  - component: {fileID: 7348922099128360466}
   m_Layer: 0
   m_Name: Deer
   m_TagString: Animal
@@ -2147,7 +2148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469f7c029f2d714a8684d9ed8cbf5ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 20
+  detectionRadius: 3
   playerDetectionRadius: 10
   isAggressive: 0
   isScared: 1
@@ -2190,3 +2191,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_wanderRadius: 20
+--- !u!114 &7348922099128360466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8339154491256408790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e8f1c9593920a4f91d05d51fa5fd4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_animalType: 6

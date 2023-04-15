@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class AnimalDetection : MonoBehaviour
 {
-    public float detectionRadius;
-    public float playerDetectionRadius = 10f;
     public bool isAggressive = false;
     public bool isScared = false;
     public float fleeingCoef = 0.7f;
@@ -15,6 +13,9 @@ public class AnimalDetection : MonoBehaviour
     private Transform m_playerTransform;
     private NavMeshAgent m_navMeshAgent;
     private NavMeshPath path;
+    
+    public const float detectionRadius = 3f;
+    public const float playerDetectionRadius = 8f;
 
     private void Awake()
     {
@@ -22,7 +23,6 @@ public class AnimalDetection : MonoBehaviour
         m_playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         path = new NavMeshPath();
-        detectionRadius = 5;
     }
 
     public bool PlayerInRange()
@@ -91,10 +91,23 @@ public class AnimalDetection : MonoBehaviour
         if (appleExists()) {
             m_foodManager.DestroyApple(this);
         }
-
     }
 
-    public bool appleExists() {
+    public bool appleExists()
+    {
         return (m_currentAppleTransform != null);
+    }
+    
+    public void StartEatingApple()
+    {
+        m_currentAppleTransform.GetComponent<Apple>().Eat();
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, playerDetectionRadius);
     }
 }
