@@ -1,4 +1,4 @@
-ghis project uses the following assets:
+This project uses the following assets:
 
 Atmospheric Height Fog
 https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/atmospheric-height-fog-optimized-fog-for-consoles-mobile-and-vr-143825
