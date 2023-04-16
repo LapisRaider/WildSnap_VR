@@ -19,7 +19,6 @@ GameObject:
   - component: {fileID: 1270750815294941355}
   - component: {fileID: 1270750815294941356}
   - component: {fileID: 7834981300991960074}
-  - component: {fileID: 1658352203}
   m_Layer: 0
   m_Name: Lion
   m_TagString: Animal
@@ -284,25 +283,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_animalType: 3
---- !u!114 &1658352203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271824137426779597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0ca804d6b18f6d4db4ebe14203336f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animalSound: {fileID: 0}
-  walking: {fileID: 0}
-  eating: {fileID: 0}
-  running: {fileID: 0}
-  attacking: {fileID: 0}
-  death: {fileID: 0}
-  sleeping: {fileID: 0}
 --- !u!1001 &1648777349713661028
 PrefabInstance:
   m_ObjectHideFlags: 0
