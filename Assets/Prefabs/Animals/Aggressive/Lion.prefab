@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 1179891709189027707}
   - component: {fileID: 1189262748916391253}
   - component: {fileID: 1168499721752248587}
-  - component: {fileID: 1167778560616461373}
   - component: {fileID: 1375274221801947509}
   - component: {fileID: 1270750815294941353}
   - component: {fileID: 1270750815294941354}
   - component: {fileID: 1270750815294941355}
   - component: {fileID: 1270750815294941356}
   - component: {fileID: 7834981300991960074}
+  - component: {fileID: 1658352203}
   m_Layer: 0
   m_Name: Lion
   m_TagString: Animal
@@ -196,68 +196,6 @@ MonoBehaviour:
   attacking: {fileID: 8300000, guid: 2e77463d056f93647b1f400e5c8a0c56, type: 3}
   death: {fileID: 0}
   sleeping: {fileID: 0}
---- !u!114 &1167778560616461373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1271824137426779597}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36003be02bd7fc54db18675085e2ab6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idleStates:
-  - stateName: StandUp
-    animationBool: isStanding
-    minStateTime: 5
-    maxStateTime: 10
-    stateWeight: 1
-  movementStates:
-  - stateName: Walk
-    animationBool: isWalking
-    maxStateTime: 10
-    moveSpeed: 2
-    turnSpeed: 100
-  - stateName: Running
-    animationBool: isRunning
-    maxStateTime: 20
-    moveSpeed: 6
-    turnSpeed: 200
-  attackingStates:
-  - stateName: Attack
-    animationBool: isAttacking
-  deathStates:
-  - stateName: Death
-    animationBool: isDead
-  species: Chimpanzee
-  stats: {fileID: 11400000, guid: fb5b295c26be5384186694d0a0e46379, type: 2}
-  wanderZone: 25
-  awareness: 30
-  scent: 30
-  constainedToWanderZone: 0
-  nonAgressiveTowards: []
-  matchSurfaceRotation: 0
-  surfaceRotationSpeed: 2
-  logChanges: 0
-  showGizmos: 0
-  drawWanderRange: 1
-  drawScentRange: 1
-  drawAwarenessRange: 1
-  deathEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  attackingEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  idleEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  movementEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  CurrentState: 0
 --- !u!195 &1375274221801947509
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -329,8 +267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469f7c029f2d714a8684d9ed8cbf5ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 3
-  playerDetectionRadius: 8
   isAggressive: 1
   isScared: 0
   fleeingCoef: 0.7
@@ -348,6 +284,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_animalType: 3
+--- !u!114 &1658352203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271824137426779597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0ca804d6b18f6d4db4ebe14203336f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animalSound: {fileID: 0}
+  walking: {fileID: 0}
+  eating: {fileID: 0}
+  running: {fileID: 0}
+  attacking: {fileID: 0}
+  death: {fileID: 0}
+  sleeping: {fileID: 0}
 --- !u!1001 &1648777349713661028
 PrefabInstance:
   m_ObjectHideFlags: 0

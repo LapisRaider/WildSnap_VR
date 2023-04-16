@@ -1876,7 +1876,6 @@ GameObject:
   - component: {fileID: 5802818591324755765}
   - component: {fileID: 6072212779868164193}
   - component: {fileID: 7348922099128360466}
-  - component: {fileID: 69286762}
   m_Layer: 0
   m_Name: Deer
   m_TagString: Animal
@@ -2047,7 +2046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ca804d6b18f6d4db4ebe14203336f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalSound: {fileID: 0}
+  animalSound: {fileID: 8300000, guid: 9f5591bf0410147a3ab3dd80de160b1b, type: 3}
   walking: {fileID: 8300000, guid: b8d66fbf2a4c44b208b86bdcaf684983, type: 3}
   eating: {fileID: 8300000, guid: 39081a8f8fcfc43319c8f687e415712a, type: 3}
   running: {fileID: 0}
@@ -2142,22 +2141,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_animalType: 6
---- !u!114 &69286762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8339154491256408790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0ca804d6b18f6d4db4ebe14203336f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animalSound: {fileID: 8300000, guid: 9f5591bf0410147a3ab3dd80de160b1b, type: 3}
-  walking: {fileID: 0}
-  eating: {fileID: 0}
-  running: {fileID: 0}
-  attacking: {fileID: 0}
-  death: {fileID: 0}
-  sleeping: {fileID: 0}
