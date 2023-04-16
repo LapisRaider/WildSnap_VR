@@ -1097,7 +1097,6 @@ GameObject:
   - component: {fileID: 2687504699433196584}
   - component: {fileID: 2706749686843768158}
   - component: {fileID: 2675542734973842136}
-  - component: {fileID: 2675654615442479712}
   - component: {fileID: 2738574254731992800}
   - component: {fileID: 2645389051250242664}
   - component: {fileID: 2645389051250242671}
@@ -1280,68 +1279,6 @@ MonoBehaviour:
   attacking: {fileID: 8300000, guid: 2e77463d056f93647b1f400e5c8a0c56, type: 3}
   death: {fileID: 0}
   sleeping: {fileID: 0}
---- !u!114 &2675654615442479712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2644508233391612118}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36003be02bd7fc54db18675085e2ab6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  idleStates:
-  - stateName: StandUp
-    animationBool: isStanding
-    minStateTime: 5
-    maxStateTime: 10
-    stateWeight: 1
-  movementStates:
-  - stateName: Walk
-    animationBool: isWalking
-    maxStateTime: 10
-    moveSpeed: 2
-    turnSpeed: 100
-  - stateName: Running
-    animationBool: isRunning
-    maxStateTime: 20
-    moveSpeed: 6
-    turnSpeed: 200
-  attackingStates:
-  - stateName: Attack
-    animationBool: isAttacking
-  deathStates:
-  - stateName: Death
-    animationBool: isDead
-  species: Bear
-  stats: {fileID: 11400000, guid: 7c0caf258cdab7a4fa8d1b3f9a9a5510, type: 2}
-  wanderZone: 25
-  awareness: 30
-  scent: 30
-  constainedToWanderZone: 0
-  nonAgressiveTowards: []
-  matchSurfaceRotation: 0
-  surfaceRotationSpeed: 2
-  logChanges: 0
-  showGizmos: 0
-  drawWanderRange: 1
-  drawScentRange: 1
-  drawAwarenessRange: 1
-  deathEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  attackingEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  idleEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  movementEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  CurrentState: 0
 --- !u!195 &2738574254731992800
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1376,7 +1313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cbe3b2d6bb672d45904d0253169fd40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_wanderRadius: 20
+  m_wanderRadius: 14
 --- !u!114 &2645389051250242671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1413,8 +1350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469f7c029f2d714a8684d9ed8cbf5ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 3
-  playerDetectionRadius: 8
   isAggressive: 1
   isScared: 0
   fleeingCoef: 0.7
