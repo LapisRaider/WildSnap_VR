@@ -1,31 +1,29 @@
+<img src="https://i.ibb.co/9rkC78s/Pos2.png" alt="WildSnap VR Thumbnail"/>
+
 # About
 
 A VR game made using **Unity 2021.3.16f1**
 
 **Target Device**: Meta Oculus Device (Quest or Rift)
 
-<br/>
-
 WildSnap VR is an exciting and immersive VR app that takes the user on a thrilling adventure through a stunning virtual world filled with real animals. As a photographer on a quest to capture the perfect shot, the user will explore the game's various habitats and environments while learning about the animals that live there. 
-
-<br/>
 
 # How to play
 
 The main aim of WildSnap VR is for players to learn more about the different type of animals by exploring the in-game world and taking and collecting pictures of every animal and their actions. Players can see the photos of animals they have taken or have yet to by looking at the animal dex. The animal dex also shows information and interesting facts about the animals.
 
 ## Controls:
-- **Locomotion Move**: <u>Right Controller Joystick</u> -> allows players to move about the world *We gave this option to let players have more precise positioning*
-- **Teleport**: <u>Right Controller Back Trigger Button</u> -> hold down the trigger to aim and let go to teleport
-- **Interact with objects** - <u>Right Controller Side Trigger Button</u> -> Point at apples and hold button to grab apples, can also use this to interact with the NPC
-- **Interact with Animal Dex (User Interface)** - <u>Right Controller Back Trigger Button</u> -> When UI is opened, you can point and click on the buttons with this control instead of teleporting
-- **Move Camera** - Camera is attached to your <u>left controller</u>, moving your left controller will move it around in the world
-- **Open Animal Dex** - <u>Left Controller Y button</u> -> Click to toggle Animal Dex
-- **Take photo on Camera** - <u> Left Controller Back Trigger Button</u> -> Click to take a photo
-- **Zoom in and out** - <u>Left Controller Joystick</u> -> Move it to zoom in and out
+| Control          | Action                              | Explaination                                                                              |
+|------------------|-------------------------------------|-------------------------------------------------------------------------------------------|
+| Left Trigger     | Take photo                          |                                                                                           |
+| Left Y Button    | Open/Close Animal Dex               |                                                                                           |
+| Left Joystick    | Zoom in and out                     | Move up and down to zoom in and out                                                       |
+| Right Trigger    | Teleport                            | Hold down the trigger to aim and let go to teleport, primary movement                     |
+| Right Trigger    | Interact with Animal Dex (UI)       | When UI is opened, point and click on the buttons with this control                       |
+| Right Grip       | Interact with objects               | Point at apples and hold down to grab apples, or press to interact with NPCs              |
+| Right Joystick   | Move                                | For precise positioning                                                                   |
 
-
-<br/>
+<img src="https://imgur.com/LzYxfHC.png" alt="Animal Dex"/>
 
 # How to build/compile project
 1. Clone project from our [github](https://github.com/LapisRaider/WildSnap_VR)
@@ -35,8 +33,6 @@ The main aim of WildSnap VR is for players to learn more about the different typ
 5. To build the game onto your Oculus, go to File > Build Settings, and switch to Android platform
 6. In Run Device, select your Oculus, and click Build and Run, it should take about 20-30mins to build the project from scratch
 
-<br/>
-
 # Packages used
 * XR Interaction Toolkit
 * Oculus XR Plugin
@@ -44,7 +40,7 @@ The main aim of WildSnap VR is for players to learn more about the different typ
 * Universal Rendering Pipeline
 * TextmeshPro
 
-<br/>
+<img src="https://imgur.com/x9vVE2Y.png" alt="Beautiful Scenery"/>
 
 # Imported Art Assets used
 
