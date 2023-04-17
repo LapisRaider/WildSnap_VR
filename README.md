@@ -2,6 +2,10 @@
 
 A VR game made using **Unity 2021.3.16f1**
 
+**Target Device**: Meta Oculus Device (Quest or Rift)
+
+<br/>
+
 WildSnap VR is an exciting and immersive VR app that takes the user on a thrilling adventure through a stunning virtual world filled with real animals. As a photographer on a quest to capture the perfect shot, the user will explore the game's various habitats and environments while learning about the animals that live there. 
 
 <br/>
